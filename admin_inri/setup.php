@@ -1,12 +1,38 @@
 <?php #echo "Я Setup)";
-require_once('lib/class.Admin.php');
+#require_once('lib/class.Admin.php');
 require_once('lib/class.Setup.php');
-$admin = new Admin();
+#$admin = new Admin();
 $output = '';
 
 
 class SetupSite extends Setup{
   
+  function __construct (){
+    
+    parent::__construct();
+    
+    $this->nav_items_arr['/'.ADM_DIR.'/'.$this->script_name.'?step=setup_database_access' ] = '1. Доступ к базе данных';
+    
+    $this->nav_items_arr['/'.ADM_DIR.'/'.$this->script_name.'?step=setup_database_module' ] = '2. Установка модулей';
+  }
+  
+  
+  function show(){
+    $output = $step = '';
+    
+    if( isset($_GET['step']) && $_GET['step'] ) $step = $_GET['step'];
+    
+    switch ($step){
+      case 'setup_database_access': 
+        $this->set_content($this->wrap_block($this->setup_database_access())) ;
+        break;
+      
+    }
+    
+    $output = parent::show();
+    
+    return $output;
+  }
 }
 
 $setup = new SetupSite();

@@ -456,9 +456,9 @@ class CatCarusel extends BaseCarusel{
 	  	if ($query = $this->pdo->query("SELECT * FROM `".$this->prefix.$this->carusel_name.'_cat'."` WHERE `id` = '$cid'")){
 	  		if ( $cat = $query->fetch() ){
 	  			$output = $this->get_bread_crumbs($cat['parent_id']);
-	  			$output .= ' → <a href="'.IA_URL.'$this->carusel_name.'.php?c_id='.$cat['id'].'">'.
+	  			$output .= ' → <a href="'.IA_URL.$this->carusel_name.'.php?c_id='.$cat['id'].'">'.
 	  			$cat['title'].'</a> ';
-          $this->bread[$cat['title']] = ''.IA_URL.'$this->carusel_name.'.php?c_id='.$cat['id']; 
+          $this->bread[$cat['title']] = ''.IA_URL.$this->carusel_name.'.php?c_id='.$cat['id']; 
 	  		}
 	  	}
 	  }
@@ -527,7 +527,7 @@ class CatCarusel extends BaseCarusel{
                   </td>
               	  
                   <td style="text-align: left;">
-                    <a href="'.IA_URL.'$this->carusel_name.'.php?c_id='.$id.'" title="редактировать">'.$title.'</a>
+                    <a href="'.IA_URL.$this->carusel_name.'.php?c_id='.$id.'" title="редактировать">'.$title.'</a>
                   </td>
               	  
             	';
@@ -535,7 +535,7 @@ class CatCarusel extends BaseCarusel{
               $output .= '
               	  <td style="" class="img-act">
                     
-                    <a  href="..'.IA_URL.'$this->carusel_name.'.php?editc='.$id.'" 
+                    <a  href="..'.IA_URL.$this->carusel_name.'.php?editc='.$id.'" 
                         class = "btn btn-info btn-sm"
                         title = "Редактировать">
                         <i class="fa fa-pencil"></i>
@@ -561,7 +561,7 @@ class CatCarusel extends BaseCarusel{
               
               if(!$val_is_cildren && !$val_is_items){
                 $output .= '
-                    <a href="..'.IA_URL.'$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}"
+                    <a href="..'.IA_URL.$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}"
                           class="btn btn-danger btn-sm" 
                           title="удалить" 
                           onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
@@ -717,11 +717,11 @@ HTML;
             </td>
         	  
             <td style="text-align: left;">
-              <a href="'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
+              <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
             </td>
 
             <td style="" class="img-act">
-              <a  href="..'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" 
+              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
                 <i class="fa fa-pencil"></i>
@@ -755,7 +755,7 @@ HTML;
     $c_id = $_SESSION[$this->carusel_name]['c_id'];
     
     $output .= $this->getFormStyleAndScript();
-    $header = '<h1><a href = "'.IA_URL.'$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
+    $header = '<h1><a href = "'.IA_URL.$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
     
     $this->header = $header;
     (!is_null($this->admin)) ?  : $output .=  $header;
@@ -999,7 +999,7 @@ HTML;
   function add_slide($item = null){
     $output = $title = "";
     
-    $header ='<h1><a href="'.IA_URL.''.$this->carusel_name.'.php">'.$this->header.'</a></h1>';
+    $header ='<h1><a href="'.IA_URL.$this->carusel_name.'.php">'.$this->header.'</a></h1>';
     $this->header = $header;
     (!is_null($this->admin)) ?  : $output .=  $header;
     
@@ -1024,7 +1024,7 @@ HTML;
                 <FORM 
                   method="post" 
                   enctype="multipart/form-data" 
-                  action="'.IA_URL.''.$this->carusel_name.'.php?creates"
+                  action="'.IA_URL.$this->carusel_name.'.php?creates"
                   class="form-horizontal form-label-left"
                 >';
 
@@ -1130,7 +1130,7 @@ HTML;
     ";
     
     #$id = intval($_GET["edits"]);
-    $header ='<h1><a href="'.IA_URL.''.$this->carusel_name.'.php">'.$this->header.'</a></h1>';
+    $header ='<h1><a href="'.IA_URL.$this->carusel_name.'.php">'.$this->header.'</a></h1>';
     $this->header = $header;
     (!is_null($this->admin)) ?  : $output .=  $header;
     
@@ -1160,7 +1160,7 @@ HTML;
       
   		$output .='<FORM method="post" 
                   enctype="multipart/form-data" 
-                  action="'.IA_URL.''.$this->carusel_name.'.php?updates='.$id.'"
+                  action="'.IA_URL.$this->carusel_name.'.php?updates='.$id.'"
                   class="form-horizontal form-label-left"
                 >';
       
@@ -1283,7 +1283,7 @@ HTML;
     }  
     switch($view){
       case 'show_table':
-        header('Location: '.IA_URL.'$this->carusel_name.'.php');
+        header('Location: '.IA_URL.$this->carusel_name.'.php');
         #$output .= $this->show_table();
         break;
         
@@ -1435,7 +1435,7 @@ HTML;
   function add_cat_slide($item = null){
     $output = $title = "";
     
-    $header .='<h1><a href="'.IA_URL.''.$this->carusel_name.'.php">'.$this->header.'</a></h1>';
+    $header .='<h1><a href="'.IA_URL.$this->carusel_name.'.php">'.$this->header.'</a></h1>';
     $this->header = $header;
     (!is_null($this->admin)) ?  : $output .=  $header;
     
@@ -1454,7 +1454,7 @@ HTML;
     $output .= '<div style="/*margin:25px;*/">
                 <FORM method="post" 
                   enctype="multipart/form-data" 
-                  action="'.IA_URL.''.$this->carusel_name.'.php?createc"
+                  action="'.IA_URL.$this->carusel_name.'.php?createc"
                   class="form-horizontal form-label-left"
                 >';
 
@@ -1560,7 +1560,7 @@ HTML;
     ";
     
     #$id = intval($_GET["edits"]);
-    $header .='<h1><a href="'.IA_URL.''.$this->carusel_name.'.php">'.$this->header.'</a></h1>';
+    $header .='<h1><a href="'.IA_URL.$this->carusel_name.'.php">'.$this->header.'</a></h1>';
     $this->header = $header;
     (!is_null($this->admin)) ?  : $output .=  $header;
     
@@ -1587,7 +1587,7 @@ HTML;
       
   		$output .='<FORM 
                   method="post" enctype="multipart/form-data" 
-                  action="'.IA_URL.''.$this->carusel_name.'.php?updateс='.$id.'"
+                  action="'.IA_URL.$this->carusel_name.'.php?updateс='.$id.'"
                   class="form-horizontal form-label-left"
                 >';
       
@@ -1609,7 +1609,7 @@ HTML;
       }
       if ($item_img !== ''){
         $output .= '<BR/>загружено:'.$item_img.'<BR/><IMG src="/images/'.$this->carusel_name.'/cat/slide/'.$item_img.'">';
-  		  $output .= '[ <A href="'.IA_URL.'$this->carusel_name.'.php?delete_picture_c=1&id='.$id.'" onClick="javascript: if (confirm('."'Удалить картинку?')) { return true;} else { return false;}\"".'>удалить</A> ]<BR/>';
+  		  $output .= '[ <A href="'.IA_URL.$this->carusel_name.'.php?delete_picture_c=1&id='.$id.'" onClick="javascript: if (confirm('."'Удалить картинку?')) { return true;} else { return false;}\"".'>удалить</A> ]<BR/>';
       }
       
       
@@ -1796,7 +1796,7 @@ HTML;
   // END Категории
   
   function view_tree(){
-    $output = '<h1><a href = "'.IA_URL.'$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
+    $output = '<h1><a href = "'.IA_URL.$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
     $output .= '<table class="catalog" width="990"><tr><td style="text-align: left;">';
 		$output .= '<div class="well">';
 		$output .= $this->show_tree_catalog();
@@ -1854,7 +1854,7 @@ HTML;
 	}
   
   function full_tree(){
-    $output = '<h1><a href = "'.IA_URL.'$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
+    $output = '<h1><a href = "'.IA_URL.$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
     $output .= '
 		  <script>
 		  $(function(){
