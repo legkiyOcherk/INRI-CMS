@@ -1,0 +1,121 @@
+<?php
+require_once('lib/class.Admin.php');
+$admin = new Admin();
+require_once(NX_PATH.'iladmin/lib/class.Carusel.php');
+require_once(NX_PATH.'iladmin/lib/class.Image.php');
+
+class Article extends Carusel{  
+  function show_table_header_rows(){
+    $output = '
+          <tr class="th nodrop nodrag">
+          	<td style="width: 55px;">#</td>
+      		  <td style="width: 50px;">Скрыть</td>
+            <td style="width: 50px;">Фиксировать<br> на всем сайте</td>
+      		  <td>Название</td>
+            <td>Стандартный блок</td>
+      		  <td style="width: 80px">Действие</td>
+          </tr>';
+    
+    return $output;
+  }
+  
+  function show_table_rows($item){
+    $output = '';
+    extract($item);
+    
+    $output .= '
+          <tr class="r1" id="tr_'.$id.'" style="cursor: move;">			 
+            <td>
+              <input type="checkbox" class="group_checkbox" name="group_item[]" value="'.$id.'"> '.$id.'
+              <input type="hidden" value="'.$id.'" name="itSort[]">
+          </td>
+            
+            <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td> 
+            
+            <td class="img-act"><div title="Фиксировать" onclick="star_check('.$id.', \'fl_is_fixed\')" class="star_check '.$this->getStarValStyle($fl_is_fixed).'" id="fl_is_fixed_'.$id.'"></div></td>  
+            
+            <td style="text-align: left;">
+              <a href="'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
+            </td>
+            <td style="text-align: left;">
+              '.$link.'
+            </td>';
+            
+    $output .= '
+        	  <td style="" class="img-act">
+              <a  href="..'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" 
+                  class = "btn btn-info btn-sm"
+                  title = "Редактировать">
+                <i class="fa fa-pencil"></i>
+              </a>
+              
+              <span >
+              <span class="btn btn-danger btn-sm" 
+                    title="удалить" 
+                    onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
+                <i class="fa fa-trash-o"></i>
+              </span>
+            </td>
+  			  </tr>
+  			  </tr>';
+    
+    return $output;
+  }
+  
+  
+  function show_table(){
+    $output = "";
+   
+    $output .= parent::show_table(); 
+    
+    $output .= '<br>';
+    $output .= '
+    <pre>
+    <p>Перечень стандартных блоков</p>
+    block_mine_header => Стандартная шапка<br>
+    block_mine_top_menu => <a href="/iladmin/articles.php?c_id=1">Меню сайта</a> <br>
+    block_mine_slider => <a href="/iladmin/carusel.php">Слайдер</a><br>
+    block_inner_content => Контент на внутренних страницах
+    </pre>
+    ';
+    
+    
+    return $output;
+    
+  }
+  
+}
+
+$date_arr = array(
+    'title' => 'Название',
+    'link' => 'Стандартный блок',
+    'longtxt2' => 'Контент',
+  );
+$pager = array(
+  'perPage' => 50,
+  'page' => 1,
+  'url' => '',
+  'items_per_page' => array( 50, 100, 500, 1000, 5000)
+);
+
+$arrfilterfield = array('title', 'link', 'longtxt2');
+
+$carisel = new Article('mine_block', $date_arr, false, false, $pager);
+
+$carisel->setHeader('Главная страница');
+$carisel->setIsUrl(true);
+$carisel->setIsImages(false);
+$carisel->setIsFiles(false);
+$carisel->setIsPager(false);
+$carisel->setIsFilter(false);
+$carisel->setFilterField($arrfilterfield); 
+$carisel->setIsLog(true);
+
+$carisel->setImg_ideal_width(750);  
+$carisel->setImg_ideal_height(410);
+#$carisel->setDate_arr($date_arr);
+
+if($output = $carisel->getContent($admin)){
+  $admin->setContent($output);
+  echo $admin->showAdmin('content');
+}

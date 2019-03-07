@@ -1,0 +1,54 @@
+<?php
+header("Content-Type: text/xml");
+header("Expires: Thu, 19 Feb 1998 13:24:18 GMT");
+header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
+header("Cache-Control: no-cache, must-revalidate");
+header("Cache-Control: post-check=0,pre-check=0");
+header("Cache-Control: max-age=0");
+header("Pragma: no-cache");
+      
+$prefix="<url><loc>http://".$_SERVER["SERVER_NAME"]."/";
+$suffix="</loc></url>"."\r\n";
+
+require_once('define.php');
+require_once(NX_PATH.'iladmin/lib/global.lib.php');
+require_once(NX_PATH.'iladmin/config.inc.php');
+require_once(NX_PATH.'iladmin/lib/mysql.lib.php');
+require_once(NX_PATH.'iladmin/lib/class.db.php');
+
+function get_table_link( $table,  $prefix, $suffix ){
+  $output = '';
+  global $PDO;
+  $s = "
+    SELECT `$table`.*, `il_url`.`url` 
+    FROM `$table`
+    LEFT JOIN `il_url`
+    ON (`il_url`.`module` = '$table') AND (`il_url`.`module_id` = `$table`.`id`)
+    AND `$table`.`hide`  = 0 
+  ";
+
+  if($q = $PDO->query($s)){
+    if($count = $q->rowCount()){
+      while($r = $q->fetch()){
+        if(isset($r['url']) && $r['url'])
+          if( !isset($r['link']) || !$r['link'] )
+      	    $output .= $prefix.$r['url']."/".$suffix;
+      }
+    }
+  }
+  
+  return $output;
+}
+
+db_open();
+global $PDO;
+
+
+
+print '<?xml version="1.0" encoding="UTF-8"?>'."\r\n";
+print '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\r\n";
+echo $prefix.$suffix;
+
+print get_table_link( 'il_smpl_article',  $prefix, $suffix);
+
+print '</urlset>';
