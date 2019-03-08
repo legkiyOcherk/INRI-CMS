@@ -55,17 +55,17 @@ class Site {
     
     // ------------- SEO -------------
     {
-    $res = $this->pdo->query("SELECT `value` FROM `il_seo` WHERE `type` = 'mine_title'");
+    $res = $this->pdo->query("SELECT `value` FROM `".DB_PFX."seo` WHERE `type` = 'mine_title'");
     $row = $res->fetch();
     $seo_title =  $row['value'];
     if($seo_title) $this->siteTitle = str_replace("*h1*", $this->siteTitle, $seo_title)." - ".$_SERVER['HTTP_HOST'];
     
-    $res = $this->pdo->query("SELECT `value` FROM `il_seo` WHERE `type` = 'mine_description'");
+    $res = $this->pdo->query("SELECT `value` FROM `".DB_PFX."seo` WHERE `type` = 'mine_description'");
     $row = $res->fetch();
     $seo_description =  $row['value']; 
     if($seo_description) $this->siteDescription = str_replace("*h1*", $this->siteDescription, $seo_description);
     
-    $res = $this->pdo->query("SELECT `value` FROM `il_seo` WHERE `type` = 'mine_keywords'");
+    $res = $this->pdo->query("SELECT `value` FROM `".DB_PFX."seo` WHERE `type` = 'mine_keywords'");
     $row = $res->fetch();
     $mine_keywords =  $row['value']; 
     if($mine_keywords) $this->siteKeywords = str_replace("*h1*", $this->siteKeywords, $mine_keywords);

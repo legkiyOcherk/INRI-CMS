@@ -23,10 +23,15 @@ class SetupSite extends Setup{
     if( isset($_GET['step']) && $_GET['step'] ) $step = $_GET['step'];
     
     switch ($step){
-      case 'setup_database_access': 
+      case 'setup_database_access': #Подключение к базе данных
         $this->set_content($this->wrap_block($this->setup_database_access())) ;
         break;
       
+      case 'setup_database_module': #Установка модулей
+        #$this->set_content($this->wrap_block($this->setup_database_module())) ;
+        
+        $this->setup_database_module();
+        break;
     }
     
     $output = parent::show();

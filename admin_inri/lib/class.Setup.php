@@ -2,6 +2,7 @@
 require_once('../define.php');
 require_once(WA_PATH.'config.inc.php');
 require_once(WA_PATH.'lib/mysql.lib.php');
+require_once(WA_PATH.'lib/class.db.php');
 
 class Setup{
   
@@ -15,9 +16,13 @@ class Setup{
   var $keywords;
   var $nav_items_arr     = array(); # ['link'] => title
   var $script_name       = 'setup.php'; 
+  var $pdo;
   private $content; 
   
   function __construct (){ # конструктор
+    if($this->is_database_access()){
+      $this->pdo = db_open();  
+    }
     
     
     $this->title = 'Установка '.$this->cms.' CMS';
@@ -51,6 +56,19 @@ class Setup{
   function get_setup_style(){
     $output = '
     <style>
+    pre {
+      display: block;
+      padding: 9.5px;
+      margin: 0 0 10px;
+      font-size: 13px;
+      line-height: 1.42857143;
+      color: #333;
+      word-break: break-all;
+      word-wrap: break-word;
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
     .container{
       padding-bottom: 15px;
     }
@@ -273,7 +291,113 @@ class Setup{
       </form>';
     }
     
+    return $output; 
+  }
+  
+  function is_database($table_name){
     
+    $CFG = & $_SESSION["NEX_CFG"];
+    $database = $CFG["db_basename"];
+    
+    $s = "SHOW TABLES FROM $database LIKE '$table_name' ";
+    
+    if($q = $this->pdo->query($s)){
+      if($q->rowCount()){
+        return true;
+      }  
+    }
+    
+    return false;
+  }
+    
+  function setup_database_table($module_name, $table_name, &$sql, &$sql_insert = null, $script_name = null  ){
+   
+    $output = $error = '';
+    
+    
+    $output .= '
+    <h3>Установка модуля `'.$module_name.'`</h3>';
+    if( !$this->is_database( $table_name ) ){
+      $output .= '
+      <div class="alert alert-danger" role="alert">
+        Таблица '.$table_name.' отсутствует!
+      </div>';
+      
+      if($q = $this->pdo->query($sql)){
+        $output .= '
+        <div class="alert alert-success" role="alert">
+          Таблица '.$table_name.' создана!
+        </div>';
+        if($sql_insert) {
+          $q_insert = $this->pdo->query($sql_insert);
+          $output .= '
+          <div class="alert alert-success" role="alert">
+            Таблица '.$table_name.' Заполнена значениями по умолчанию!
+          </div>';
+        }
+      }else{
+        $error .= '
+        <div class="alert alert-danger" role="alert">
+          Не удалось установить таблицу '.$table_name.'!
+        </div>';
+      }
+      
+      
+    }else{
+      $output .= '
+      <div class="alert alert-success" role="alert">
+        Таблица '.$table_name.' существует!
+      </div>';
+    }
+    
+    if($error){
+      $output .= $error;
+    }else{
+      if($script_name){
+        $output .= '
+        <div class="alert alert-primary" role="alert">
+          Управление модулем `<b><a href = "'.IA_URL.$script_name.'" target = "_blank">'.$module_name.'</a></b>`.
+        </div>';
+      }
+    }
+    
+    return $output; 
+  }
+  
+  function setup_module_currency(){
+    $table = DB_PFX.'currency';
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `name` varchar(256) NOT NULL,
+        `title` varchar(256) NOT NULL,
+        `val` text NOT NULL,
+        `type` tinyint(1) NOT NULL DEFAULT '0',
+        `comment` varchar(256) NOT NULL,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+      
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `name`, `title`, `val`, `type`, `comment`, `hide`, `ord`) VALUES
+      (1, 'eur', 'Курс EUR:', '70.50', 0, '', 0, 0),
+      (2, 'usd', 'Курс USD:', '63.10', 0, '', 0, 0) ";
+    
+    return $this->setup_database_table("Курсы валют", $table, $sql, $sql_insert, 'currency.php'  );
+  }
+  
+  function setup_database_module(){
+    $output = '';
+    if( $this->is_database_access() ){
+      
+      
+      $this->add_content( $this->wrap_block(  # Курсы валют
+                                              $this->setup_module_currency()  ));
+      
+    }else{
+      $this->add_content( $this->wrap_block( $this->test_database_access() ));
+    }
     
     return $output; 
   }

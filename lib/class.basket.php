@@ -18,8 +18,8 @@ class Basket {
 		$this->user_id = self::Authorization();
 		$this->start_session($create, $update);
     //($db_ye = db::value( 'val', 'config', 'name = "ye"')) ? $this->ye = $db_ye : $this->ye = 10;
-    $this->eur = db::value( 'val', 'currency', 'name = "eur"');
-    $this->usd = db::value( 'val', 'currency', 'name = "usd"');
+    $this->eur = db::value( 'val', DB_PFX.'currency', 'name = "eur"');
+    $this->usd = db::value( 'val', DB_PFX.'currency', 'name = "usd"');
         
 		if ($this->basket_id) {
 			$this->count = db::value("SUM(amount)", 'basket_items', "basket_id = $this->basket_id");
