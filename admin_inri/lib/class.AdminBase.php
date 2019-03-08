@@ -10,7 +10,7 @@ class BaseAdmin{
   var $style_admin = 'AdminLTE';
   
   // Настройка модуля (меняется при установке модуля)
-  var $prefix = "il_";
+  var $prefix; 
   var $sitelink = "in-ri.ru";
   // End Настройка модуля
   var $pdo;
@@ -52,6 +52,7 @@ class BaseAdmin{
     require_once(WA_PATH.'lib/class.db.php');
     require_once(WA_PATH.'lib/auth.lib.php');
     
+    $this->prefix = DB_PFX; 
     AllFunction::validate_post_vars();
     
     $this->pdo = db_open();
@@ -422,7 +423,7 @@ HTML;
     	if (isset($_GET["auth"]) && isset($_POST["login"]) && isset($_POST["password"])){
     		$login = addslashes($_POST["login"]);
     		
-        $query = $this->pdo->query("SELECT * FROM `il_accounts` WHERE `login` = '$login'");
+        $query = $this->pdo->query("SELECT * FROM `".DB_PFX."accounts` WHERE `login` = '$login'");
         
     		if ($query->rowCount()){
           $this->acc_info = $query->fetch();
@@ -696,10 +697,10 @@ HTML;
     if ($user["id"]) $user_logged=$user["id"]; else $user_logged=0;
     if ($_POST)
     {
-    	#mysql_query("INSERT INTO `il_admin_logs` SET `ip`='$ip', `script`='$script',`date_time`=now(), `user_id`=$user_logged");
+    	#mysql_query("INSERT INTO `".DB_PFX."admin_logs` SET `ip`='$ip', `script`='$script',`date_time`=now(), `user_id`=$user_logged");
     	#$log_id=mysql_insert_id();
       
-      $query = $this->pdo->query("INSERT INTO `il_admin_logs` SET `ip`='$ip', `script`='$script',`date_time`=now(), `user_id`=$user_logged");
+      $query = $this->pdo->query("INSERT INTO `".DB_PFX."admin_logs` SET `ip`='$ip', `script`='$script',`date_time`=now(), `user_id`=$user_logged");
       $log_id = $this->pdo->lastInsertId();
       switch ($script)
     	{
@@ -707,13 +708,13 @@ HTML;
     		if ($this->access_error){
           
     			if ($user_id==0){
-            $this->pdo->query("UPDATE `il_admin_logs` SET `action`=17, `user_id`=0, `changes`='Ошибка входа: введен неверный логин {$_POST["login"]}' WHERE `id`=$log_id");
+            $this->pdo->query("UPDATE `".DB_PFX."admin_logs` SET `action`=17, `user_id`=0, `changes`='Ошибка входа: введен неверный логин {$_POST["login"]}' WHERE `id`=$log_id");
           }else{ 
-            $this->pdo->query("UPDATE `il_admin_logs` SET `action`=17, `user_id`=$user_id, `changes`='Ошибка входа: введен неверный пароль для пользователя {$_POST["login"]}' WHERE `id`=$log_id");
+            $this->pdo->query("UPDATE `".DB_PFX."admin_logs` SET `action`=17, `user_id`=$user_id, `changes`='Ошибка входа: введен неверный пароль для пользователя {$_POST["login"]}' WHERE `id`=$log_id");
           }
     		}else{ 
           if($log_id){
-            $s = "UPDATE `il_admin_logs` SET `action`=1, `user_id`=$user_logged, `changes`='Пользователь {$_POST["login"]} успешно вошел в систему ' WHERE `id`=$log_id";  
+            $s = "UPDATE `".DB_PFX."admin_logs` SET `action`=1, `user_id`=$user_logged, `changes`='Пользователь {$_POST["login"]} успешно вошел в систему ' WHERE `id`=$log_id";  
             $this->pdo->query($s);
           }
           

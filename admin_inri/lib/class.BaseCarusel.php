@@ -6,7 +6,7 @@ require_once "formvalidator.php"; // Валидатор
 class BaseCarusel{
   
   // Настройка модуля (меняется при установке модуля)
-  var $prefix = "il_";
+  var $prefix = DB_PFX; 
   
   var $max_img_width = 1920; // Максимальная ширина картинки
   var $max_img_quality = 90; // Оптимизация картинки

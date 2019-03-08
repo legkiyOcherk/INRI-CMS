@@ -332,10 +332,10 @@ class Files extends BaseCarusel{
             </td>
         	  
             <td style="text-align: left;">
-              <a href="'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
+              <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
             </td>
             <td style="text-align: left;">
-              <a href="'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$file.'</a>
+              <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$file.'</a>
             </td>
             <td style="text-align: left;">
               '.$module.'
@@ -351,7 +351,7 @@ class Files extends BaseCarusel{
             </td>
             
         	  <td style="" class="img-act">
-              <a  href="..'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" 
+              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
                 <i class="fa fa-pencil"></i>
@@ -594,7 +594,7 @@ class Files extends BaseCarusel{
         );
         $output .= $this->show_form_row( 
           'Действия', 
-          ' <a class = "btn btn-danger" href="'.IA_URL.'$this->carusel_name.'.php?delete_file=1&id='.$item["id"].'" 
+          ' <a class = "btn btn-danger" href="'.IA_URL.$this->carusel_name.'.php?delete_file=1&id='.$item["id"].'" 
                onClick="javascript: if (confirm('."'Удалить файл?')) { return true;} else { return false;}\"".'>
                <span class = "glyphicon glyphicon-remove"></span> Удалить</a> '
         );
@@ -803,7 +803,7 @@ class Files extends BaseCarusel{
     }  
     switch($view){
       case 'show_table':
-        header('Location: '.IA_URL.'$this->carusel_name.'.php');
+        header('Location: '.IA_URL.$this->carusel_name.'.php');
         #$output .= $this->show_table();
         break;
         

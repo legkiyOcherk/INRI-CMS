@@ -38,8 +38,8 @@ class Site {
     $this->pdo = $PDO;
     $this->module = $module;
     
-    $this->_BASKET = new Basket();
-    $this->search = new Search();
+    #$this->_BASKET = new Basket();
+    #$this->search = new Search();
     
     #$this->having_poor_vision = new HavingPoorVision();
     #$this->eur = $this->pdo->query("SELECT `val` FROM `currency` WHERE `name` = 'eur'");
@@ -73,8 +73,8 @@ class Site {
     // ------------- END SEO -------------
     
     
-    if(!$this->phone_header  = db::value("val", DB_PFX."config", "name = 'phone'")){
-      $this->phone_header    = '
+    if(!$this->phone_header = db::value("val", DB_PFX."config", "name = 'phone'")){
+      $this->phone_header = '
         <a href="tel:88000000000">8-800-000-00-00</a>';
     }
     if(!$this->adress_header = db::value("val", DB_PFX."config", "name = 'adress'")){
@@ -92,23 +92,14 @@ class Site {
       $this->working_hour    = 'Время работы:<br>ПН-ПТ: с 9:00 до 18:00';
     }
     
-    $this->soc_net           = db::value("val", DB_PFX."config", "name = 'soc_net'"); 
+    $this->soc_net          = db::value("val", DB_PFX."config", "name = 'soc_net'"); 
     
-    $this->user_script       = db::value("value", DB_PFX."design", "type = 'user_script'");
+    $this->user_script      = db::value("value", DB_PFX."design", "type = 'user_script'");
     
-    if(!$this->user_style    = db::value("value", DB_PFX."design", "type = 'user_style'") ){
-      $this->user_style      = '';
+    if(!$this->user_style   = db::value("value", DB_PFX."design", "type = 'user_style'") ){
+      $this->user_style = '';
     }
     
-    if(!$this->user_meta     = db::value("value", DB_PFX."design", "type = 'user_meta'") ){
-      $this->user_meta       = '';
-    }
-    
-    if(!$this->whatsap_phone = db::value("val", DB_PFX."config", "name = 'whatsap_phone'") ){
-      $this->whatsap_phone   = '';
-    }
-    
-        
     // Просмотренные страницы
     (!isset ($_SESSION['visited_pages'])) ? $_SESSION['visited_pages'] = '' : $this->visited_pages = $_SESSION['visited_pages'];
     #pri($this->visited_pages); #unset($_SESSION['visited_pages']);
@@ -172,7 +163,7 @@ class Site {
     
     $output = '    
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="author" content="in-ri.ru">
+    <meta name="author" content="d1.ru">
     <link rel="shortcut icon" type="image/x-icon" href="/css/img/favicon/favicon.ico">
     ';
     
@@ -185,10 +176,7 @@ class Site {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <link href="/css/style.css?v=1" rel="stylesheet">
     ';
-    if( isset($this->user_meta)  && $this->user_meta ) $output .= $this->user_meta.'
-    ';
-    if( isset($this->user_style) && $this->user_style) $output .= $this->user_style.'
-    ';
+    $output .= $this->user_style;
     
     return  $output;
   }
@@ -199,23 +187,6 @@ class Site {
       $output .= $this->getMineHeader();
       $output .= $this->getMineTopMenu();  
     }
-    
-    /*$basked_data = $this->_BASKET->get_basket_data();
-    ( $this->_BASKET->getCount() ) ? $style = "" : $style = "display: none;" ;
-    $output .= '
-    <!-- basked -->
-    <div class="basked_box" style = "'.$style.'">
-      <a href="/basket">
-        <div class="basked_icon">
-          <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-        </div>
-        <div class="basked">
-          '.$basked_data['basket_head'].'
-        </div>
-      </a>
-    </div>
-    <!-- End basked -->
-    ';*/
     
     return  $output;
   }
@@ -232,16 +203,15 @@ class Site {
               
                 <div class="col-12 col-sm-4 col-lg-auto">
                   <div class="logo_box">
-                    <a href="/"><img class="logo" src="/css/img/logo1.png" alt=""></a>
+                    <a href="/"><img class="logo" src="/css/img/logo2.png" alt=""></a>
                   </div>
                 </div>
                 
                 <div class="col-12 col-sm-4 col-lg">
-                  <div class="header_phone_box">';
-                    /*<div class="header_phone">
+                  <div class="header_phone_box">
+                    <div class="header_phone">
                       '.$this->phone_header.'
-                    </div>*/
-    $output .= '
+                    </div>
                     <div class="header_adress">
                       '.$this->adress_header.'
                     </div>
@@ -252,55 +222,23 @@ class Site {
                 </div>
                 
                 <div class="col-12 col-sm-4 col-lg-auto">
-                  <div class="header_phone_box">
-                    <div class="header_phone">
-                      '.$this->phone_header.'
-                    </div>';
-    /*$output .= '
                   <div class="header_callback_box">
                     <div class="header_callback">
                       <button class="btn flmenu1" data-id="0" data-target="#myModal" data-title="Заказать обратный звонок" data-toggle="modal">Заказать обратный звонок</button>
-                    </div>';*/
-    if($this->soc_net){
-      $output .= '
+                    </div>
                     <div class="header_soc">
                       '.$this->soc_net.'
-                    </div>';
-    }
-    $output .= '
+                    </div>
                   </div>
-                </div>';
-      
-    #$basked_data = $this->_BASKET->get_basket_data();
-    $style = '';
-    #( $this->_BASKET->getCount() ) ? $style = "" : $style = "display: none;" ;
-    $output .= '
-                <div class="col-12 col-sm-4 col-lg-auto">
-                
-                  <!-- basked -->
-                  <div class="basked_box" style = "'.$style.'">
-                    <a href="/basket">
-                      <div class="basked_icon">
-                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-                      </div>
-                      <div class="basked">
-                        '.$basked_data['basket_head'].'
-                      </div>
-                    </a>
-                  </div>
-                  <!-- End basked -->
-                  
                 </div>
-    ';
-    
-    $output .= '
+                
               </div>
               
             </div>
           </div>
           <!-- End header -->';
           
-    $output = $this->addEditAdminLink($output, '/iladmin/param.php');
+    $output = $this->addEditAdminLink($output, '/wedadmin/param.php');
     
     return $output;
   }
@@ -313,7 +251,7 @@ class Site {
           <div class="top_menu_box">
             <div class="top_menu">
             
-              <nav class= "navbar navbar-expand-sm navbar-dark">
+              <nav class= "navbar navbar-expand-sm navbar-dark bg-dark">
                 <a class="navbar-brand d-sm-none" href="#">Меню</a>
                 <button class="navbar-toggler" type="button" 
                   data-toggle="collapse" 
@@ -327,11 +265,8 @@ class Site {
 
                 <div class="collapse navbar-collapse" id="navbarsTop">
                   
-                  <ul class="navbar-nav mr-auto">';
-    $output .= Article::show_head_chief_menu2($this); # Меню с выподашкой cat_articles
-    #$output .= Article::show_head_chief_menu($this); # Меню cat_articles
-    #$output .= Article::show_simple_menu($this);     # Меню smpl_article
-    $output .= '
+                  <ul class="navbar-nav mr-auto">
+                    '.Article::show_simple_menu($this).'
                   </ul>
 
                 </div>
@@ -342,42 +277,11 @@ class Site {
           <!-- End top_menu -->
     ';
     
-    #$output = $this->addEditAdminLink($output, '/iladmin/smpl_article.php');
-    $output = $this->addEditAdminLink($output, '/iladmin/articles.php?c_id=1');
-    
+    $output = $this->addEditAdminLink($output, '/wedadmin/smpl_article.php');
     
     return $output;
   }
   
-  function getSearchBox(){
-    $output = '';
-    
-    $output .= '
-    <div class="block_box">
-      <div class="block">';
-    $output .= $this->search->showSearchLine($this);
-    $output .= '
-      </div>
-    </div>';
-    return $output;
-  }
-  
-  function getMineGoods(){
-    $output = '';
-    
-    $output .= '
-    <div class="block_box">
-      <div class="block">';
-    $output .= Goods::show_mine_goods($this, 1);
-    $output .= '
-      </div>
-    </div>';
-    
-    $output = $this->addEditAdminLink($output, '/iladmin/mine_block.php');
-    return $output;
-  }
-  
-   
   function getFooter(){
     $output = '';
         
@@ -393,101 +297,55 @@ class Site {
         
         <div class="row">
           <div class="col-12 footer_menu_box">
-            <ul class="footer_menu ">';
-    $output .= Article::show_footer_menu($this);
-    #$output .= Article::show_simple_menu($this);
-    $output .= '
+            <ul class="footer_menu ">
+              '.Article::show_simple_menu($this).'
             </ul>
-          </div>';
-    
-    if($this->soc_net){
-      $output .= '
+          </div>
+          
           <div class="col-12 soc_net_box">
             <div class = "soc_net">'.$this->soc_net.'</div>
-          </div>';
-    }
+          </div>
           
-    $output .= '      
         </div>';
-    if( isset($this->phone_header) && $this->phone_header ){
-      $output .= '
-        <div class="row">
-          <div class="col-12 tac">
-            '.$this->phone_header.'
-          </div>
-        </div>';
-    }
-    if( isset($this->adress_header) && $this->adress_header ){
-      $output .= '
-        <div class="row">
-          <div class="col-12 tac">
-            '.$this->adress_header.'
-          </div>
-        </div>';
-    }
         
     $output .= '
         <div class="row">
           <div class="col tac">
-            <div class="inri_box">
-              <span><a href="//in-ri.ru" target="_blank">Разработано</a></span> 
-              <a href="//in-ri.ru" target="_blank"><b>
-                <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="549.392px" height="530.999px" viewBox="0 0 549.392 530.999" enable-background="new 0 0 549.392 530.999" xml:space="preserve">
-                  <g>
-                    <defs>
-                      <polygon class="inri_item" id="SVGID_1_" points="0,86.998 55.001,86.998 55.001,443.998 0,443.998 0,86.998 		"></polygon>
-                    </defs>
-                    <use xlink:href="#SVGID_1_" overflow="visible" fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff"></use>
-                    <clipPath id="SVGID_2_">
-                      <use xlink:href="#SVGID_1_" overflow="visible"></use>
-                    </clipPath>
-                  </g>
-                  <g>
-                    <defs>
-                      <path class="inri_item" id="SVGID_3_" d="M249.579,444.338h21.759V206.002c-20.739,0-41.478,0-62.217,0v116.619L88.76,204.982H66.66v239.017
-                        c20.742,0,41.82,0,62.901,0V327.04L249.579,444.338L249.579,444.338z"></path>
-                    </defs>
-                    <use xlink:href="#SVGID_3_" overflow="visible" fill="#ffffff"></use>
-                    <clipPath id="SVGID_4_">
-                      <use xlink:href="#SVGID_3_" overflow="visible"></use>
-                    </clipPath>
-                  </g>
-                  <g>
-                    <defs>
-                      <path class="inri_item" id="SVGID_5_" d="M436.789,359.68c60.18-40.8,43.182-153.339-50.319-153.678c-34.68,0-70.038,0-104.379,0
-                        c0,79.557,0,158.778,0,237.997c19.722,0,40.461,0,60.861,0V373.96h31.62l40.8,70.038h67.998v-8.838L436.789,359.68L436.789,359.68
-                        z M386.47,319.9h-43.518c0-19.041,0-40.119,0-59.499c14.28,0,29.238-0.339,43.518,0C421.15,260.74,419.449,319.9,386.47,319.9
-                        L386.47,319.9z"></path>
-                    </defs>
-                    <use xlink:href="#SVGID_5_" overflow="visible" fill="#ffffff"></use>
-                    <clipPath id="SVGID_6_">
-                      <use xlink:href="#SVGID_5_" overflow="visible"></use>
-                    </clipPath>
-                  </g>
-                  <g>
-                    <defs>
-                      <polygon class="inri_item" id="SVGID_7_" points="538.001,443.998 483.001,443.998 483.001,205.999 538.001,205.999 538.001,443.998 
-                        538.001,443.998 		"></polygon>
-                    </defs>
-                    <defs>
-                      <polygon class="inri_item" id="SVGID_8_" points="510.5,101.607 549.392,140.5 510.5,179.39 471.61,140.5 510.5,101.607 		"></polygon>
-                    </defs>
-                    <use xlink:href="#SVGID_7_" overflow="visible" fill="#ffffff"></use>
-                    <use xlink:href="#SVGID_8_" overflow="visible" fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff"></use>
-                    <clipPath id="SVGID_9_">
-                      <use xlink:href="#SVGID_7_" overflow="visible"></use>
-                    </clipPath>
-                    <clipPath id="SVGID_10_" clip-path="url(#SVGID_9_)">
-                      <use xlink:href="#SVGID_8_" overflow="visible"></use>
-                    </clipPath>
-                  </g>
-                  <g>
-                    <path class="inri_item" fill="#ffffff" d="M483.001,454.999v20.999h-428v-20.999H0c0,45.885,0,76,0,76h538.001v-76H483.001z"></path>
-                    <path class="inri_item" fill="#ffffff" d="M55.001,75.998v-1v-20h428v20.999h55.001V0H0c0,0,0,29.677,0,74.998c0,0.329,0,0.669,0,1H55.001z"></path>
-                  </g>
-                </svg>
-              </b></a>
-            
+            <div class="d1_box">
+              <span>Разработано</span> 
+              <a href="http://d1.ru/" target="_blank">
+                <b>  
+                  
+                  <svg version="1.1" id="_x31_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 352.657 106.492" enable-background="new 0 0 352.657 106.492" xml:space="preserve">
+
+                    <path class="d1_item" fill-rule="evenodd" clip-rule="evenodd" fill="#181818" d="M103.592,53.289c0,15.4-4.514,27.838-13.567,37.337
+                    c-10.11,10.557-24.546,15.847-43.332,15.847H0V0.13h46.694c20.572,0,35.738,5.878,45.471,17.634
+                    C99.783,26.956,103.592,38.782,103.592,53.289L103.592,53.289z M64.187,53.312c0-7.336-2.046-13.002-6.137-16.952
+                    c-3.715-3.573-8.723-5.36-15-5.36h-4.961v44.554h4.961c4.914,0,9.052-1.058,12.461-3.174C61.295,68.76,64.187,62.411,64.187,53.312z
+                    "></path>
+                    
+                    <polygon class="d1_item" fill-rule="evenodd" clip-rule="evenodd" fill="#181818" points="152.093,106.342 113.986,106.342 113.965,29.342 
+                    98.048,29.342 115.025,0.13 152.054,0 152.085,83.491 "></polygon>
+                    
+                    <path class="d1_item" fill-rule="evenodd" clip-rule="evenodd" fill="#181818" d="M260.783,106.423h-43.732l-14.177-35.808l-1.176-0.282v36.09
+                    h-37.689v-22.93V0.08h48.293c13.002,0,23.23,2.915,30.73,8.746c8.158,6.419,12.249,15.917,12.249,28.449
+                    c0,13.26-6.16,22.219-18.456,26.85L260.783,106.423L260.783,106.423z M217.051,37.745c0-3.057-1.011-5.502-3.033-7.312
+                    c-2.022-1.811-4.702-2.728-8.041-2.728h-4.279v20.173h4.279C213.36,47.879,217.051,44.493,217.051,37.745z"></path>
+                    
+                    <path class="d1_item" fill-rule="evenodd" clip-rule="evenodd" fill="#181818" d="M352.657,61.494c0,32.234-16.73,44.998-49.928,44.998
+                    c-33.199,0-49.667-12.764-49.667-44.998V0.13h38.089v60.753c0,10.651,3.903,15.988,11.709,15.988
+                    c7.806,0,11.709-5.338,11.709-15.988V0.13h38.089V61.494z"></path>
+                    
+                    <g>
+                     <path class="d1_item d1_item_bg" fill-rule="evenodd" clip-rule="evenodd" fill="#181818" stroke="#FFFFFF" stroke-width="23.2954" stroke-miterlimit="22.9256" d="
+                     M158.436,101.182c9.533,0,17.309-7.776,17.309-17.309c0-9.534-7.775-17.309-17.309-17.309c-9.533,0-17.309,7.775-17.309,17.309
+                     C141.127,93.407,148.903,101.182,158.436,101.182z"></path>
+                     <path class="d1_item" fill-rule="evenodd" clip-rule="evenodd" fill="#181818" d="M158.436,101.182c9.533,0,17.309-7.776,17.309-17.309
+                     c0-9.534-7.775-17.309-17.309-17.309c-9.533,0-17.309,7.775-17.309,17.309C141.127,93.407,148.903,101.182,158.436,101.182z"></path>
+                   </g>
+                  </svg>
+                </b>
+              </a>
             </div>
             
           </div>
@@ -521,7 +379,7 @@ class Site {
     <script src="/vendors/maskedinput/jquery.maskedinput.min.js"></script>
     <script type="text/javascript">
     $(function() {
-       /*$("#phone").mask("+7 (999) 999-99-99");*/
+       $("#phone").mask("+7 (999) 999-99-99");
        $("#UserPhone").mask("+7 (999) 999-99-99");
     });
     </script>
@@ -539,23 +397,6 @@ class Site {
         closeClick : false,
         openEffect : "none",
         closeEffect : "none"
-      });
-    });
-    </script>
-    
-    <script type="text/javascript" src="/js/store1.js"></script>
-    
-    <link rel="stylesheet" href="/vendors/iCheck/skins/all.css">
-    <script src="/vendors/iCheck/icheck.min.js"></script>
-    <script>
-    $(document).ready(function(){
-      $(".сonsent_checkbox").iCheck({
-        checkboxClass: "icheckbox_square-blue",
-        radioClass: "iradio_square-blue"
-      });
-      $(".dost_radio").iCheck({
-        checkboxClass: "icheckbox_square-blue",
-        radioClass: "iradio_square-blue"
       });
     });
     </script>
@@ -591,10 +432,10 @@ class Site {
     $output = '';
     
     $s = "
-      SELECT `il_carusel`.* 
-      FROM `il_carusel`
-      WHERE `il_carusel`.`hide` = 0
-      ORDER BY `il_carusel`.`ord`
+      SELECT `".DB_PFX."carusel`.* 
+      FROM `".DB_PFX."carusel`
+      WHERE `".DB_PFX."carusel`.`hide` = 0
+      ORDER BY `".DB_PFX."carusel`.`ord`
     "; #pri($s);
     
     if($q = $this->pdo->query($s)){
@@ -673,7 +514,7 @@ class Site {
       }
     }
     
-    $output = $this->addEditAdminLink($output, '/iladmin/carusel.php');
+    $output = $this->addEditAdminLink($output, '/wedadmin/carusel.php');
     
     return $output;
   }
@@ -856,52 +697,7 @@ class Site {
     
     return $output;
   }
-  
-  function getBlockSwitchSelector($s, $cont = ''){
-    $output = '';
-    
-    if($q = $this->pdo->query($s)){ 
-      if($q->rowCount()){
-        while($r = $q->fetch()){
-          $output .= '
-    <a name="'.$r['url'].'"></a>';
-          
-          switch ($r['link']) {
-            
-            case  'block_mine_header':
-                  $output .= $this->getMineHeader(); break;
-            case  'block_mine_top_menu':
-                  $output .= $this->getMineTopMenu(); break;
-            case  'block_search':
-                  $output .= $this->getSearchBox(); break;
-            case  'block_mine_slider':
-                  $output .= $this->getMineSlider(); break;
-            case  'block_mine_news':
-                  $output .= $this->getMineNews(); break;
-            case  'block_mine_goods':
-                  $output .= $this->getMineGoods(); break;
-                  
-            case  'block_ferrum_form':
-                  $output .= $this->getMineFerrumForm(); break;
-                  
-            case  'block_inner_content': // Контент на внутренних страницах
-                  $output .= $this->addEditAdminLink($cont, '/iladmin'.$this->adminLink); 
-                  break;
-                  
-            default:
-                  if($r['longtxt2']){
-                    $output .= $this->addEditAdminLink($r['longtxt2'], '/iladmin/mine_block.php?edits='.$r['id']);
-                  }
-                  break; 
-          }
-          
-        }
-      }
-    }
-    
-    return $output;
-  }
-  
+
   function getIndexContent(){
     $output = '';
     #header('Location: /makeup '); 
@@ -911,21 +707,47 @@ class Site {
       LEFT JOIN `".DB_PFX."url`
       ON (`".DB_PFX."url`.`module` = '".DB_PFX."mine_block') AND (`".DB_PFX."url`.`module_id` = `".DB_PFX."mine_block`.`id`) 
       WHERE `".DB_PFX."mine_block`.`hide` = 0
-      AND `".DB_PFX."mine_block`.`link` <> 'block_inner_content'
       ORDER BY `".DB_PFX."mine_block`.`ord`
     "; #pri($s);
     
-    $output .= $this->getBlockSwitchSelector($s);
+    if($q = $this->pdo->query($s))
+      if($q->rowCount())
+        while($r = $q->fetch()){
+          $output .= '
+    <a name="'.$r['url'].'"></a>';
+          
+          switch ($r['link']) {
+            case  'block_mine_header':
+                  $output .= $this->getMineHeader(); break;
+            case  'block_mine_top_menu':
+                  $output .= $this->getMineTopMenu(); break;
+            case  'block_mine_slider':
+                  $output .= $this->getMineSlider(); break;
+            case  'block_mine_news':
+                  $output .= $this->getMineNews(); break;
+            case  'block_ferrum_form':
+                  $output .= $this->getMineFerrumForm(); break;
+                  
+            default:
+                  if($r['longtxt2']){
+                    $output .= $this->addEditAdminLink($r['longtxt2'], '/wedadmin/mine_block.php?edits='.$r['id']);
+                  }
+                  break; 
+          }
+          
+        }
     
     #$output .= $this->showVisitedPage();
     
     return $output;
   }
   
+  
+  
   function getInnerContent($cont){
     $output = '';
     
-    if(db::value('link', DB_PFX.'mine_block', 'link = "block_inner_content"' )){  
+    if(db::value('link', '".DB_PFX."mine_block', 'link = "block_inner_content"' )){
       $this->is_block_inner_content = true;
       $s = "
         SELECT `".DB_PFX."mine_block`.*, `".DB_PFX."url`.`url`
@@ -937,8 +759,37 @@ class Site {
         ORDER BY `".DB_PFX."mine_block`.`ord`
       "; #pri($s);
       
-      $output .= $this->getBlockSwitchSelector($s, $cont);
-      
+      if($q = $this->pdo->query($s))
+        if($q->rowCount())
+          while($r = $q->fetch()){
+            $output .= '
+      <a name="'.$r['url'].'"></a>';
+            
+            switch ($r['link']) {
+              
+              case  'block_mine_header':
+                    $output .= $this->getMineHeader(); break;
+              case  'block_mine_top_menu':
+                    $output .= $this->getMineTopMenu(); break;
+              case  'block_mine_slider':
+                    $output .= $this->getMineSlider(); break;
+              case  'block_mine_news':
+                    $output .= $this->getMineNews(); break;
+              case  'block_ferrum_form':
+                    $output .= $this->getMineFerrumForm(); break;
+                    
+              case  'block_inner_content':
+                    $output .= $this->addEditAdminLink($cont, '/wedadmin'.$this->adminLink); 
+                    break;
+                    
+              default:
+                    if($r['longtxt2']){
+                      $output .= $this->addEditAdminLink($r['longtxt2'], '/wedadmin/mine_block.php?edits='.$r['id']);
+                    }
+                    break; 
+            }
+            
+          }
     }else{
       $output .= $cont;
     }
@@ -988,72 +839,21 @@ class Site {
     #pri($this);
     switch($this->module){
       
-      case 'il_smpl_article':
+      case DB_PFX.'smpl_article':
         $this->adminLink = "/smpl_article.php";
         if($this->module_id) $this->adminLink .= "?edits=".$this->module_id;
         
         $left_menu = true;
-        $cont = Article::getSmplItems($this, $this->module_id, 'il_smpl_article');
+        $cont = Article::getSmplItems($this, $this->module_id, '".DB_PFX."smpl_article');
         $cont = $this->getContentPrefix($left_menu).$cont.$this->getContentPostfix($left_menu);
         break;
-        
-      case 'il_cat_articles':
-        $this->adminLink = "/articles.php";
-        if($this->module_id){
-          $this->adminLink .= "?editc=".$this->module_id;
-          $_SESSION['articles']['c_id'] = $this->module_id;
-        }
-        $this->left_menu = Article::show_left_menu_ivolga($this, $this->module_id);
-        (isset($this->left_menu) && $this->left_menu) ? $left_menu = true : $left_menu = false;
-        
-        $cont = Article::getCatItems($this, $this->module_id, 'il_cat_articles', 'il_articles');
-        $cont = $this->getContentPrefix($left_menu).$cont.$this->getContentPostfix($left_menu);
-        break;
-        
-      case 'il_articles':
-        $this->adminLink = "/articles.php";
-        if($this->module_id){
-          $this->adminLink .= "?edits=".$this->module_id;
-          $_SESSION['articles']['c_id'] = db::value("cat_id", "il_articles", "id = ".$this->module_id );
-        }        
-        $this->left_menu = Article::show_left_menu_ivolga($this, db::value("cat_id", "il_articles", "id = ".$this->module_id));
-        (isset($this->left_menu) && $this->left_menu) ? $left_menu = true : $left_menu = false;
-        
-        $cont = Article::getItems($this, $this->module_id, 'il_cat_articles', 'il_articles');
-        $cont = $this->getContentPrefix($left_menu).$cont.$this->getContentPostfix($left_menu);
-        break; 
-        
-      case 'il_news':
+      
+      case DB_PFX.'news':
         $this->adminLink = "/news.php";
         if($this->module_id) $this->adminLink .= "?edits=".$this->module_id;
         
-        $cont = News::getNews($this, $this->module_id, 'il_news');
+        $cont = self::getNews();
         $cont = $this->getContentPrefix(false).$cont.$this->getContentPostfix(false);
-        break;
-        
-      case 'il_cat_goods':
-        $this->adminLink = "/goods.php";
-        if($this->module_id){
-          $this->adminLink .= "?editc=".$this->module_id;
-          $_SESSION['goods']['c_id'] = db::value("cat_id", "il_goods", "id = ".$this->module_id );
-        }
-        
-        $this->cat_arr = db::select("id, parent_id, title, hide", "il_cat_goods");
-        $cont = Goods::show_cat_items($this, $this->module_id, 'il_cat_goods', 'il_goods');
-        $cont = $this->getContentPrefix($left_menu).$cont.$this->getContentPostfix($left_menu);
-        break;
-        
-      case 'il_goods':
-        $this->adminLink = "/goods.php";
-        if($this->module_id){
-          $this->adminLink .= "?edits=".$this->module_id;
-          $_SESSION['goods']['c_id'] = db::value("cat_id", "il_goods", "id = ".$this->module_id );
-        }
-        
-        $this->cat_arr = db::select("id, parent_id, title, hide", "il_cat_goods");
-        $item = db::row('*', 'il_goods', "id = ".$this->module_id);
-        $cont = Goods::show_item_full($this, $item);
-        $cont = $this->getContentPrefix($left_menu).$cont.$this->getContentPostfix($left_menu);
         break;
         
       case 'search':
@@ -1061,38 +861,6 @@ class Site {
         $cont = $this->getContentPrefix().$cont.$this->getContentPostfix();
         break;
         
-      case 'basket':
-        $this->adminLink = "/orders.php";
-        $this->siteTitle = "Корзина - ".$_SERVER['HTTP_HOST'];
-        $cont = '';
-        $cont .= '<div  style="margin-top: 10px;" id = "basket_ajx_box">';
-        $this->bread = '
-            <div class="bread_crumbs_box ">
-              <div class="bread_crumbs border_top_button_line">
-                <a href="/">Главная</a> → <span>Корзина</span>
-              </div>      
-            </div>
-        ';
-        #pri($_SESSION);
-        #$cont .= $this->bread;
-        
-        $cont .= '<h1>Корзина</h1>';
-        $cont .= '<div id = "basket_ajx">';
-    	  $cont .= $this->_BASKET->show_basket();
-        $cont .= '</div>';
-        $cont .= '<br/><br/>';
-        $cont .= $this->_BASKET->show_pre_order();
-        $cont .= '</div>';
-        
-        $cont = $this->getContentPrefix(false).$cont.$this->getContentPostfix(false);
-
-        break;
-      
-      case 'xlsorder':
-        echo Basket::xls_order($this);
-        die();
-        break;
-      
       case 'backup_sql':
         echo 'backup_sql';
         $GLOBALS['DATE_UPDATE'] = date("Y-m-d H:i:s");
@@ -1207,7 +975,7 @@ class Site {
       $output .= '
       <div class="container-fluid " id="wa_panel">
         <div class="row-fluid">
-          <div class="span2"><a class="btn btn-sm" target = "_blank" href="/iladmin'.$this->adminLink.'">править в Wedadmin</a></div>
+          <div class="span2"><a class="btn btn-sm" target = "_blank" href="/wedadmin'.$this->adminLink.'">править в Wedadmin</a></div>
         </div>
         <div class="row-fluid" style="text-align:center">
           <i class="icon-chevron-up" id="trigger"> Х скрыть </i>
@@ -1222,10 +990,10 @@ class Site {
     $output = '';
     
     $s = "
-      SELECT `il_reviews`.*
-      FROM `il_reviews`
-      WHERE `il_reviews`.`hide` = 0
-      ORDER BY `il_reviews`.`date` DESC
+      SELECT `".DB_PFX."reviews`.*
+      FROM `".DB_PFX."reviews`
+      WHERE `".DB_PFX."reviews`.`hide` = 0
+      ORDER BY `".DB_PFX."reviews`.`date` DESC
       LIMIT 10
     "; #pri($s);
     $q = $this->pdo->query($s);
@@ -1326,7 +1094,7 @@ class Site {
     if($this->visited_pages){
       $output .= '
         <!-- recently_viewed -->
-        <div class="recently_vieil_box_box">
+        <div class="recently_viewed_box_box">
           <div class="recently_viewed">
         
             <div class="pop_goods_header">Недавно просмотренные страницы</div>
@@ -1521,10 +1289,6 @@ class Site {
               </div> 
               <textarea class="form-control glyphicon-ok" rows="5" id = "UserText"></textarea>
             </div>
-            <br>
-            <div class="input-group сonsent" style="padding-left: 0px; text-align: center;">
-              <input class="req сonsent_checkbox" type="checkbox" id="UserConsent" required="" style="margin-bottom: 5px;"> &nbsp;<span class="input-group-addon " style = "margin-left: 35px; margin-top: -23px; display: inline-block;">Я согласен с <a href="/politikoy-organizacii-po-obrabotke-personalnyh" rel="nofollow" target="_blank">политикой организации по обработке персональных данных</a> и даю свое <a href="/soglasie-posetitelya-sayta" rel="nofollow" target="_blank">согласие</a> на их обработку</span>
-            </div>
           </div>
           <div class="modal-footer">
             <!--<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>-->
@@ -1547,12 +1311,11 @@ class Site {
             <b>Спасибо! Ваша заявка успешно отправлена.</b><br><br>
             Менеджер свяжется с Вами.
           </div>
-          <div class="modal-footer"><button class="btn btn-success" type="button" data-dismiss="modal">Закрыть</button></div>        </div>
+          <div class="modal-footer"><button class="btn btn-success" type="button" data-dismiss="modal">Закрыть</button></div>    </div>
       </div>
     </div>';
     
     $this->js_scripts .= '
-    
     <script type="text/javascript" charset="utf-8">
     $(function(){
       $(".good_buy", this).click(function() {
@@ -1672,7 +1435,7 @@ class Site {
     $back_date = date('Y-m-d');
     $sql = "
     SELECT * 
-    FROM il_backup_file
+    FROM ".DB_PFX."backup_file
     WHERE date_backup >= '$back_date 00:00:00'
     AND date_backup <= '$back_date 23:59:59'
     ";
@@ -1724,7 +1487,7 @@ class Site {
       
       //Добавляем запись в бд
       $sql = "
-      INSERT INTO  `il_backup_file` ( `date_backup` ,  `is_file`, `file_name`) 
+      INSERT INTO  `".DB_PFX."backup_file` ( `date_backup` ,  `is_file`, `file_name`) 
       VALUES ( '$update',  '1', '$temp_time');
       ";
       
@@ -1736,7 +1499,7 @@ class Site {
       // узнаем дату 30 бэкапа
       $sql = "
       SELECT * 
-      FROM  il_backup_file 
+      FROM  ".DB_PFX."backup_file 
       ORDER BY  date_backup DESC 
       LIMIT 29 , 1
       ";
@@ -1752,7 +1515,7 @@ class Site {
         //Узнаем имена файлов не удаленных бэкапов
         $sql = "
         SELECT * 
-        FROM  `il_backup_file` 
+        FROM  `".DB_PFX."backup_file` 
         WHERE  `date_backup` < '$date_3_backup' 
         AND is_file =1
         ";
@@ -1769,7 +1532,7 @@ class Site {
           $up_id = $row['id'];
           $sql_up = 
           "
-          UPDATE  `il_backup_file` SET  `is_file` =  '0' WHERE  `id` = $up_id LIMIT 1 ;
+          UPDATE  `".DB_PFX."backup_file` SET  `is_file` =  '0' WHERE  `id` = $up_id LIMIT 1 ;
           ";
           
           $res_up = mysql_query($sql_up);

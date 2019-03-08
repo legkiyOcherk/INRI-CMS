@@ -205,22 +205,22 @@ class Carusel extends BaseCarusel{
   // All Method
   
   function setIsUrl($is_url) {
-    require_once(NX_PATH.IA_URL.'/lib/class.Url.php');
+    require_once('lib/class.Url.php');
     if($is_url) $this->url_item = new Url('url');
   }
   
   function setIsImages($is_images) {
-    require_once(NX_PATH.IA_URL.'/lib/class.Images.php');
+    require_once('lib/class.Images.php');
     if($is_images) $this->images_items = new Images('all_images');
   }
   
   function setIsFiles($is_files) {
-    require_once(NX_PATH.IA_URL.'/lib/class.Files.php');
+    require_once('lib/class.Files.php');
     if($is_files) $this->files_items = new Files('all_files');
   }
   
   function setIsLog($is_log) {
-    require_once(NX_PATH.IA_URL.'/lib/class.Log.php');
+    require_once('lib/class.Log.php');
     if($is_log) $this->log = new Log('all_log');
   }
   
@@ -270,12 +270,12 @@ class Carusel extends BaseCarusel{
             </td>
         	  
             <td style="text-align: left;">
-              <a href="'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
+              <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
             </td>';
             
     $output .= '
         	  <td style="" class="img-act">
-              <a  href="..'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" 
+              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
                 <i class="fa fa-pencil"></i>

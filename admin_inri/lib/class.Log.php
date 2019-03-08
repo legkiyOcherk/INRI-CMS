@@ -4,7 +4,7 @@ require_once "formvalidator.php";
 
 class Log extends BaseCarusel{
   // Настройка модуля (меняется при установке модуля)
-  var $prefix = "il_";
+  var $prefix = DB_PFX;
   // End Настройка модуля
   
   var $header = 'ЧПУ (Человеко Понятный URL)';
@@ -59,8 +59,8 @@ class Log extends BaseCarusel{
     $this->sqlTable = $this->prefix.$this->carusel_name;  
     
     $s = "
-      SELECT `il_accounts`.*
-      FROM `il_accounts`  
+      SELECT `".DB_PFX."accounts`.*
+      FROM `".DB_PFX."accounts`  
       WHERE 1
     ";#pri($s);
     
@@ -232,7 +232,7 @@ class Log extends BaseCarusel{
             <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>  
             <td>'.$date.'</td>
             <td style="text-align: left;">
-              <a href="'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
+              <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
             </td>
             <td>';
     
@@ -251,7 +251,7 @@ class Log extends BaseCarusel{
         $output .= 'Не существует';
       }else{
         
-        $output .= '<a href="'.IA_URL.'$md.'.php?'.$ed.'='.$module_id.'" title="Посмотреть в админке">'.$tt.'</a>';  
+        $output .= '<a href="'.IA_URL.$md.'.php?'.$ed.'='.$module_id.'" title="Посмотреть в админке">'.$tt.'</a>';  
       }
       
     }elseif($type == 'delete'){
@@ -274,7 +274,7 @@ class Log extends BaseCarusel{
         
     $output .= '
         	  <td style="" class="img-act">
-              <a  href="..'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" 
+              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
                 <i class="fa fa-pencil"></i>
@@ -515,7 +515,7 @@ class Log extends BaseCarusel{
     
     switch($view){
       case 'show_table':
-        header('Location: '.IA_URL.'$this->carusel_name.'.php');
+        header('Location: '.IA_URL.$this->carusel_name.'.php');
         #$output .= $this->show_table();
         break;
         

@@ -6,18 +6,18 @@ class Article {
     
   }
   
-  static function show_simple_menu(){
+  static function show_simple_menu(){ 
     global $PDO;
     $output = '';
     
     $s = "
-      SELECT `il_smpl_article`.*,  `il_url`.`url` 
-      FROM `il_smpl_article`
-      LEFT JOIN `il_url`
-      ON (`il_url`.`module` = 'il_smpl_article') AND (`il_url`.`module_id` = `il_smpl_article`.`id`)
-      WHERE `il_smpl_article`.`fl_mine_menu` = 1
-      AND `il_smpl_article`.`hide` = 0
-      ORDER BY `il_smpl_article`.`ord`
+      SELECT `".DB_PFX."smpl_article`.*,  `".DB_PFX."url`.`url` 
+      FROM   `".DB_PFX."smpl_article`
+      LEFT JOIN `".DB_PFX."url`
+      ON (`".DB_PFX."url`.`module` = '".DB_PFX."smpl_article') AND (`".DB_PFX."url`.`module_id` = `".DB_PFX."smpl_article`.`id`)
+      WHERE `".DB_PFX."smpl_article`.`fl_mine_menu` = 1
+      AND `".DB_PFX."smpl_article`.`hide` = 0
+      ORDER BY `".DB_PFX."smpl_article`.`ord`
     "; #pri($s);
     
     if ( $q = $PDO->query($s) ){

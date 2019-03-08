@@ -17,10 +17,18 @@ class SetupSite extends Setup{
   }
   
   
+  
+  function setup_database_module_all(){
+    parent::setup_database_module_all();
+    
+    $this->setup_database_module_cutaway(); #Сайт визитка  
+    
+  }
+  
   function show(){
     $output = $step = '';
     
-    if( isset($_GET['step']) && $_GET['step'] ) $step = $_GET['step'];
+    if( isset($_GET['step']) && $_GET['step'] ) $step = $_GET['step']; #pri($step);
     
     switch ($step){
       case 'setup_database_access': #Подключение к базе данных
@@ -28,9 +36,11 @@ class SetupSite extends Setup{
         break;
       
       case 'setup_database_module': #Установка модулей
-        #$this->set_content($this->wrap_block($this->setup_database_module())) ;
-        
         $this->setup_database_module();
+        break;
+      
+      case 'delete_database_module': #Установка модулей
+        $this->delete_database_module();
         break;
     }
     
