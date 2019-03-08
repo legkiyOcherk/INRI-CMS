@@ -402,7 +402,7 @@ class Setup{
     return $output; 
   }
   
-  function setup_module_currency(){
+  function setup_module_currency_onlineshop(){
     $title = "Курсы валют";
     $name = 'currency';
     $table = DB_PFX.$name;
@@ -601,6 +601,30 @@ HTML;
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
   
+  function setup_module_admin_logs(){
+    $title = "Логи входа в админку";
+    $name = 'admin_logs';
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql = "
+    CREATE TABLE IF NOT EXISTS `$table` (
+      `id` bigint(20) NOT NULL AUTO_INCREMENT,
+      `ip` varchar(15) NOT NULL,
+      `user_id` int(11) NOT NULL,
+      `date_time` datetime NOT NULL,
+      `action` int(11) NOT NULL,
+      `item_id` int(11) NOT NULL,
+      `changes` text NOT NULL,
+      `script` varchar(16) NOT NULL,
+      PRIMARY KEY (`id`),
+      KEY `ip` (`ip`,`user_id`,`date_time`,`action`,`script`)
+    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    $sql_insert = '';
+    
+    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+  }
+  
   
   function setup_module_url_cutaway(){
     $title = "Человеко-понятные адреса";
@@ -677,11 +701,82 @@ HTML;
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
   
+  function setup_module_smpl_article_cutaway(){
+    $title = "Содержание сайта";
+    $name = 'smpl_article';
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `date` varchar(10) DEFAULT NULL,
+        `link` varchar(255) DEFAULT NULL,
+        `longtxt1` text,
+        `longtxt2` text,
+        `fl_mine_menu` tinyint(1) DEFAULT NULL,
+        `seo_h1` varchar(255) DEFAULT NULL,
+        `seo_title` varchar(255) DEFAULT NULL,
+        `seo_description` varchar(255) DEFAULT NULL,
+        `seo_keywords` varchar(255) DEFAULT NULL,
+        `img_alt` varchar(255) DEFAULT NULL,
+        `img_title` varchar(255) DEFAULT NULL,
+        `orm_search_name` varchar(255) DEFAULT NULL,
+        `orm_search` text,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `img`, `date`, `link`, `longtxt1`, `longtxt2`, `fl_mine_menu`, `seo_h1`, `seo_title`, `seo_description`, `seo_keywords`, `img_alt`, `img_title`, `orm_search_name`, `orm_search`, `hide`, `ord`) VALUES ";
+    $sql_insert .=<<<HTML
+(1, 'Главная', '', '', '/', '', '', 1, '', '', '', '', '', '', 'ГЛАВНЫЙ', '', 0, 0),
+(2, 'О компании', '', '', '', '', '<h3>Пример текста &laquo;О компании&raquo;, как его написать &ndash; &laquo;пикап&raquo; потенциального клиента</h3>\r\n\r\n<p>Вы на рынке с 2002 года? Мне всё равно. &laquo;АвтоВАЗ&raquo; на рынке дольше вас&hellip; У вас хорошая динамика развития и молодой, дружный коллектив? Отлично, то есть, опыта у сотрудников маловато&hellip; Закупили дорогое немецкое оборудование (в кредит?), когда рубль балансировал на ободке унитаза? Значит, теперь мне за это расплачиваться? Прощайте!</p>\r\n\r\n<p>Как написать текст на страницу &laquo;О компании&raquo; и выбросить из словосочетания &laquo;потенциальный клиент&raquo; первое слово? Сделать это в среде &laquo;неправильных&raquo; клиентов. Ведь они, как девушка, которую постоянно атакуют пикаперы: интерес проявляет, но в машину не садится.</p>\r\n\r\n<p>Проблема в том, что у вас все как у всех: низкие цены, надежное оборудование и специалисты &ndash; профессионалы своего дела, у которых клиентоориенитрованность на нуле.</p>\r\n\r\n<p>Если не знаете, как написать текст о компании для сайта, и нужны примеры, то эта работа для <a href="//d1.ru" target="_blank">нас</a>.</p>\r\n', 1, '', '', '', '', '', '', 'О КОМПАНИЯ', 'ПРИМЕР ТЕКСТ LAQUO О КОМПАНИЯ RAQUO КАК ЕГО НАПИСАТЬ NDASH LAQUO ПИКАП RAQUO ПОТЕНЦИАЛЬНЫЙ КЛИЕНТ ВЫ НА РЫНОК С 2002 ГОД Я ВЕСЬ РАВНО LAQUO АВТОВАЗ RAQUO НА РЫНОК ДОЛГИЙ ВЫ HELLIP У ВЫ ХОРОШИЙ ДИНАМИК РАЗВИТИЕ И МОЛОДАЯ ДРУЖНЫЙ КОЛЛЕКТИВ ОТЛИЧНО ТО ЕСТЬ ОПЫТ У СОТРУДНИК МАЛОВАТЫЙ HELLIP ЗАКУПИТЬ ДОРОГОЙ НЕМЕЦКИЙ ОБОРУДОВАНИЕ В КРЕДИТ КОГДА РУБЛЬ БАЛАНСИРОВАТЬ НА ОБОДОК УНИТАЗ ЗНАЧИТ ТЕПЕРЬ Я ЗА ЭТО РАСПЛАЧИВАТЬСЯ ПРОЩАТЬ КАК НАПИСАТЬ ТЕКСТ НА СТРАНИЦА LAQUO О КОМПАНИЯ RAQUO И ВЫБРОСИТЬ ИЗ СЛОВОСОЧЕТАНИЕ LAQUO ПОТЕНЦИАЛЬНЫЙ КЛИЕНТ RAQUO ПЕРВЫЙ СЛОВО СДЕЛАТЬ ЭТО В СРЕДА LAQUO НЕПРАВИЛЬНЫЙ RAQUO КЛИЕНТ ВЕДЬ ОНИ КАК ДЕВУШКА КОТОРЫЙ ПОСТОЯННО АТАКОВАТЬ ПИКАПЕР ИНТЕРЕС ПРОЯВЛЯТЬ НО В МАШИН НЕ САДИТЬСЯ ПРОБЛЕМА В ТОМ ЧТО У ВЫ ВСЕ КАК У ВЕСЬ НИЗКИЙ ЦЕНА НАДЕЖНЫЙ ОБОРУДОВАНИЕ И СПЕЦИАЛИСТ NDASH ПРОФЕССИОНАЛ СВОЕ ДЕТЬ У КОТОРЫЙ КЛИЕНТООРИЕНИТРОВАННОСТЬ НА НУЛЬ ЕСЛИ НЕ ЗНАТЬ КАК НАПИСАТЬ ТЕКСТ О КОМПАНИЯ ДЛЯ САЙТ И НУЖНЫЙ ПРИМЕР ТО ЭТОТ РАБОТА ДЛЯ МЫ', 0, 3),
+(3, 'Фотогалерея', '', '', '', '', '', 1, '', '', '', '', '', '', 'ФОТОГАЛЕРЕЯ', '', 0, 1),
+(4, 'Документы', '', '', '', '', '', 1, '', '', '', '', '', '', 'ДОКУМЕНТ', '', 0, 2),
+(5, 'Дилеры', '', '', '', '', '', 0, '', '', '', '', '', '', 'ДИЛЕР', '', 0, 5),
+(6, 'Контакты', '', '', '', '', '<p><b>Директор: Крохалев Илья Владимирович</b></p>\r\n\r\n<p><b>E-mail</b>: <a href="mailto:d1@d1.ru">d1@d1.ru</a></p>\r\n\r\n<p><b>Телефоны в Екатеринбурге:</b><br />\r\n<span class="phone"><nobr>+7 343 372-33-07</nobr>, <nobr>371-21-45</nobr>, <nobr>371-31-03</nobr>, <nobr>290-37-57</nobr></span></p>\r\n\r\n<p><b>Сот. 8-922-209-33-07</b></p>\r\n\r\n<p><b>Адрес:</b> 620014, г. Екатеринбург, пр. Ленина 24/8, оф. 451</p>\r\n\r\n<p><b>Ориентиры::</b> пл. 1905 года, Ленина-Вайнера. В здании Бизнес Центра находятся магазины: Красный Леопард, Benetton, Adidas. Вход с Ленина справа от арки 3 двери, входим в среднюю, потом на лифте на 4 этаж и 2 раза налево.<br />\r\nПарковка на площади 1905 года, на Попова-Хохрякова или в платном паркинге Аркада.</p>\r\n\r\n<p><b>Время работы:</b> пн-пт 10:00-19:00, сб-вс 11:00-18:00<br />\r\n&nbsp;</p>\r\n<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A71f1792e079ea2350269366fbc0037aaad93183c6e2c49cd23c1eb8b4c0ccb9e&amp;width=100%25&amp;height=600&amp;lang=ru_RU&amp;scroll=false"></script>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<h2>Как пройти</h2>\r\n', 1, '', '', '', '', '', '', 'КОНТАКТ', 'ДИРЕКТОР КРОХАЛЕВ ИЛЬЯ ВЛАДИМИР E-MAIL D1 D1 RU ТЕЛЕФОН В ЕКАТЕРИНБУРГ 7 343 372-33-07 371-21-45 371-31-03 290-37-57 СОТЫ 8-922-209-33-07 АДРЕС 620014 Г ЕКАТЕРИНБУРГ ПР ЛЕНИН 24 8 ОФА 451 ОРИЕНТИР ПЛ 1905 ГОД ЛЕНИНА-ВАЙНЕР В ЗДАНИЕ БИЗНЕС ЦЕНТР НАХОДИТЬСЯ МАГАЗИН КРАСНЫЙ ЛЕОПАРД BENETTON ADIDAS ВХОД С ЛЕНИН СПРАВА ОТ АРКА 3 ДВЕРЬ ВХОДИТЬ В СРЕДНИЙ ПОТОМ НА ЛИФТ НА 4 ЭТАЖ И 2 РАЗ НАЛЕВО ПАРКОВКА НА ПЛОЩАДЬ 1905 ГОД НА ПОПОВА-ХОХРЯКОВ ИЛИ В ПЛАТНЫЙ ПАРКИНГ АРКАД ВРЕМЯ РАБОТА ПН-ПТ 10 00-19 00 СБ-ВС 11 00-18 00 NBSP NBSP КАК ПРОЙТИ', 0, 4),
+(7, 'Услуги', '', '', '', '', '<ul>\r\n	<li>Услуга 1</li>\r\n	<li>Услуга 2</li>\r\n	<li>Услуга 3</li>\r\n</ul>\r\n', 0, '', '', '', '', '', '', 'УСЛУГА', 'УСЛУГА 1 УСЛУГА 2 УСЛУГА 3', 0, 6);
+HTML;
+    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+  }
+  
+  function setup_module_carusel_cutaway(){
+    $title = "Слайдер";
+    $name = 'carusel';
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `link` varchar(255) DEFAULT NULL,
+        `txt1` varchar(255) DEFAULT NULL,
+        `longtxt1` text,
+        `img_alt` varchar(255) DEFAULT NULL,
+        `img_title` varchar(255) DEFAULT NULL,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `img`, `link`, `txt1`, `longtxt1`, `img_alt`, `img_title`, `hide`, `ord`) VALUES ";
+    $sql_insert .=<<<HTML
+(1, '1', '1531731471.jpg', '', '', '', '', '', 0, 1),
+(2, '2', '1531731498.jpg', '', 'Текст', '<p>Описание описание описание описание</p>\r\n', 'Alt изображение', 'Title изображение', 0, 0),
+(3, '3', '1531731518.jpg', '', '', '', '', '', 0, 2),
+(4, '4', '1531731541.jpg', '', '', '', '', '', 0, 3),
+(5, '5', '1531731565.jpg', '', '', '', '', '', 0, 4);
+HTML;
+    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+  }
+  
   
   function setup_database_module_required(){
-    
-    $this->add_content( $this->wrap_block(  # Курсы валют
-                                              $this->setup_module_currency()  ));
       
     $this->add_content( $this->wrap_block(  # Параметры
                                             $this->setup_module_config()  ));
@@ -694,6 +789,9 @@ HTML;
     
     $this->add_content( $this->wrap_block(  # Администрирование
                                             $this->setup_module_accounts()  ));
+    
+    $this->add_content( $this->wrap_block(  # Логи входа в админку
+                                            $this->setup_module_admin_logs()  ));
                                             
     #$this->add_content( $this->wrap_block(  # ЧПУ
     #                                          $this->setup_module_url()  ));
@@ -706,7 +804,20 @@ HTML;
                                               
     $this->add_content( $this->wrap_block(  # Блоки на главной странице
                                               $this->setup_module_mine_block_cutaway()  ));
+                                              
+    $this->add_content( $this->wrap_block(  # Содержание сайта
+                                              $this->setup_module_smpl_article_cutaway()  ));
+                                              
+    $this->add_content( $this->wrap_block(  # Слайдер
+                                              $this->setup_module_carusel_cutaway()  ));
   }
+  
+  function setup_database_module_onlineshop(){ # Интернет магазин
+  
+    $this->add_content( $this->wrap_block(  # Курсы валют
+                                              $this->setup_module_currency_onlineshop()  ));
+  }
+  
   
   function setup_database_module_all(){
     

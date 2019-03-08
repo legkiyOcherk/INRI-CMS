@@ -51,7 +51,7 @@ class SetupSite extends Setup{
 }
 
 $setup = new SetupSite();
-$setup->add_content($setup->wrap_block('<p>Установка курсов валют</p>'));
+#$setup->add_content($setup->wrap_block('<p>Установка курсов валют</p>')); 
 
 $output .= $setup->show();
 

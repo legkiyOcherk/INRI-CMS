@@ -1,9 +1,9 @@
 <?php
 require_once('lib/class.Admin.php');
 $admin = new Admin();
-require_once(NX_PATH.'iladmin/lib/class.Carusel.php');
-require_once(NX_PATH.'iladmin/lib/class.Image.php');
-require_once(NX_PATH.'vendors/phpmorphy/phpmorphy_init.php'); // Морфология
+require_once('lib/class.Carusel.php');
+require_once('lib/class.Image.php');
+require_once('../vendors/phpmorphy/phpmorphy_init.php'); // Морфология
 
 
 function get_phpmorphy($descr_str) {
@@ -143,12 +143,12 @@ class Article extends Carusel{
             </td>
         	  
             <td style="text-align: left;">
-              <a href="'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" title="редактировать"><b>'.$title.'</b> '.$longtxt1.'</a>
+              <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать"><b>'.$title.'</b> '.$longtxt1.'</a>
             </td>';
             
     $output .= '
         	  <td style="" class="img-act">
-              <a  href="..'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" 
+              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
                 <i class="fa fa-pencil"></i>

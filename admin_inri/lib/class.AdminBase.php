@@ -52,7 +52,8 @@ class BaseAdmin{
     require_once(WA_PATH.'lib/auth.lib.php');
     
     $this->prefix   = DB_PFX; 
-    $this->sitelink = SITE_NAME
+    $this->sitelink = SITE_NAME;
+    
     AllFunction::validate_post_vars();
     
     $this->pdo = db_open();
