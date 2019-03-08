@@ -9,10 +9,9 @@
 class BaseAdmin{
   var $style_admin = 'AdminLTE';
   
-  // Настройка модуля (меняется при установке модуля)
   var $prefix; 
-  var $sitelink = "in-ri.ru";
-  // End Настройка модуля
+  var $sitelink;
+  
   var $pdo;
   
   var $adminDoctype = '<!DOCTYPE html>';
@@ -52,7 +51,8 @@ class BaseAdmin{
     require_once(WA_PATH.'lib/class.db.php');
     require_once(WA_PATH.'lib/auth.lib.php');
     
-    $this->prefix = DB_PFX; 
+    $this->prefix   = DB_PFX; 
+    $this->sitelink = SITE_NAME
     AllFunction::validate_post_vars();
     
     $this->pdo = db_open();
