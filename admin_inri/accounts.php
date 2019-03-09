@@ -1,8 +1,8 @@
 <?php
 require_once('lib/class.Admin.php');
-$admin = new Admin();
-require_once(NX_PATH.'smakcabinet/lib/class.Carusel.php');
-require_once(NX_PATH.'smakcabinet/lib/class.Image.php');
+$admin = new Admin(); 
+require_once('lib/class.Carusel.php');
+require_once('lib/class.Image.php');
 
 class Accounts extends Carusel{  
   

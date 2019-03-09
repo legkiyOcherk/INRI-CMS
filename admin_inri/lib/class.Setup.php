@@ -971,20 +971,20 @@ HTML;
     $sql_insert = "
       INSERT INTO `$table` (`id`, `title`, `url`, `module`, `module_id`, `hide`, `ord`) VALUES ";
     $sql_insert .=<<<HTML
-        (1, 'Главная', 'glavnaya', 'wed_smpl_article', 1, 0, 0),
-        (2, 'О компании', 'kompanii', 'wed_smpl_article', 2, 0, 0),
-        (3, 'Фотогалерея', 'fotogalereya', 'wed_smpl_article', 3, 0, 0),
-        (4, 'Документы', 'dokumenty', 'wed_smpl_article', 4, 0, 0),
-        (5, 'Дилеры', 'dilery', 'wed_smpl_article', 5, 0, 0),
-        (6, 'Контакты', 'kontakty', 'wed_smpl_article', 6, 0, 0),
-        (8, 'Блок 1', 'blok-1', 'wed_mine_block', 2, 0, 0),
-        (9, 'Блок 2', 'blok-2', 'wed_mine_block', 3, 0, 0),
-        (10,'Блок 3', 'blok-3', 'wed_mine_block', 4, 0, 0),
-        (11,'Слайдер на главной',  'slayder-na-glavnoy', 'wed_mine_block', 5, 0, 0),
-        (12,'Услуги', 'uslugi', 'wed_smpl_article', 7, 0, 0),
-        (13,'Шапка сайта', 'shapka-sayta', 'wed_mine_block', 6, 0, 0),
-        (14,'Главное меню', 'glavnoe-menyu', 'wed_mine_block', 7, 0, 0),
-        (15,'Контент на внутренних страницах',  'kontent-na-vnutrennih-stranicah', 'wed_mine_block', 8, 0, 0),
+        (1, 'Главная', 'glavnaya', 'inri_smpl_article', 1, 0, 0),
+        (2, 'О компании', 'kompanii', 'inri_smpl_article', 2, 0, 0),
+        (3, 'Фотогалерея', 'fotogalereya', 'inri_smpl_article', 3, 0, 0),
+        (4, 'Документы', 'dokumenty', 'inri_smpl_article', 4, 0, 0),
+        (5, 'Дилеры', 'dilery', 'inri_smpl_article', 5, 0, 0),
+        (6, 'Контакты', 'kontakty', 'inri_smpl_article', 6, 0, 0),
+        (8, 'Блок 1', 'blok-1', 'inri_mine_block', 2, 0, 0),
+        (9, 'Блок 2', 'blok-2', 'inri_mine_block', 3, 0, 0),
+        (10,'Блок 3', 'blok-3', 'inri_mine_block', 4, 0, 0),
+        (11,'Слайдер на главной',  'slayder-na-glavnoy', 'inri_mine_block', 5, 0, 0),
+        (12,'Услуги', 'uslugi', 'inri_smpl_article', 7, 0, 0),
+        (13,'Шапка сайта', 'shapka-sayta', 'inri_mine_block', 6, 0, 0),
+        (14,'Главное меню', 'glavnoe-menyu', 'inri_mine_block', 7, 0, 0),
+        (15,'Контент на внутренних страницах',  'kontent-na-vnutrennih-stranicah', 'inri_mine_block', 8, 0, 0),
         (16,'robots.txt',  'robots_txt', 'robots_txt', 0, 0, 0)
         
 HTML;
@@ -1040,20 +1040,20 @@ HTML;
     $sql_insert = "
       INSERT INTO `$table` (`id`, `title`, `module`, `module_id`, `img`, `longtxt1`, `longtxt2`, `seo_h1`, `seo_title`, `seo_description`, `img_alt`, `img_title`, `hide`, `ord`, `module_ord`) VALUES ";
     $sql_insert .=<<<HTML
-(70, 'yamaha scr950.jpg', 'il_smpl_article', 3, '1532522961_10.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(69, 'QOVZzEETzGY.jpg', 'il_smpl_article', 3, '1532522961_9.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(68, 'HONDACB900FHornet-5190_3.jpg', 'il_smpl_article', 3, '1532522961_8.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(63, '14658847586171.jpg', 'il_smpl_article', 3, '1532522961_3.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(64, '14658847586242.jpg', 'il_smpl_article', 3, '1532522961_4.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(65, '14658847586293.jpg', 'il_smpl_article', 3, '1532522961_5.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(66, '14764684961551.jpg', 'il_smpl_article', 3, '1532522961_6.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(67, '14785962379880.jpg', 'il_smpl_article', 3, '1532522961_7.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(62, '14658847586130.jpg', 'il_smpl_article', 3, '1532522961_2.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(61, '14657292234510.jpg', 'il_smpl_article', 3, '1532522961_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(60, '4.jpg', 'il_smpl_article', 3, '1532522961_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(71, 'mMAPhsLGD6w.jpg', 'il_smpl_article', 3, '1532523022_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(72, 'QPyh7YBBraM.jpg', 'il_smpl_article', 3, '1532523023_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
-(73, 'rNqjPvV3a2Q.jpg', 'il_smpl_article', 3, '1532523024_2.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0);
+(70, 'yamaha scr950.jpg', 'inri_smpl_article', 3, '1532522961_10.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(69, 'QOVZzEETzGY.jpg', 'inri_smpl_article', 3, '1532522961_9.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(68, 'HONDACB900FHornet-5190_3.jpg', 'inri_smpl_article', 3, '1532522961_8.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(63, '14658847586171.jpg', 'inri_smpl_article', 3, '1532522961_3.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(64, '14658847586242.jpg', 'inri_smpl_article', 3, '1532522961_4.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(65, '14658847586293.jpg', 'inri_smpl_article', 3, '1532522961_5.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(66, '14764684961551.jpg', 'inri_smpl_article', 3, '1532522961_6.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(67, '14785962379880.jpg', 'inri_smpl_article', 3, '1532522961_7.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(62, '14658847586130.jpg', 'inri_smpl_article', 3, '1532522961_2.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(61, '14657292234510.jpg', 'inri_smpl_article', 3, '1532522961_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(60, '4.jpg', 'inri_smpl_article', 3, '1532522961_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(71, 'mMAPhsLGD6w.jpg', 'inri_smpl_article', 3, '1532523022_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(72, 'QPyh7YBBraM.jpg', 'inri_smpl_article', 3, '1532523023_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(73, 'rNqjPvV3a2Q.jpg', 'inri_smpl_article', 3, '1532523024_2.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0);
 HTML;
     $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
     $output .= $this->copy_img_module( $name, SOURCE_SITE_CUTAWAY );
@@ -1069,11 +1069,11 @@ HTML;
     $sql_insert = "
       INSERT INTO `$table` (`id`, `title`, `module`, `module_id`, `img`, `file`, `longtxt1`, `img_alt`, `img_title`, `hide`, `ord`, `module_ord`) VALUES ";
     $sql_insert .=<<<HTML
-(1, '1972.pdf', 'il_smpl_article', 4, '', '1530877350_0.pdf', NULL, NULL, NULL, 0, 0, 0),
-(2, '1973.pdf', 'il_smpl_article', 4, '', '1530877350_1.pdf', NULL, NULL, NULL, 0, 0, 0),
-(3, '1974.pdf', 'il_smpl_article', 4, '', '1530877350_2.pdf', NULL, NULL, NULL, 0, 0, 0),
-(4, '1975.pdf', 'il_smpl_article', 4, '', '1530877350_3.pdf', NULL, NULL, NULL, 0, 0, 0),
-(5, '1976.pdf', 'il_smpl_article', 4, '', '1530877350_4.pdf', NULL, NULL, NULL, 0, 0, 0);
+(1, '1972.pdf', 'inri_smpl_article', 4, '', '1530877350_0.pdf', NULL, NULL, NULL, 0, 0, 0),
+(2, '1973.pdf', 'inri_smpl_article', 4, '', '1530877350_1.pdf', NULL, NULL, NULL, 0, 0, 0),
+(3, '1974.pdf', 'inri_smpl_article', 4, '', '1530877350_2.pdf', NULL, NULL, NULL, 0, 0, 0),
+(4, '1975.pdf', 'inri_smpl_article', 4, '', '1530877350_3.pdf', NULL, NULL, NULL, 0, 0, 0),
+(5, '1976.pdf', 'inri_smpl_article', 4, '', '1530877350_4.pdf', NULL, NULL, NULL, 0, 0, 0);
 HTML;
     
     $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
