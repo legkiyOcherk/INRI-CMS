@@ -1,8 +1,8 @@
 <?php
 require_once('lib/class.Admin.php');
 $admin = new Admin();
-require_once(NX_PATH.'iladmin/lib/class.Log.php');
-
+require_once('lib/class.Log.php');
+ 
 $pager = array(
   'perPage' => 100,
   'page' => 1,

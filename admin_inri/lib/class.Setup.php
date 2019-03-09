@@ -345,6 +345,44 @@ class Setup{
     
     return $output;
   }
+  
+  function sql_insert_database_table( $table_name, &$sql_insert){
+    $output = '';
+    
+    if($sql_insert) {
+      $this->pdo->query("TRUNCATE TABLE  `$table_name`");
+      if($q_insert = $this->pdo->query($sql_insert)){
+        $output .= '
+      <div class="alert alert-success" role="alert">
+        Таблица '.$table_name.' Заполнена значениями по умолчанию!
+      </div>';  
+      }else{
+        $output .= '
+        <div class="alert alert-danger" role="alert">
+          Не удалось заполнить таблицу '.$table_name.' значениями по умолчанию!!
+        </div>';
+      }
+      
+    }
+    
+    return $output;
+  }
+  
+  function sql_def_insert_database_table( $module_name, $table_name, &$sql_insert, $script_name = null){
+    $output = '';
+    if($ins_text = $this->sql_insert_database_table( $table_name, $sql_insert  )){
+      $output .= '
+      <h4>Наполнение модуля `'.$module_name.'`</h4>';
+      $output .= $ins_text;
+      if($script_name){
+        $output .= '
+        <div class="alert alert-primary" role="alert">
+          Управление модулем `<b><a href = "'.IA_URL.$script_name.'" target = "_blank">'.$module_name.'</a></b>`.
+        </div>';
+      }
+    }
+    return $output;
+  }
     
   function setup_database_table($module_name, $table_name, &$sql, &$sql_insert = null, $script_name = null  ){
    
@@ -352,7 +390,7 @@ class Setup{
     
     
     $output .= '
-    <h3>Установка модуля `'.$module_name.'`</h3>';
+    <h4>Установка модуля `'.$module_name.'`</h4>';
     if( !$this->is_database( $table_name ) ){
       $output .= '
       <div class="alert alert-danger" role="alert">
@@ -365,13 +403,7 @@ class Setup{
           Таблица '.$table_name.' создана!
           &nbsp; <a class="btn btn-outline-danger btn-sm float-right" href = "/'.ADM_DIR.'/'.$this->script_name.'?step=delete_database_module&table_name='.$table_name.'">Удалить</a>
         </div>';
-        if($sql_insert) {
-          $q_insert = $this->pdo->query($sql_insert);
-          $output .= '
-          <div class="alert alert-success" role="alert">
-            Таблица '.$table_name.' Заполнена значениями по умолчанию!
-          </div>';
-        }
+        $output .= $this->sql_insert_database_table($table_name, $sql_insert);
       }else{
         $error .= '
         <div class="alert alert-danger" role="alert">
@@ -402,9 +434,70 @@ class Setup{
     return $output; 
   }
   
-  function setup_module_currency_onlineshop(){
-    $title = "Курсы валют";
-    $name = 'currency';
+  function create_img_dir( $name ){
+    if (!is_dir("../images")){
+      mkdir("../images");
+      chmod ("../images", 0777);
+    }
+    
+    if (!is_dir("../images/".$name )){
+      mkdir ( "../images/".$name );
+      chmod ( "../images/".$name, 0755 );
+    }
+    
+    if (!is_dir("../images/".$name."/orig")){
+      mkdir("../images/".$name."/orig");
+      chmod ("../images/".$name."/orig", 0755);
+    }
+    
+    if (!is_dir("../images/".$name."/slide")){
+      mkdir("../images/".$name."/slide");
+      chmod ("../images/".$name."/slide", 0755);
+    }
+    
+    if (!is_dir("../images/".$name."/temp")){
+      mkdir("../images/".$name."/temp");
+      chmod ("../images/".$name."/temp", 0755);
+    }
+    
+    if (!is_dir("../images/".$name."/variations")){
+      mkdir("../images/".$name."/variations");
+      chmod ("../images/".$name."/variations", 0755);
+    }
+  }
+  
+  function create_cat_img_dir( $name ){
+    
+    parent::create_img_dir();
+    
+    if (!is_dir("../images/".$name."/cat")){
+      mkdir("../images/".$name."/cat");
+      chmod ("../images/".$name."/cat", 0755);
+    }
+    
+    if (!is_dir("../images/".$name."/cat/orig")){
+      mkdir("../images/".$name."/cat/orig");
+      chmod ("../images/".$name."/cat/orig", 0755);
+    }
+    
+    if (!is_dir("../images/".$name."/cat/slide")){
+      mkdir("../images/".$name."/cat/slide");
+      chmod ("../images/".$name."/cat/slide", 0755);
+    }
+    
+    if (!is_dir("../images/".$name."/cat/temp")){
+      mkdir("../images/".$name."/cat/temp");
+      chmod ("../images/".$name."/cat/temp", 0755);
+    }
+        if (!is_dir("../images/".$name."/cat/variations")){
+      mkdir("../images/".$name."/cat/variations");
+      chmod ("../images/".$name."/cat/variations", 0755);
+    }
+  }
+  
+  #--------------------- setup_database_module_required --------------------- 
+  function setup_module_currency_onlineshop( $title, $name ){
+    
     $table = DB_PFX.$name;
     $script_name = $name.'.php';
     
@@ -429,9 +522,8 @@ class Setup{
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
   
-  function setup_module_config(){
-    $title = "Параметры";
-    $name = 'config';
+  function setup_module_config( $title, $name ){
+    
     $table = DB_PFX.$name;
     $script_name = $name.'.php';
     
@@ -462,9 +554,8 @@ HTML;
     return $this->setup_database_table( $title, $table, $sql, $sql_insert, $script_name  );
   }
   
-  function setup_module_seo(){
-    $title = "СЕО";
-    $name = 'seo';
+  function setup_module_seo( $title, $name ){
+    
     $table = DB_PFX.$name;
     $script_name = $name.'.php';
     
@@ -502,9 +593,8 @@ HTML;
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
   
-  function setup_module_design(){
-    $title = "Оформление сайта";
-    $name = 'design';
+  function setup_module_design( $title, $name ){
+    
     $table = DB_PFX.$name;
     $script_name = $name.'.php';
     
@@ -524,21 +614,21 @@ HTML;
     $sql_insert = "
       INSERT INTO `$table` (`id`, `title`, `type`, `view`, `ord`, `hide`, `value`, `comment`) VALUES ";
     $sql_insert .=<<<HTML
-      (12, 'Стили', 'user_style', 2, 130, 0, '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" >\r\n\r\n<style>\r\n  .test{\r\n	padding: 20px;\r\n  }\r\n  .mine_slider {\r\n    max-width: 1920px;\r\n  }\r\n</style>\r\n\r\n', 'Пользовательские css стили'),
-      (11, 'Скрипты, счетчики', 'user_script', 2, 120, 0, '<script type="text/javascript">\r\n\r\n</script>\r\n<!--LiveInternet counter--><script type="text/javascript">\r\ndocument.write("<a href=''//www.liveinternet.ru/click'' "+\r\n"target=_blank><img src=''//counter.yadro.ru/hit?t44.6;r"+\r\nescape(document.referrer)+((typeof(screen)=="undefined")?"":\r\n";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?\r\nscreen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+\r\n";h"+escape(document.title.substring(0,150))+";"+Math.random()+\r\n"'' alt='''' title=''LiveInternet'' "+\r\n"border=''0'' width=''0'' height=''0''><\\/a>")\r\n</script><!--/LiveInternet-->\r\n', 'Яндекс метрика, liveinternet.ru и пользовательские js скрипты'),
-      (21, 'Файлы', 'user_file', 3, 140, 0, '', 'Пользовательские файлы. ( путь до папки /images_ckeditor/files <a href = "/images_ckeditor/files/test.jpg" target = "_blank">тест</a> )'),
-      (23, 'meta теги', 'user_meta', 2, 90, 0, '', 'Подтверждение прав: вембмастер, метрика и др.'),
-      (22, 'robots.txt', 'user_robots', 2, 100, 0, 'User-agent: * \r\nHost:\r\nSitemap: /sitemap.xml\r\n', 'Пользовательские css стили');
+(1, 'Стили', 'user_style', 2, 130, 0, '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" >\r\n\r\n<style>\r\n  .test{\r\n	padding: 20px;\r\n  }\r\n  .mine_slider {\r\n    /*max-width: 1920px;*/\r\n  }\r\n</style>\r\n\r\n', 'Пользовательские css стили'),
+(2, 'Скрипты, счетчики', 'user_script', 2, 120, 0, '<script type="text/javascript">\r\n\r\n</script>\r\n', 'Яндекс метрика, liveinternet.ru и пользовательские js скрипты'),
+(3, 'Файлы', 'user_file', 3, 140, 0, '', 'Пользовательские файлы. ( путь до папки /images_ckeditor/files <a href = "/images_ckeditor/files/test.jpg" target = "_blank">тест</a> )'),
+(4, 'meta теги', 'user_meta', 2, 90, 0, '', 'Подтверждение прав: вембмастер, метрика и др.'),
+(5, 'robots.txt', 'user_robots', 2, 100, 0, 'User-agent: * \r\nHost:\r\nSitemap: /sitemap.xml\r\n', 'Пользовательские css стили');
 HTML;
     
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
   
-  function setup_module_url(){
-    $title = "Человеко-понятные адреса";
-    $name = 'url';
+  function setup_module_url( $title, $name ){
+    
     $table = DB_PFX.$name;
     $script_name = $name.'.php';
+    $sql_insert = '';
     
     $sql = "
       CREATE TABLE IF NOT EXISTS `$table` (
@@ -554,13 +644,13 @@ HTML;
         KEY `module` (`module`),
         KEY `module_id` (`module_id`)
       ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+      
     
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
   
-  function setup_module_accounts(){
-    $title = "Администрирование";
-    $name = 'accounts';
+  function setup_module_accounts( $title, $name ){
+    
     $table = DB_PFX.$name;
     $script_name = $name.'.php';
     
@@ -601,9 +691,8 @@ HTML;
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
   
-  function setup_module_admin_logs(){
-    $title = "Логи входа в админку";
-    $name = 'admin_logs';
+  function setup_module_admin_logs( $title, $name ){
+    
     $table = DB_PFX.$name;
     $script_name = $name.'.php';
     
@@ -625,10 +714,8 @@ HTML;
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
   
-  
-  function setup_module_url_cutaway(){
-    $title = "Человеко-понятные адреса";
-    $name = 'url';
+  function setup_module_all_log( $title, $name ){
+    
     $table = DB_PFX.$name;
     $script_name = $name.'.php';
     
@@ -636,16 +723,75 @@ HTML;
       CREATE TABLE IF NOT EXISTS `$table` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `title` varchar(255) NOT NULL,
-        `url` varchar(255) NOT NULL,
+        `type` varchar(255) NOT NULL,
+        `user_id` varchar(255) NOT NULL,
+        `ip` varchar(15) DEFAULT NULL,
+        `int_ip` int(10) DEFAULT NULL,
+        `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+        `dump_data` text,
+        `query` text,
         `module` varchar(255) NOT NULL,
         `module_id` int(11) NOT NULL,
         `hide` tinyint(1) NOT NULL DEFAULT '0',
         `ord` int(11) NOT NULL DEFAULT '0',
-        PRIMARY KEY (`id`),
-        UNIQUE KEY `url` (`url`),
-        KEY `module` (`module`),
-        KEY `module_id` (`module_id`)
+        PRIMARY KEY (`id`)
       ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    $sql_insert = '';
+    
+    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+  }
+  
+  function setup_module_mine_block( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    $sql_insert = '';
+    $sql = "
+    CREATE TABLE IF NOT EXISTS `$table` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `title` varchar(255) NOT NULL,
+      `img` varchar(255) NOT NULL,
+      `link` varchar(255) DEFAULT NULL,
+      `longtxt2` text,
+      `fl_is_fixed` tinyint(1) NOT NULL DEFAULT '0',
+      `hide` tinyint(1) NOT NULL DEFAULT '0',
+      `ord` int(11) NOT NULL DEFAULT '0',
+      PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    
+    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+  }
+  
+  function setup_module_carusel( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    $sql_insert = '';
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `link` varchar(255) DEFAULT NULL,
+        `txt1` varchar(255) DEFAULT NULL,
+        `longtxt1` text,
+        `img_alt` varchar(255) DEFAULT NULL,
+        `img_title` varchar(255) DEFAULT NULL,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    
+    $this->create_img_dir( $name );
+    
+    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+  }
+   
+  #--------------------- setup_database_module_cutaway --------------------- 
+  function insert_def_module_url_cutaway( $title, $name ){
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
     $sql_insert = "
       INSERT INTO `$table` (`id`, `title`, `url`, `module`, `module_id`, `hide`, `ord`) VALUES ";
     $sql_insert .=<<<HTML
@@ -666,44 +812,50 @@ HTML;
         (16,'robots.txt',  'robots_txt', 'robots_txt', 0, 0, 0)
         
 HTML;
-    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+        
+    return $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name );
   }
   
-  function setup_module_mine_block_cutaway(){
-    $title = "Блоки на главной странице";
-    $name = 'mine_block';
+  function insert_def_module_mine_block_cutaway( $title, $name ){
     $table = DB_PFX.$name;
     $script_name = $name.'.php';
     
-    $sql = "
-    CREATE TABLE IF NOT EXISTS `$table` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `title` varchar(255) NOT NULL,
-      `img` varchar(255) NOT NULL,
-      `link` varchar(255) DEFAULT NULL,
-      `longtxt2` text,
-      `fl_is_fixed` tinyint(1) NOT NULL DEFAULT '0',
-      `hide` tinyint(1) NOT NULL DEFAULT '0',
-      `ord` int(11) NOT NULL DEFAULT '0',
-      PRIMARY KEY (`id`)
-    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
     $sql_insert = "
-      INSERT INTO `$table` (`id`, `title`, `img`, `link`, `longtxt2`, `fl_is_fixed`, `hide`, `ord`) VALUES ";
+      INSERT INTO `$table` (`id`, `title`, `img`, `link`, `longtxt2`, `fl_is_fixed`, `hide`, `ord`) VALUES ";  
     $sql_insert .=<<<HTML
-(2, 'Блок 3', '', '', '<div class="block_box">\r\n<div class="block">\r\n<h1>Блок</h1>\r\n\r\n<h2 style="text-align: center;">Контакты</h2>\r\n</div>\r\n</div>\r\n<!-- сontacts_inretactive -->\r\n\r\n<div class="сontacts_inretactive_box">\r\n<div class="сontacts_inretactive">\r\n<div class="ya_map"><script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A71f1792e079ea2350269366fbc0037aaad93183c6e2c49cd23c1eb8b4c0ccb9e&amp;width=100%25&amp;height=500&amp;lang=ru_RU&amp;scroll=false"></script></div>\r\n\r\n<div class="сontacts_descr">\r\n<p><b>Наш адрес:</b><br />\r\n620014, г. Екатеринбург, пр. Ленина 24/8, оф. 451</p>\r\n\r\n<p><b>Телефоны:</b><br />\r\n<a href="tel:+73433723307">+7 (343) 372-33-07</a> <a href="tel:+7 (343) 371-21-45">+7 (343) 371-21-45</a></p>\r\n\r\n<p><b>Электропочта:</b><br />\r\n<a href="mailto:d1@d1.ru">d1@d1.ru</a></p>\r\n</div>\r\n<!-- End сontacts_inretactive --></div>\r\n</div>\r\n<style type="text/css">/* --- сontacts --- */\r\n.сontacts_box{\r\n  background: url("img/mc_bg.png") no-repeat center center;\r\n  background-size: cover;\r\n  min-height: 490px;\r\n  padding-bottom: 0px;\r\n}\r\n.сontacts{\r\n  padding-bottom: 20px;\r\n}\r\n.сontacts_descr{\r\n  max-width: 335px;\r\n  background: #ffffff;\r\n  margin: 0 auto;\r\n  margin-top: 10px;\r\n  padding: 15px 25px;\r\n  border: 10px solid #17a2b8;\r\n  text-align: center;\r\n}\r\n.сontacts_descr b{\r\n  font: 400 25px/30px AvantGardeGothicBdITC-Reg, Arial, sans-serif;\r\n  color: #000000;\r\n}\r\n.сontacts_descr a{\r\n  color: #000000;\r\n}\r\n/* --- End сontacts --- */\r\n  \r\n  /* --- сontacts_inretactive_box --- */\r\n.сontacts_inretactive_box{\r\n  min-height: 500px;\r\n  padding-bottom: 0px;\r\n  \r\n}\r\n.сontacts_inretactive{\r\n  padding-bottom: 20px;\r\n  position: relative;\r\n}\r\n.ya_map{\r\n  position: absolute;\r\n  top: 0;\r\n  height: 500px;\r\n  width: 100%;\r\n}\r\n.сontacts_inretactive .mtitle_box{\r\n  /*position: relative;\r\n  z-index: 1;\r\n  text-align: right;\r\n  margin-right: 15px;*/\r\n}\r\n\r\n.сontacts_inretactive .сontacts_descr{\r\n  margin: 55px 15px 15px 25px;\r\n  position: relative;\r\n  z-index: 1;\r\n  max-width: 335px;\r\n  background: #ffffff;\r\n  float: right;\r\n}\r\n@media (max-width: 768px){\r\n  .сontacts_inretactive .сontacts_descr{\r\n    margin: 0 auto 0 auto;\r\n    float: none;\r\n  }\r\n  .сontacts_inretactive{\r\n    padding-top: 525px;\r\n  }\r\n}\r\n/* --- End сontacts_inretactive --- */\r\n</style>\r\n', 0, 0, 6),
-(3, 'Блок 1', '', '', '<div class="block_box">\r\n<div class="block">\r\n<h2>Блок</h2>\r\n</div>\r\n</div>\r\n\r\n<div class="block_box bl_bg" style="">\r\n<div class="block_b" style="background: rgba(0, 0, 0, 0.3);\r\n    padding-top: 15px;\r\n    padding-bottom: 15px;">\r\n<div class="block">\r\n<h2 style="color: #fff;">Коротко о нас</h2>\r\n\r\n<p>Ни для кого не секрет, что в Сети лицом корпорации или фирмы является веб-сайт. Именно по этой причине солидные организации не жалеют денег на создание, поддержку, поисковую оптимизацию сайтов в Интернете. Первым шагом на пути к успеху является <b>разработка сайта</b>, которую лучше заказать у настоящих мастеров своего дела - студии, специализирующейся на сайтах. Дизайн студия D1.ru, предлагает своим клиентам разработку сайтов в Екатеринбурге, в Москве и Челябинске. Нам важен каждый сайт, поэтому к каждому клиенту мы находим индивидуальный подход в разработке сайта.</p>\r\n\r\n<p>Очень важна грамотная и эффективная <strong>поисковая оптимизация сайта</strong>, которая призвана привлечь на сайт целевую аудиторию, увеличить посещаемость сайта, увеличить количество заказов с сайта.<br />\r\nСсылка на Ваш сайт появляется в поисковых системах Яндекс, Google, Mail, Рамблер в тот момент, когда клиенту нужны ваши товары/услуги, он как раз ищет поставщика, к кому обратиться. Такой клиент уже лояльно относится к Вашей компании.<br />\r\nВ последнее время эффект от <strong>поисковой оптимизации сайта в Екатеринбурге</strong> увеличивается в 2 раза за год, т.к. растет количество интернет-пользователей и их активность.</p>\r\n\r\n<p><b>Дизайн-студия D1.ru занимается разработкой сайтов, поддержкой, созданием интернет-магазинов, интернет-рекламой и&nbsp;поисковой оптимизацией.</b></p>\r\n\r\n<p><b>Директор студии - Илья Крохалев</b> до создания студии 5 лет занимался разработкой сайтов, развитием городского портала E1.ru в компании Урал Релком.</p>\r\n\r\n<p><b>Студия работает с 1 марта 2005 года.</b> Многие специалисты студии работают в сфере создания сайтов более 15&nbsp;лет,</p>\r\nчто гарантирует высокое качество работы, решение любых технических вопросов.\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><b>Среди наших клиентов:</b> крупные заводы, торговые компании, турфирмы, агентства недвижимости, застройщики, известные интернет-магазины, медицинские компании и многие другие.<br />\r\n&nbsp;</p>\r\n</div>\r\n</div>\r\n</div>\r\n<style type="text/css">.bl_bg{\r\n    background-image: url(/images_ckeditor/files/test.jpg);\r\n    background-attachment: fixed;\r\n    background-size: cover;\r\n    background-position: center center;\r\n    text-shadow: 1px 1px 16px rgba(0, 0, 0, 0.8);\r\n    color: #ffffff;\r\n    padding-top: 0;\r\n    padding-bottom: 0;\r\n    margin-bottom: 0px;\r\n    /*-webkit-transform: translate3d(0,0,0);*/\r\n    -webkit-backface-visibility: hidden;\r\n  }\r\n  .admin_edit_box .bl_bg{\r\n    /*position: relative;\r\n    z-index: 1600;*/\r\n  }\r\n</style>\r\n', 0, 0, 5),
+(2, 'Блок 3', '', '', '<div class="block_box">\r\n<div class="block">\r\n<h1>Блок</h1>\r\n\r\n<h2 style="text-align: center;">Контакты</h2>\r\n</div>\r\n</div>\r\n<!-- сontacts_inretactive -->\r\n\r\n<div class="сontacts_inretactive_box">\r\n<div class="сontacts_inretactive">\r\n<div class="ya_map"><script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Abbe514650299016758f03759051467d1a8adc3faf2e49e2556ec55580a030390&amp;width=100%25&amp;height=500&amp;lang=ru_RU&amp;scroll=false"></script></div>\r\n\r\n<div class="сontacts_descr">\r\n<p><b>Наш адрес:</b><br />\r\n620100, г. Екатеринбург, ул Сибирский тракт 12/2, офис 404</p>\r\n\r\n<p><b>Телефоны:</b><br />\r\n<a href="tel:+79058010809">+7 (905) 801-08-09</a></p>\r\n\r\n<p><b>Электропочта:</b><br />\r\n<a href="mailto:1@in-ri.ru">1@in-ri.ru</a></p>\r\n</div>\r\n<!-- End сontacts_inretactive --></div>\r\n</div>\r\n<style type="text/css">/* --- сontacts --- */\r\n.сontacts_box{\r\n  background: url("img/mc_bg.png") no-repeat center center;\r\n  background-size: cover;\r\n  min-height: 490px;\r\n  padding-bottom: 0px;\r\n}\r\n.сontacts{\r\n  padding-bottom: 20px;\r\n}\r\n.сontacts_descr{\r\n  max-width: 335px;\r\n  background: #ffffff;\r\n  margin: 0 auto;\r\n  margin-top: 10px;\r\n  padding: 15px 25px;\r\n  border: 10px solid #17a2b8;\r\n  text-align: center;\r\n}\r\n.сontacts_descr b{\r\n  font: 400 25px/30px AvantGardeGothicBdITC-Reg, Arial, sans-serif;\r\n  color: #000000;\r\n}\r\n.сontacts_descr a{\r\n  color: #000000;\r\n}\r\n/* --- End сontacts --- */\r\n  \r\n  /* --- сontacts_inretactive_box --- */\r\n.сontacts_inretactive_box{\r\n  min-height: 500px;\r\n  padding-bottom: 0px;\r\n  \r\n}\r\n.сontacts_inretactive{\r\n  padding-bottom: 20px;\r\n  position: relative;\r\n}\r\n.ya_map{\r\n  position: absolute;\r\n  top: 0;\r\n  height: 500px;\r\n  width: 100%;\r\n}\r\n.сontacts_inretactive .mtitle_box{\r\n  /*position: relative;\r\n  z-index: 1;\r\n  text-align: right;\r\n  margin-right: 15px;*/\r\n}\r\n\r\n.сontacts_inretactive .сontacts_descr{\r\n  margin: 55px 15px 15px 25px;\r\n  position: relative;\r\n  z-index: 1;\r\n  max-width: 335px;\r\n  background: #ffffff;\r\n  float: right;\r\n}\r\n@media (max-width: 768px){\r\n  .сontacts_inretactive .сontacts_descr{\r\n    margin: 0 auto 0 auto;\r\n    float: none;\r\n  }\r\n  .сontacts_inretactive{\r\n    padding-top: 525px;\r\n  }\r\n}\r\n/* --- End сontacts_inretactive --- */\r\n</style>\r\n', 0, 0, 6),
+(3, 'Блок 1', '', '', '<div class="block_box">\r\n<div class="block">\r\n<h2>Блок</h2>\r\n</div>\r\n</div>\r\n\r\n<div class="block_box bl_bg" style="">\r\n<div class="block_b" style="background: rgba(0, 0, 0, 0.3);\r\n    padding-top: 150px;\r\n    padding-bottom: 150px;">\r\n<div class="block">\r\n<h2 style="color: #fff;">ПРОЕКТИРОВАНИЕ И ДИЗАЙН</h2>\r\n\r\n<p>Внешний вид сайта - лицо компании. Важно, чтобы он был не только красивым, но и удобным. Интуитивно понятный интерфейс пользователя плюс отзывчивый дизайн увеличивают конверсию и продажи.</p>\r\n\r\n<h2 style="color: #fff;">РАЗРАБОТКА</h2>\r\n\r\n<p>На этапе разработки учитывается адаптивность сайта. Он должен корректно отображаться в любом браузере и на всех видах устройств. Удобная система управления сайтом позволит вам вести проект самостоятельно.</p>\r\n\r\n<h2 style="color: #fff;">ПРОДВИЖЕНИЕ И ПОДДЕРЖКА</h2>\r\n\r\n<p>Как не потеряться в медиа пространстве? Мы готовы сотрудничать с вами, отзываясь на любые просьбы и следим за тем, чтобы ваш сайт был в топе поисковиков.</p>\r\n\r\n<p><b>ВЕБ-студия <a href="//in-ri.ru" style="color: #dc3545;">in-ri.ru</a> занимается разработкой сайтов, поддержкой, созданием интернет-магазинов, интернет-рекламой и&nbsp;поисковой оптимизацией.</b></p>\r\n</div>\r\n</div>\r\n</div>\r\n<style type="text/css">.bl_bg{\r\n    background-image: url(/images_ckeditor/files/test.jpg);\r\n    background-attachment: fixed;\r\n    background-size: cover;\r\n    background-position: center center;\r\n    text-shadow: 1px 1px 16px rgba(0, 0, 0, 0.8);\r\n    color: #ffffff;\r\n    padding-top: 0;\r\n    padding-bottom: 0;\r\n    margin-bottom: 0px;\r\n    /*-webkit-transform: translate3d(0,0,0);*/\r\n    -webkit-backface-visibility: hidden;\r\n  }\r\n  .admin_edit_box .bl_bg{\r\n    /*position: relative;\r\n    z-index: 1600;*/\r\n  }\r\n</style>\r\n', 0, 0, 5),
 (4, 'Блок 2', '', '', '<div class="block_box">\r\n<div class="block">\r\n<h2>Блок&nbsp;</h2>\r\n\r\n<div class="scheme">\r\n<div class="row">\r\n<div class="col-12 col-md-4">\r\n<div class="c_img_box"><i class="fas fa-globe fa-5x">&nbsp;</i></div>\r\n\r\n<div class="c_title">Встречи 1 раз в неделю</div>\r\n</div>\r\n\r\n<div class="col-12 col-md-4">\r\n<div class="c_img_box"><i class="fas fa-tasks fa-5x">&nbsp;</i></div>\r\n\r\n<div class="c_title">График работы</div>\r\n</div>\r\n\r\n<div class="col-12 col-md-4">\r\n<div class="c_img_box"><i class="fas fa-external-link-alt fa-5x">&nbsp;</i></div>\r\n\r\n<div class="c_title">Новые техники</div>\r\n</div>\r\n</div>\r\n\r\n<div class="row">\r\n<div class="col-12 col-md-4">\r\n<div class="c_img_box"><i class="far fa-clock fa-5x">&nbsp;</i></div>\r\n\r\n<div class="c_title">Поддержка</div>\r\n</div>\r\n\r\n<div class="col-12 col-md-4">\r\n<div class="c_img_box"><i class="fas fa-percent fa-5x">&nbsp;</i></div>\r\n\r\n<div class="c_title">100%</div>\r\n</div>\r\n\r\n<div class="col-12 col-md-4">\r\n<div class="c_img_box"><i class="far fa-sun fa-5x">&nbsp;</i></div>\r\n\r\n<div class="c_title">Качественный результат</div>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n<style type="text/css">/* --- scheme --- */\r\n.scheme{\r\n	margin-top: 25px;\r\n  margin-bottom: 25px;\r\n}\r\n.scheme .c_img_box{\r\n  text-align:center;\r\n  /*color: #28a745;*/\r\n  padding-bottom: 25px;\r\n  padding-top: 15px;\r\n}\r\n.scheme .c_title{\r\n	text-align:center;\r\n  padding-bottom: 35px;\r\n  font-size: 24px;\r\n  font-weight: bold;\r\n}\r\n.steps{\r\n  \r\n}\r\n.steps .rim{\r\n  display: inline-block;\r\n  width: 25px;\r\n  text-align:center;\r\n}\r\n.steps .left{\r\n  /*text-align:right;*/\r\n}\r\n.steps .right{\r\n  border-left: 2px solid #37373e59;\r\n  border-right: 2px solid #37373e59;\r\n  border-top: 2px solid #37373e59;\r\n  padding-top: 20px;\r\n  padding-bottom: 20px;\r\n  /*min-height: 75px;*/\r\n}\r\n.steps .row:last-child {\r\n  \r\n  /*border-bottom: 3px solid #37373e;*/\r\n}\r\n/* --- END scheme --- */\r\n</style>\r\n', 1, 0, 4),
 (5, 'Слайдер', '', 'block_mine_slider', '', 0, 0, 2),
 (6, 'Шапка сайта', '', 'block_mine_header', '', 1, 0, 0),
 (7, 'Меню сайта', '', 'block_mine_top_menu', '', 1, 0, 1),
-(8, 'Контент на внутренних страницах', '', 'block_inner_content', '', 1, 0, 3)
+(8, 'Контент на внутренних страницах', '', 'block_inner_content', '', 1, 0, 3);
 HTML;
-    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+    
+    return $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name );
   }
   
-  function setup_module_smpl_article_cutaway(){
-    $title = "Содержание сайта";
-    $name = 'smpl_article';
+  function insert_def_module_carusel_cutaway( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `img`, `link`, `txt1`, `longtxt1`, `img_alt`, `img_title`, `hide`, `ord`) VALUES ";
+    $sql_insert .=<<<HTML
+(1, '1', '1531731471.jpg', '', '', '', '', '', 0, 1),
+(2, '2', '1531731498.jpg', '', 'Текст', '<p>Описание описание описание описание</p>\r\n', 'Alt изображение', 'Title изображение', 0, 0),
+(3, '3', '1531731518.jpg', '', '', '', '', '', 0, 2),
+(4, '4', '1531731541.jpg', '', '', '', '', '', 0, 3),
+(5, '5', '1531731565.jpg', '', '', '', '', '', 0, 4);
+HTML;
+    
+    return $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name );
+  }
+  
+  #--------------------- setup_database_module_onlineshop ---------------------
+  function setup_module_smpl_article_cutaway( $title, $name ){
+    
     $table = DB_PFX.$name;
     $script_name = $name.'.php';
     
@@ -733,89 +885,71 @@ HTML;
       INSERT INTO `$table` (`id`, `title`, `img`, `date`, `link`, `longtxt1`, `longtxt2`, `fl_mine_menu`, `seo_h1`, `seo_title`, `seo_description`, `seo_keywords`, `img_alt`, `img_title`, `orm_search_name`, `orm_search`, `hide`, `ord`) VALUES ";
     $sql_insert .=<<<HTML
 (1, 'Главная', '', '', '/', '', '', 1, '', '', '', '', '', '', 'ГЛАВНЫЙ', '', 0, 0),
-(2, 'О компании', '', '', '', '', '<h3>Пример текста &laquo;О компании&raquo;, как его написать &ndash; &laquo;пикап&raquo; потенциального клиента</h3>\r\n\r\n<p>Вы на рынке с 2002 года? Мне всё равно. &laquo;АвтоВАЗ&raquo; на рынке дольше вас&hellip; У вас хорошая динамика развития и молодой, дружный коллектив? Отлично, то есть, опыта у сотрудников маловато&hellip; Закупили дорогое немецкое оборудование (в кредит?), когда рубль балансировал на ободке унитаза? Значит, теперь мне за это расплачиваться? Прощайте!</p>\r\n\r\n<p>Как написать текст на страницу &laquo;О компании&raquo; и выбросить из словосочетания &laquo;потенциальный клиент&raquo; первое слово? Сделать это в среде &laquo;неправильных&raquo; клиентов. Ведь они, как девушка, которую постоянно атакуют пикаперы: интерес проявляет, но в машину не садится.</p>\r\n\r\n<p>Проблема в том, что у вас все как у всех: низкие цены, надежное оборудование и специалисты &ndash; профессионалы своего дела, у которых клиентоориенитрованность на нуле.</p>\r\n\r\n<p>Если не знаете, как написать текст о компании для сайта, и нужны примеры, то эта работа для <a href="//d1.ru" target="_blank">нас</a>.</p>\r\n', 1, '', '', '', '', '', '', 'О КОМПАНИЯ', 'ПРИМЕР ТЕКСТ LAQUO О КОМПАНИЯ RAQUO КАК ЕГО НАПИСАТЬ NDASH LAQUO ПИКАП RAQUO ПОТЕНЦИАЛЬНЫЙ КЛИЕНТ ВЫ НА РЫНОК С 2002 ГОД Я ВЕСЬ РАВНО LAQUO АВТОВАЗ RAQUO НА РЫНОК ДОЛГИЙ ВЫ HELLIP У ВЫ ХОРОШИЙ ДИНАМИК РАЗВИТИЕ И МОЛОДАЯ ДРУЖНЫЙ КОЛЛЕКТИВ ОТЛИЧНО ТО ЕСТЬ ОПЫТ У СОТРУДНИК МАЛОВАТЫЙ HELLIP ЗАКУПИТЬ ДОРОГОЙ НЕМЕЦКИЙ ОБОРУДОВАНИЕ В КРЕДИТ КОГДА РУБЛЬ БАЛАНСИРОВАТЬ НА ОБОДОК УНИТАЗ ЗНАЧИТ ТЕПЕРЬ Я ЗА ЭТО РАСПЛАЧИВАТЬСЯ ПРОЩАТЬ КАК НАПИСАТЬ ТЕКСТ НА СТРАНИЦА LAQUO О КОМПАНИЯ RAQUO И ВЫБРОСИТЬ ИЗ СЛОВОСОЧЕТАНИЕ LAQUO ПОТЕНЦИАЛЬНЫЙ КЛИЕНТ RAQUO ПЕРВЫЙ СЛОВО СДЕЛАТЬ ЭТО В СРЕДА LAQUO НЕПРАВИЛЬНЫЙ RAQUO КЛИЕНТ ВЕДЬ ОНИ КАК ДЕВУШКА КОТОРЫЙ ПОСТОЯННО АТАКОВАТЬ ПИКАПЕР ИНТЕРЕС ПРОЯВЛЯТЬ НО В МАШИН НЕ САДИТЬСЯ ПРОБЛЕМА В ТОМ ЧТО У ВЫ ВСЕ КАК У ВЕСЬ НИЗКИЙ ЦЕНА НАДЕЖНЫЙ ОБОРУДОВАНИЕ И СПЕЦИАЛИСТ NDASH ПРОФЕССИОНАЛ СВОЕ ДЕТЬ У КОТОРЫЙ КЛИЕНТООРИЕНИТРОВАННОСТЬ НА НУЛЬ ЕСЛИ НЕ ЗНАТЬ КАК НАПИСАТЬ ТЕКСТ О КОМПАНИЯ ДЛЯ САЙТ И НУЖНЫЙ ПРИМЕР ТО ЭТОТ РАБОТА ДЛЯ МЫ', 0, 3),
+(2, 'О компании', '', '', '', '', '<h3>Пример текста &laquo;О компании&raquo;, как его написать &ndash; &laquo;пикап&raquo; потенциального клиента</h3>\r\n\r\n<p>Вы на рынке с 2002 года? Мне всё равно. &laquo;АвтоВАЗ&raquo; на рынке дольше вас&hellip; У вас хорошая динамика развития и молодой, дружный коллектив? Отлично, то есть, опыта у сотрудников маловато&hellip; Закупили дорогое немецкое оборудование (в кредит?), когда рубль балансировал на ободке унитаза? Значит, теперь мне за это расплачиваться? Прощайте!</p>\r\n\r\n<p>Как написать текст на страницу &laquo;О компании&raquo; и выбросить из словосочетания &laquo;потенциальный клиент&raquo; первое слово? Сделать это в среде &laquo;неправильных&raquo; клиентов. Ведь они, как девушка, которую постоянно атакуют пикаперы: интерес проявляет, но в машину не садится.</p>\r\n\r\n<p>Проблема в том, что у вас все как у всех: низкие цены, надежное оборудование и специалисты &ndash; профессионалы своего дела, у которых клиентоориенитрованность на нуле.</p>\r\n\r\n<p>Если не знаете, как написать текст о компании для сайта, и нужны примеры, то эта работа для <a href="//in-ri.ru" target="_blank">нас</a>.</p>\r\n', 1, '', '', '', '', '', '', 'О КОМПАНИЯ', 'ПРИМЕР ТЕКСТ LAQUO О КОМПАНИЯ RAQUO КАК ЕГО НАПИСАТЬ NDASH LAQUO ПИКАП RAQUO ПОТЕНЦИАЛЬНЫЙ КЛИЕНТ ВЫ НА РЫНОК С 2002 ГОД Я ВЕСЬ РАВНО LAQUO АВТОВАЗ RAQUO НА РЫНОК ДОЛГИЙ ВЫ HELLIP У ВЫ ХОРОШИЙ ДИНАМИК РАЗВИТИЕ И МОЛОДАЯ ДРУЖНЫЙ КОЛЛЕКТИВ ОТЛИЧНО ТО ЕСТЬ ОПЫТ У СОТРУДНИК МАЛОВАТЫЙ HELLIP ЗАКУПИТЬ ДОРОГОЙ НЕМЕЦКИЙ ОБОРУДОВАНИЕ В КРЕДИТ КОГДА РУБЛЬ БАЛАНСИРОВАТЬ НА ОБОДОК УНИТАЗ ЗНАЧИТ ТЕПЕРЬ Я ЗА ЭТО РАСПЛАЧИВАТЬСЯ ПРОЩАТЬ КАК НАПИСАТЬ ТЕКСТ НА СТРАНИЦА LAQUO О КОМПАНИЯ RAQUO И ВЫБРОСИТЬ ИЗ СЛОВОСОЧЕТАНИЕ LAQUO ПОТЕНЦИАЛЬНЫЙ КЛИЕНТ RAQUO ПЕРВЫЙ СЛОВО СДЕЛАТЬ ЭТО В СРЕДА LAQUO НЕПРАВИЛЬНЫЙ RAQUO КЛИЕНТ ВЕДЬ ОНИ КАК ДЕВУШКА КОТОРЫЙ ПОСТОЯННО АТАКОВАТЬ ПИКАПЕР ИНТЕРЕС ПРОЯВЛЯТЬ НО В МАШИН НЕ САДИТЬСЯ ПРОБЛЕМА В ТОМ ЧТО У ВЫ ВСЕ КАК У ВЕСЬ НИЗКИЙ ЦЕНА НАДЕЖНЫЙ ОБОРУДОВАНИЕ И СПЕЦИАЛИСТ NDASH ПРОФЕССИОНАЛ СВОЕ ДЕТЬ У КОТОРЫЙ КЛИЕНТООРИЕНИТРОВАННОСТЬ НА НУЛЬ ЕСЛИ НЕ ЗНАТЬ КАК НАПИСАТЬ ТЕКСТ О КОМПАНИЯ ДЛЯ САЙТ И НУЖНЫЙ ПРИМЕР ТО ЭТОТ РАБОТА ДЛЯ МЫ', 0, 3),
 (3, 'Фотогалерея', '', '', '', '', '', 1, '', '', '', '', '', '', 'ФОТОГАЛЕРЕЯ', '', 0, 1),
 (4, 'Документы', '', '', '', '', '', 1, '', '', '', '', '', '', 'ДОКУМЕНТ', '', 0, 2),
 (5, 'Дилеры', '', '', '', '', '', 0, '', '', '', '', '', '', 'ДИЛЕР', '', 0, 5),
-(6, 'Контакты', '', '', '', '', '<p><b>Директор: Крохалев Илья Владимирович</b></p>\r\n\r\n<p><b>E-mail</b>: <a href="mailto:d1@d1.ru">d1@d1.ru</a></p>\r\n\r\n<p><b>Телефоны в Екатеринбурге:</b><br />\r\n<span class="phone"><nobr>+7 343 372-33-07</nobr>, <nobr>371-21-45</nobr>, <nobr>371-31-03</nobr>, <nobr>290-37-57</nobr></span></p>\r\n\r\n<p><b>Сот. 8-922-209-33-07</b></p>\r\n\r\n<p><b>Адрес:</b> 620014, г. Екатеринбург, пр. Ленина 24/8, оф. 451</p>\r\n\r\n<p><b>Ориентиры::</b> пл. 1905 года, Ленина-Вайнера. В здании Бизнес Центра находятся магазины: Красный Леопард, Benetton, Adidas. Вход с Ленина справа от арки 3 двери, входим в среднюю, потом на лифте на 4 этаж и 2 раза налево.<br />\r\nПарковка на площади 1905 года, на Попова-Хохрякова или в платном паркинге Аркада.</p>\r\n\r\n<p><b>Время работы:</b> пн-пт 10:00-19:00, сб-вс 11:00-18:00<br />\r\n&nbsp;</p>\r\n<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A71f1792e079ea2350269366fbc0037aaad93183c6e2c49cd23c1eb8b4c0ccb9e&amp;width=100%25&amp;height=600&amp;lang=ru_RU&amp;scroll=false"></script>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<h2>Как пройти</h2>\r\n', 1, '', '', '', '', '', '', 'КОНТАКТ', 'ДИРЕКТОР КРОХАЛЕВ ИЛЬЯ ВЛАДИМИР E-MAIL D1 D1 RU ТЕЛЕФОН В ЕКАТЕРИНБУРГ 7 343 372-33-07 371-21-45 371-31-03 290-37-57 СОТЫ 8-922-209-33-07 АДРЕС 620014 Г ЕКАТЕРИНБУРГ ПР ЛЕНИН 24 8 ОФА 451 ОРИЕНТИР ПЛ 1905 ГОД ЛЕНИНА-ВАЙНЕР В ЗДАНИЕ БИЗНЕС ЦЕНТР НАХОДИТЬСЯ МАГАЗИН КРАСНЫЙ ЛЕОПАРД BENETTON ADIDAS ВХОД С ЛЕНИН СПРАВА ОТ АРКА 3 ДВЕРЬ ВХОДИТЬ В СРЕДНИЙ ПОТОМ НА ЛИФТ НА 4 ЭТАЖ И 2 РАЗ НАЛЕВО ПАРКОВКА НА ПЛОЩАДЬ 1905 ГОД НА ПОПОВА-ХОХРЯКОВ ИЛИ В ПЛАТНЫЙ ПАРКИНГ АРКАД ВРЕМЯ РАБОТА ПН-ПТ 10 00-19 00 СБ-ВС 11 00-18 00 NBSP NBSP КАК ПРОЙТИ', 0, 4),
+(6, 'Контакты', '', '', '', '', '<p><b>Директор: Ощепков Илья Александрович</b></p>\r\n\r\n<p><b>E-mail</b>: <a href="mailto:1@in-ri.ru">1@in-ri.ru</a></p>\r\n\r\n<p><b>Телефоны в Екатеринбурге:</b></p>\r\n\r\n<p><b>Сот. <a href = "tel:+79058010809">+7 (905) 801-08-09</a></b></p>\r\n\r\n<p><b>Адрес:</b> 620100, г. Екатеринбург, ул Сибирский тракт 12/2, офис 404</p>\r\n\r\n<p><b>Время работы:</b> пн-пт 10:00-19:00, сб-вс 11:00-18:00<br />\r\n&nbsp;</p>\r\n<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Abbe514650299016758f03759051467d1a8adc3faf2e49e2556ec55580a030390&amp;width=100%25&amp;height=500&amp;lang=ru_RU&amp;scroll=false"></script>\r\n\r\n<p>&nbsp;</p>\r\n\r\n', 1, '', '', '', '', '', '', 'КОНТАКТ', 'ДИРЕКТОР ОЩЕПОК ИЛЬЯ АЛЕКСАНДР E-MAIL 1 IN-RI RU ТЕЛЕФОН В ЕКАТЕРИНБУРГ СОТЫ 7 905 801-08-09 АДРЕС 620100 Г ЕКАТЕРИНБУРГ УТЬ СИБИРСКИЙ ТРАКТ 12 2 ОФИС 404 ВРЕМЯ РАБОТА ПН-ПТ 10 00-19 00 СБ-ВС 11 00-18 00 NBSP NBSP', 0, 4),
 (7, 'Услуги', '', '', '', '', '<ul>\r\n	<li>Услуга 1</li>\r\n	<li>Услуга 2</li>\r\n	<li>Услуга 3</li>\r\n</ul>\r\n', 0, '', '', '', '', '', '', 'УСЛУГА', 'УСЛУГА 1 УСЛУГА 2 УСЛУГА 3', 0, 6);
 HTML;
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
   
-  function setup_module_carusel_cutaway(){
-    $title = "Слайдер";
-    $name = 'carusel';
-    $table = DB_PFX.$name;
-    $script_name = $name.'.php';
-    
-    $sql = "
-      CREATE TABLE IF NOT EXISTS `$table` (
-        `id` int(11) NOT NULL AUTO_INCREMENT,
-        `title` varchar(255) NOT NULL,
-        `img` varchar(255) NOT NULL,
-        `link` varchar(255) DEFAULT NULL,
-        `txt1` varchar(255) DEFAULT NULL,
-        `longtxt1` text,
-        `img_alt` varchar(255) DEFAULT NULL,
-        `img_title` varchar(255) DEFAULT NULL,
-        `hide` tinyint(1) NOT NULL DEFAULT '0',
-        `ord` int(11) NOT NULL DEFAULT '0',
-        PRIMARY KEY (`id`)
-      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
-    $sql_insert = "
-      INSERT INTO `$table` (`id`, `title`, `img`, `link`, `txt1`, `longtxt1`, `img_alt`, `img_title`, `hide`, `ord`) VALUES ";
-    $sql_insert .=<<<HTML
-(1, '1', '1531731471.jpg', '', '', '', '', '', 0, 1),
-(2, '2', '1531731498.jpg', '', 'Текст', '<p>Описание описание описание описание</p>\r\n', 'Alt изображение', 'Title изображение', 0, 0),
-(3, '3', '1531731518.jpg', '', '', '', '', '', 0, 2),
-(4, '4', '1531731541.jpg', '', '', '', '', '', 0, 3),
-(5, '5', '1531731565.jpg', '', '', '', '', '', 0, 4);
-HTML;
-    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
-  }
   
   
   function setup_database_module_required(){
+    
+    $this->add_content( $this->wrap_block(  "<h2>Базовые настройки</h2>" ));
       
     $this->add_content( $this->wrap_block(  # Параметры
-                                            $this->setup_module_config()  ));
+                                            $this->setup_module_config( 'Параметры', 'config' )  ));
                                             
     $this->add_content( $this->wrap_block(  # СЕО
-                                            $this->setup_module_seo()  ));
+                                            $this->setup_module_seo( 'СЕО', 'seo' )  ));
                                             
     $this->add_content( $this->wrap_block(  # Оформление сайта
-                                            $this->setup_module_design()  ));
+                                            $this->setup_module_design( 'Оформление сайта', 'design' )  ));
     
     $this->add_content( $this->wrap_block(  # Администрирование
-                                            $this->setup_module_accounts()  ));
+                                            $this->setup_module_accounts( 'Администрирование', 'accounts' )  ));
     
     $this->add_content( $this->wrap_block(  # Логи входа в админку
-                                            $this->setup_module_admin_logs()  ));
+                                            $this->setup_module_admin_logs( 'Логи входа в админку', 'admin_logs' )  ));
+    
+    $this->add_content( $this->wrap_block(  # Логи редактирования контента
+                                            $this->setup_module_all_log( 'Логи редактирования контента', 'all_log' )  ));
                                             
-    #$this->add_content( $this->wrap_block(  # ЧПУ
-    #                                          $this->setup_module_url()  ));
+    $this->add_content( $this->wrap_block(  # ЧПУ
+                                            $this->setup_module_url( 'Человеко-понятные адреса', 'url')  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Блоки на главной странице
+                                            $this->setup_module_mine_block( 'Блоки на главной странице', 'mine_block' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Слайдер
+                                            $this->setup_module_carusel( 'Слайдер', 'carusel' )  ));
   }
   
   function setup_database_module_cutaway(){ # Сайт визитка
-  
-    $this->add_content( $this->wrap_block(  # ЧПУ
-                                              $this->setup_module_url_cutaway()  ));
-                                              
-    $this->add_content( $this->wrap_block(  # Блоки на главной странице
-                                              $this->setup_module_mine_block_cutaway()  ));
+    
+    $this->add_content( $this->wrap_block(  "<h2>Сайт визитка</h2>" ));
                                               
     $this->add_content( $this->wrap_block(  # Содержание сайта
-                                              $this->setup_module_smpl_article_cutaway()  ));
+                                            $this->setup_module_smpl_article_cutaway( 'Содержание сайта', 'smpl_article' )  ));
                                               
     $this->add_content( $this->wrap_block(  # Слайдер
-                                              $this->setup_module_carusel_cutaway()  ));
+                                            $this->insert_def_module_carusel_cutaway('Слайдер', 'carusel')  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Блоки на главной странице
+                                            $this->insert_def_module_mine_block_cutaway( 'Блоки на главной странице', 'mine_block')  ));
+                                            
+    $this->add_content( $this->wrap_block(  # ЧПУ
+                                            $this->insert_def_module_url_cutaway( 'Человеко-понятные адреса', 'url' )  ));
   }
   
   function setup_database_module_onlineshop(){ # Интернет магазин
   
     $this->add_content( $this->wrap_block(  # Курсы валют
-                                              $this->setup_module_currency_onlineshop()  ));
+                                            $this->setup_module_currency_onlineshop( 'Курсы валют', 'currency' )  ));
   }
   
   

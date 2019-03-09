@@ -19,6 +19,7 @@ class SetupSite extends Setup{
   
   
   function setup_database_module_all(){
+    
     parent::setup_database_module_all();
     
     $this->setup_database_module_cutaway(); #Сайт визитка  

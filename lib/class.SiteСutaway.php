@@ -238,7 +238,7 @@ class Site {
           </div>
           <!-- End header -->';
           
-    $output = $this->addEditAdminLink($output, '/wedadmin/param.php');
+    $output = $this->addEditAdminLink($output, IA_URL.'param.php');
     
     return $output;
   }
@@ -277,7 +277,7 @@ class Site {
           <!-- End top_menu -->
     ';
     
-    $output = $this->addEditAdminLink($output, '/wedadmin/smpl_article.php');
+    $output = $this->addEditAdminLink($output, IA_URL.'/smpl_article.php');
     
     return $output;
   }
@@ -311,41 +311,65 @@ class Site {
     $output .= '
         <div class="row">
           <div class="col tac">
-            <div class="d1_box">
-              <span>Разработано</span> 
-              <a href="http://d1.ru/" target="_blank">
-                <b>  
-                  
-                  <svg version="1.1" id="_x31_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 352.657 106.492" enable-background="new 0 0 352.657 106.492" xml:space="preserve">
-
-                    <path class="d1_item" fill-rule="evenodd" clip-rule="evenodd" fill="#181818" d="M103.592,53.289c0,15.4-4.514,27.838-13.567,37.337
-                    c-10.11,10.557-24.546,15.847-43.332,15.847H0V0.13h46.694c20.572,0,35.738,5.878,45.471,17.634
-                    C99.783,26.956,103.592,38.782,103.592,53.289L103.592,53.289z M64.187,53.312c0-7.336-2.046-13.002-6.137-16.952
-                    c-3.715-3.573-8.723-5.36-15-5.36h-4.961v44.554h4.961c4.914,0,9.052-1.058,12.461-3.174C61.295,68.76,64.187,62.411,64.187,53.312z
-                    "></path>
-                    
-                    <polygon class="d1_item" fill-rule="evenodd" clip-rule="evenodd" fill="#181818" points="152.093,106.342 113.986,106.342 113.965,29.342 
-                    98.048,29.342 115.025,0.13 152.054,0 152.085,83.491 "></polygon>
-                    
-                    <path class="d1_item" fill-rule="evenodd" clip-rule="evenodd" fill="#181818" d="M260.783,106.423h-43.732l-14.177-35.808l-1.176-0.282v36.09
-                    h-37.689v-22.93V0.08h48.293c13.002,0,23.23,2.915,30.73,8.746c8.158,6.419,12.249,15.917,12.249,28.449
-                    c0,13.26-6.16,22.219-18.456,26.85L260.783,106.423L260.783,106.423z M217.051,37.745c0-3.057-1.011-5.502-3.033-7.312
-                    c-2.022-1.811-4.702-2.728-8.041-2.728h-4.279v20.173h4.279C213.36,47.879,217.051,44.493,217.051,37.745z"></path>
-                    
-                    <path class="d1_item" fill-rule="evenodd" clip-rule="evenodd" fill="#181818" d="M352.657,61.494c0,32.234-16.73,44.998-49.928,44.998
-                    c-33.199,0-49.667-12.764-49.667-44.998V0.13h38.089v60.753c0,10.651,3.903,15.988,11.709,15.988
-                    c7.806,0,11.709-5.338,11.709-15.988V0.13h38.089V61.494z"></path>
-                    
-                    <g>
-                     <path class="d1_item d1_item_bg" fill-rule="evenodd" clip-rule="evenodd" fill="#181818" stroke="#FFFFFF" stroke-width="23.2954" stroke-miterlimit="22.9256" d="
-                     M158.436,101.182c9.533,0,17.309-7.776,17.309-17.309c0-9.534-7.775-17.309-17.309-17.309c-9.533,0-17.309,7.775-17.309,17.309
-                     C141.127,93.407,148.903,101.182,158.436,101.182z"></path>
-                     <path class="d1_item" fill-rule="evenodd" clip-rule="evenodd" fill="#181818" d="M158.436,101.182c9.533,0,17.309-7.776,17.309-17.309
-                     c0-9.534-7.775-17.309-17.309-17.309c-9.533,0-17.309,7.775-17.309,17.309C141.127,93.407,148.903,101.182,158.436,101.182z"></path>
-                   </g>
-                  </svg>
-                </b>
-              </a>
+            <div class="inri_box">
+              <span><a href="//in-ri.ru" target="_blank">Разработано</a></span> 
+              <a href="//in-ri.ru" target="_blank"><b>
+                <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="549.392px" height="530.999px" viewBox="0 0 549.392 530.999" enable-background="new 0 0 549.392 530.999" xml:space="preserve">
+                  <g>
+                    <defs>
+                      <polygon class="inri_item" id="SVGID_1_" points="0,86.998 55.001,86.998 55.001,443.998 0,443.998 0,86.998 		"></polygon>
+                    </defs>
+                    <use xlink:href="#SVGID_1_" overflow="visible" fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff"></use>
+                    <clipPath id="SVGID_2_">
+                      <use xlink:href="#SVGID_1_" overflow="visible"></use>
+                    </clipPath>
+                  </g>
+                  <g>
+                    <defs>
+                      <path class="inri_item" id="SVGID_3_" d="M249.579,444.338h21.759V206.002c-20.739,0-41.478,0-62.217,0v116.619L88.76,204.982H66.66v239.017
+                        c20.742,0,41.82,0,62.901,0V327.04L249.579,444.338L249.579,444.338z"></path>
+                    </defs>
+                    <use xlink:href="#SVGID_3_" overflow="visible" fill="#ffffff"></use>
+                    <clipPath id="SVGID_4_">
+                      <use xlink:href="#SVGID_3_" overflow="visible"></use>
+                    </clipPath>
+                  </g>
+                  <g>
+                    <defs>
+                      <path class="inri_item" id="SVGID_5_" d="M436.789,359.68c60.18-40.8,43.182-153.339-50.319-153.678c-34.68,0-70.038,0-104.379,0
+                        c0,79.557,0,158.778,0,237.997c19.722,0,40.461,0,60.861,0V373.96h31.62l40.8,70.038h67.998v-8.838L436.789,359.68L436.789,359.68
+                        z M386.47,319.9h-43.518c0-19.041,0-40.119,0-59.499c14.28,0,29.238-0.339,43.518,0C421.15,260.74,419.449,319.9,386.47,319.9
+                        L386.47,319.9z"></path>
+                    </defs>
+                    <use xlink:href="#SVGID_5_" overflow="visible" fill="#ffffff"></use>
+                    <clipPath id="SVGID_6_">
+                      <use xlink:href="#SVGID_5_" overflow="visible"></use>
+                    </clipPath>
+                  </g>
+                  <g>
+                    <defs>
+                      <polygon class="inri_item" id="SVGID_7_" points="538.001,443.998 483.001,443.998 483.001,205.999 538.001,205.999 538.001,443.998 
+                        538.001,443.998 		"></polygon>
+                    </defs>
+                    <defs>
+                      <polygon class="inri_item" id="SVGID_8_" points="510.5,101.607 549.392,140.5 510.5,179.39 471.61,140.5 510.5,101.607 		"></polygon>
+                    </defs>
+                    <use xlink:href="#SVGID_7_" overflow="visible" fill="#ffffff"></use>
+                    <use xlink:href="#SVGID_8_" overflow="visible" fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff"></use>
+                    <clipPath id="SVGID_9_">
+                      <use xlink:href="#SVGID_7_" overflow="visible"></use>
+                    </clipPath>
+                    <clipPath id="SVGID_10_" clip-path="url(#SVGID_9_)">
+                      <use xlink:href="#SVGID_8_" overflow="visible"></use>
+                    </clipPath>
+                  </g>
+                  <g>
+                    <path class="inri_item" fill="#ffffff" d="M483.001,454.999v20.999h-428v-20.999H0c0,45.885,0,76,0,76h538.001v-76H483.001z"></path>
+                    <path class="inri_item" fill="#ffffff" d="M55.001,75.998v-1v-20h428v20.999h55.001V0H0c0,0,0,29.677,0,74.998c0,0.329,0,0.669,0,1H55.001z"></path>
+                  </g>
+                </svg>
+              </b></a>
+            
             </div>
             
           </div>
@@ -514,7 +538,7 @@ class Site {
       }
     }
     
-    $output = $this->addEditAdminLink($output, '/wedadmin/carusel.php');
+    $output = $this->addEditAdminLink($output, IA_URL.'carusel.php');
     
     return $output;
   }
@@ -697,18 +721,9 @@ class Site {
     
     return $output;
   }
-
-  function getIndexContent(){
+  
+  function getBlockSwitchSelector($s, $cont = ''){
     $output = '';
-    #header('Location: /makeup '); 
-    $s = "
-      SELECT `".DB_PFX."mine_block`.*, `".DB_PFX."url`.`url`
-      FROM `".DB_PFX."mine_block`    
-      LEFT JOIN `".DB_PFX."url`
-      ON (`".DB_PFX."url`.`module` = '".DB_PFX."mine_block') AND (`".DB_PFX."url`.`module_id` = `".DB_PFX."mine_block`.`id`) 
-      WHERE `".DB_PFX."mine_block`.`hide` = 0
-      ORDER BY `".DB_PFX."mine_block`.`ord`
-    "; #pri($s);
     
     if($q = $this->pdo->query($s))
       if($q->rowCount())
@@ -730,12 +745,30 @@ class Site {
                   
             default:
                   if($r['longtxt2']){
-                    $output .= $this->addEditAdminLink($r['longtxt2'], '/wedadmin/mine_block.php?edits='.$r['id']);
+                    $output .= $this->addEditAdminLink($r['longtxt2'], IA_URL.'mine_block.php?edits='.$r['id']);
                   }
                   break; 
           }
           
         }
+    
+    return $output;
+  }
+  
+  
+  function getIndexContent(){
+    $output = '';
+    #header('Location: /makeup '); 
+    $s = "
+      SELECT `".DB_PFX."mine_block`.*, `".DB_PFX."url`.`url`
+      FROM `".DB_PFX."mine_block`    
+      LEFT JOIN `".DB_PFX."url`
+      ON (`".DB_PFX."url`.`module` = '".DB_PFX."mine_block') AND (`".DB_PFX."url`.`module_id` = `".DB_PFX."mine_block`.`id`) 
+      WHERE `".DB_PFX."mine_block`.`hide` = 0
+      ORDER BY `".DB_PFX."mine_block`.`ord`
+    "; #pri($s);
+    
+    $output .= $this->getBlockSwitchSelector($s);
     
     #$output .= $this->showVisitedPage();
     
@@ -759,37 +792,8 @@ class Site {
         ORDER BY `".DB_PFX."mine_block`.`ord`
       "; #pri($s);
       
-      if($q = $this->pdo->query($s))
-        if($q->rowCount())
-          while($r = $q->fetch()){
-            $output .= '
-      <a name="'.$r['url'].'"></a>';
-            
-            switch ($r['link']) {
-              
-              case  'block_mine_header':
-                    $output .= $this->getMineHeader(); break;
-              case  'block_mine_top_menu':
-                    $output .= $this->getMineTopMenu(); break;
-              case  'block_mine_slider':
-                    $output .= $this->getMineSlider(); break;
-              case  'block_mine_news':
-                    $output .= $this->getMineNews(); break;
-              case  'block_ferrum_form':
-                    $output .= $this->getMineFerrumForm(); break;
-                    
-              case  'block_inner_content':
-                    $output .= $this->addEditAdminLink($cont, '/wedadmin'.$this->adminLink); 
-                    break;
-                    
-              default:
-                    if($r['longtxt2']){
-                      $output .= $this->addEditAdminLink($r['longtxt2'], '/wedadmin/mine_block.php?edits='.$r['id']);
-                    }
-                    break; 
-            }
-            
-          }
+      $output .= $this->getBlockSwitchSelector($s);
+      
     }else{
       $output .= $cont;
     }
@@ -975,7 +979,7 @@ class Site {
       $output .= '
       <div class="container-fluid " id="wa_panel">
         <div class="row-fluid">
-          <div class="span2"><a class="btn btn-sm" target = "_blank" href="/wedadmin'.$this->adminLink.'">править в Wedadmin</a></div>
+          <div class="span2"><a class="btn btn-sm" target = "_blank" href="/'.ADM_DIR.$this->adminLink.'">править в '.ADM_DIR.'</a></div>
         </div>
         <div class="row-fluid" style="text-align:center">
           <i class="icon-chevron-up" id="trigger"> Х скрыть </i>
