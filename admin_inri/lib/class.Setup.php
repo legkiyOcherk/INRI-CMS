@@ -36,7 +36,7 @@ class Setup{
   function get_setup_header(){
     $output = '    
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="author" content="in-ri.ru">
+    <meta name="author" content="'.SITE_NAME.'">
     <link rel="shortcut icon" type="image/x-icon" href="/css/img/favicon/favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     ';
@@ -95,7 +95,7 @@ class Setup{
     $output .= '
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/'.ADM_DIR.'/'.$this->script_name.'">INRI</a>
+        <a class="navbar-brand" href="/'.ADM_DIR.'/'.$this->script_name.'">'.CMS_NAME.'</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -466,6 +466,94 @@ class Setup{
     }
   }
   
+  function create_file_dir( $name ){
+    
+    $this->create_img_dir( $name ); 
+    
+    if (!is_dir("../images/".$name."/files")){
+      mkdir("../images/".$name."/files");
+      chmod ("../images/".$name."/files", 0755);
+    }
+  }
+  
+  function copy_file( $file_name, $source, $target ){ 
+    $output = '';
+    try { 
+      if($current_file = file_get_contents( $source ) ){
+        file_put_contents($target, $current_file );
+      }
+    } 
+    catch (PDOException $e) { 
+      $output .= '
+        <div class="alert alert-danger" role="alert">
+          Ошибка копирования файла `'.$file_name.'` Источник `'.$source.'`!
+        </div>';
+      #pri( 'Ошибка копирования файла `'.$file_name.'` Источник `'.$source.'`' );
+    }
+     
+    /*$ch = curl_init( $source );
+    $fp = fopen( $target, 'wb');
+    curl_setopt($ch, CURLOPT_FILE, $fp);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_exec($ch);
+    curl_close($ch);
+    fclose($fp);*/
+    
+    return $output;
+  }
+  
+  function copy_img_module( $name, $source_site ){
+    $output = '';
+    $table = DB_PFX.$name;
+    $items = db::select('*', $table, null, null, null, null, 0 );
+    
+    foreach($items as $item){
+      if( isset($item['img']) && $item['img'] ){
+        
+        $output .= $this->copy_file(  $item['img'], 
+                                      $source_site.'/images/'.$name.'/orig/'.$item['img'],
+                                      '../images/'.$name.'/orig/'.$item['img']  ); 
+                         
+        $output .= $this->copy_file(  $item['img'], 
+                                      $source_site.'/images/'.$name.'/slide/'.$item['img'],
+                                      '../images/'.$name.'/slide/'.$item['img']  );
+      }
+    }
+    
+    return $output;
+  }
+  
+  
+  function copy_file_module( $name, $source_site ){
+    $output = '';
+    $table = DB_PFX.$name;
+    $items = db::select('*', $table, null, null, null, null, 0 );
+    
+    foreach($items as $item){
+      
+      if( isset($item['img']) && $item['img'] ){
+        
+        $output .= $this->copy_file(  $item['img'], 
+                                      $source_site.'/images/'.$name.'/orig/'.$item['img'],
+                                      '../images/'.$name.'/orig/'.$item['img']  ); 
+                         
+        $output .= $this->copy_file(  $item['img'], 
+                                      $source_site.'/images/'.$name.'/slide/'.$item['img'],
+                                      '../images/'.$name.'/slide/'.$item['img']  );
+      }
+      
+      if( isset($item['file']) && $item['file'] ){
+        
+        $output .= $this->copy_file(  $item['file'], 
+                                      $source_site.'/images/'.$name.'/files/'.$item['file'],
+                                      '../images/'.$name.'/files/'.$item['file']  ); 
+        
+      }
+    }
+    
+    return $output;
+  }
+  
   function create_cat_img_dir( $name ){
     
     parent::create_img_dir();
@@ -691,6 +779,80 @@ HTML;
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
   
+  function setup_module_mine_block( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    $sql_insert = '';
+    $sql = "
+    CREATE TABLE IF NOT EXISTS `$table` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `title` varchar(255) NOT NULL,
+      `img` varchar(255) NOT NULL,
+      `link` varchar(255) DEFAULT NULL,
+      `longtxt2` text,
+      `fl_is_fixed` tinyint(1) NOT NULL DEFAULT '0',
+      `hide` tinyint(1) NOT NULL DEFAULT '0',
+      `ord` int(11) NOT NULL DEFAULT '0',
+      PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    
+    $this->create_img_dir( $name );
+    
+    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+  }
+  
+  function setup_module_carusel( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    $sql_insert = '';
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `link` varchar(255) DEFAULT NULL,
+        `txt1` varchar(255) DEFAULT NULL,
+        `longtxt1` text,
+        `img_alt` varchar(255) DEFAULT NULL,
+        `img_title` varchar(255) DEFAULT NULL,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    
+    $this->create_img_dir( $name );
+    
+    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+  }
+  
+  function setup_module_reservations( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    $sql_insert = '';
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `date` varchar(10) DEFAULT NULL,
+        `userIp` varchar(255) DEFAULT NULL,
+        `userName` varchar(255) DEFAULT NULL,
+        `userPhone` varchar(255) DEFAULT NULL,
+        `userMail` varchar(255) DEFAULT NULL,
+        `userStatus` varchar(255) DEFAULT NULL,
+        `longtxt1` text,
+        `longtxt2` text,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    
+    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+  }
+  
   function setup_module_admin_logs( $title, $name ){
     
     $table = DB_PFX.$name;
@@ -741,44 +903,29 @@ HTML;
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
   
-  function setup_module_mine_block( $title, $name ){
+  function setup_module_all_images( $title, $name ){
     
     $table = DB_PFX.$name;
     $script_name = $name.'.php';
     $sql_insert = '';
-    $sql = "
-    CREATE TABLE IF NOT EXISTS `$table` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `title` varchar(255) NOT NULL,
-      `img` varchar(255) NOT NULL,
-      `link` varchar(255) DEFAULT NULL,
-      `longtxt2` text,
-      `fl_is_fixed` tinyint(1) NOT NULL DEFAULT '0',
-      `hide` tinyint(1) NOT NULL DEFAULT '0',
-      `ord` int(11) NOT NULL DEFAULT '0',
-      PRIMARY KEY (`id`)
-    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
     
-    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
-  }
-  
-  function setup_module_carusel( $title, $name ){
-    
-    $table = DB_PFX.$name;
-    $script_name = $name.'.php';
-    $sql_insert = '';
     $sql = "
       CREATE TABLE IF NOT EXISTS `$table` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `title` varchar(255) NOT NULL,
+        `module` varchar(255) NOT NULL,
+        `module_id` int(11) NOT NULL,
         `img` varchar(255) NOT NULL,
-        `link` varchar(255) DEFAULT NULL,
-        `txt1` varchar(255) DEFAULT NULL,
         `longtxt1` text,
+        `longtxt2` text,
+        `seo_h1` varchar(255) DEFAULT NULL,
+        `seo_title` varchar(255) DEFAULT NULL,
+        `seo_description` varchar(255) DEFAULT NULL,
         `img_alt` varchar(255) DEFAULT NULL,
         `img_title` varchar(255) DEFAULT NULL,
         `hide` tinyint(1) NOT NULL DEFAULT '0',
         `ord` int(11) NOT NULL DEFAULT '0',
+        `module_ord` int(11) NOT NULL DEFAULT '0',
         PRIMARY KEY (`id`)
       ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
     
@@ -786,7 +933,36 @@ HTML;
     
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
-   
+  
+  function setup_module_all_files( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    $sql_insert = '';
+    
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(255) NOT NULL,
+        `module` varchar(255) NOT NULL,
+        `module_id` int(11) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `file` varchar(255) NOT NULL,
+        `longtxt1` text,
+        `img_alt` varchar(255) DEFAULT NULL,
+        `img_title` varchar(255) DEFAULT NULL,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        `module_ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    
+    $this->create_file_dir( $name );
+    
+    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+  }
+  
+  
   #--------------------- setup_database_module_cutaway --------------------- 
   function insert_def_module_url_cutaway( $title, $name ){
     $table = DB_PFX.$name;
@@ -836,22 +1012,77 @@ HTML;
   }
   
   function insert_def_module_carusel_cutaway( $title, $name ){
-    
+    $output = '';
     $table = DB_PFX.$name;
     $script_name = $name.'.php';
     
     $sql_insert = "
       INSERT INTO `$table` (`id`, `title`, `img`, `link`, `txt1`, `longtxt1`, `img_alt`, `img_title`, `hide`, `ord`) VALUES ";
     $sql_insert .=<<<HTML
-(1, '1', '1531731471.jpg', '', '', '', '', '', 0, 1),
-(2, '2', '1531731498.jpg', '', 'Текст', '<p>Описание описание описание описание</p>\r\n', 'Alt изображение', 'Title изображение', 0, 0),
-(3, '3', '1531731518.jpg', '', '', '', '', '', 0, 2),
+(1, '1', '1532522017.jpg', '', '', '', '', '', 0, 1),
+(2, '2', '1532521995.jpg', '', 'Текст', '<p>Описание описание описание описание</p>\r\n', 'Alt изображение', 'Title изображение', 0, 0),
+(3, '3', '1532522040.jpg', '', '', '', '', '', 0, 2),
 (4, '4', '1531731541.jpg', '', '', '', '', '', 0, 3),
 (5, '5', '1531731565.jpg', '', '', '', '', '', 0, 4);
 HTML;
     
-    return $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name );
+    $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CUTAWAY );
+    
+    return $output;
   }
+  
+  function insert_def_module_all_images_cutaway( $title, $name ){
+    $output = '';
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `module`, `module_id`, `img`, `longtxt1`, `longtxt2`, `seo_h1`, `seo_title`, `seo_description`, `img_alt`, `img_title`, `hide`, `ord`, `module_ord`) VALUES ";
+    $sql_insert .=<<<HTML
+(70, 'yamaha scr950.jpg', 'il_smpl_article', 3, '1532522961_10.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(69, 'QOVZzEETzGY.jpg', 'il_smpl_article', 3, '1532522961_9.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(68, 'HONDACB900FHornet-5190_3.jpg', 'il_smpl_article', 3, '1532522961_8.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(63, '14658847586171.jpg', 'il_smpl_article', 3, '1532522961_3.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(64, '14658847586242.jpg', 'il_smpl_article', 3, '1532522961_4.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(65, '14658847586293.jpg', 'il_smpl_article', 3, '1532522961_5.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(66, '14764684961551.jpg', 'il_smpl_article', 3, '1532522961_6.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(67, '14785962379880.jpg', 'il_smpl_article', 3, '1532522961_7.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(62, '14658847586130.jpg', 'il_smpl_article', 3, '1532522961_2.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(61, '14657292234510.jpg', 'il_smpl_article', 3, '1532522961_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(60, '4.jpg', 'il_smpl_article', 3, '1532522961_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(71, 'mMAPhsLGD6w.jpg', 'il_smpl_article', 3, '1532523022_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(72, 'QPyh7YBBraM.jpg', 'il_smpl_article', 3, '1532523023_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(73, 'rNqjPvV3a2Q.jpg', 'il_smpl_article', 3, '1532523024_2.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0);
+HTML;
+    $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CUTAWAY );
+    
+    return $output;
+  }
+  
+  function insert_def_module_all_files_cutaway( $title, $name ){
+    $output = '';
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `module`, `module_id`, `img`, `file`, `longtxt1`, `img_alt`, `img_title`, `hide`, `ord`, `module_ord`) VALUES ";
+    $sql_insert .=<<<HTML
+(1, '1972.pdf', 'il_smpl_article', 4, '', '1530877350_0.pdf', NULL, NULL, NULL, 0, 0, 0),
+(2, '1973.pdf', 'il_smpl_article', 4, '', '1530877350_1.pdf', NULL, NULL, NULL, 0, 0, 0),
+(3, '1974.pdf', 'il_smpl_article', 4, '', '1530877350_2.pdf', NULL, NULL, NULL, 0, 0, 0),
+(4, '1975.pdf', 'il_smpl_article', 4, '', '1530877350_3.pdf', NULL, NULL, NULL, 0, 0, 0),
+(5, '1976.pdf', 'il_smpl_article', 4, '', '1530877350_4.pdf', NULL, NULL, NULL, 0, 0, 0);
+HTML;
+    
+    $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CUTAWAY );
+    $output .= $this->copy_file_module( $name, SOURCE_SITE_CUTAWAY );
+    
+    return $output;
+  }
+  
   
   #--------------------- setup_database_module_onlineshop ---------------------
   function setup_module_smpl_article_cutaway( $title, $name ){
@@ -912,12 +1143,6 @@ HTML;
     
     $this->add_content( $this->wrap_block(  # Администрирование
                                             $this->setup_module_accounts( 'Администрирование', 'accounts' )  ));
-    
-    $this->add_content( $this->wrap_block(  # Логи входа в админку
-                                            $this->setup_module_admin_logs( 'Логи входа в админку', 'admin_logs' )  ));
-    
-    $this->add_content( $this->wrap_block(  # Логи редактирования контента
-                                            $this->setup_module_all_log( 'Логи редактирования контента', 'all_log' )  ));
                                             
     $this->add_content( $this->wrap_block(  # ЧПУ
                                             $this->setup_module_url( 'Человеко-понятные адреса', 'url')  ));
@@ -927,6 +1152,20 @@ HTML;
                                             
     $this->add_content( $this->wrap_block(  # Слайдер
                                             $this->setup_module_carusel( 'Слайдер', 'carusel' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Заявки
+                                            $this->setup_module_reservations( 'Заявки', 'reservations' )  ));                                        
+    $this->add_content( $this->wrap_block(  # Логи входа в админку
+                                            $this->setup_module_admin_logs( 'Логи входа в админку', 'admin_logs' )  ));
+    
+    $this->add_content( $this->wrap_block(  # Логи редактирования контента
+                                            $this->setup_module_all_log( 'Логи редактирования контента', 'all_log' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Дополнительныe изображения
+                                            $this->setup_module_all_images( 'Дополнительныe изображения', 'all_images' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Дополнительныe файлы
+                                            $this->setup_module_all_files( 'Дополнительныe файлы', 'all_files' )  ));
   }
   
   function setup_database_module_cutaway(){ # Сайт визитка
@@ -944,6 +1183,12 @@ HTML;
                                             
     $this->add_content( $this->wrap_block(  # ЧПУ
                                             $this->insert_def_module_url_cutaway( 'Человеко-понятные адреса', 'url' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Дополнительныe изображения
+                                            $this->insert_def_module_all_images_cutaway( 'Дополнительныe изображения', 'all_images' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Дополнительныe файлы
+                                            $this->insert_def_module_all_files_cutaway( 'Дополнительныe файлы', 'all_files' )  ));
   }
   
   function setup_database_module_onlineshop(){ # Интернет магазин
@@ -957,7 +1202,6 @@ HTML;
     
     $this->setup_database_module_required();
     
-    
   }
   
   function setup_database_module(){
@@ -965,7 +1209,6 @@ HTML;
     if( $this->is_database_access() ){
       
       $this->setup_database_module_all();
-                                              
       
     }else{
       $this->add_content( $this->wrap_block( $this->test_database_access() ));

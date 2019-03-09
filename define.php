@@ -8,6 +8,7 @@ if (!defined("CMS_NAME"))  define("CMS_NAME",  "INRI");
 if (!defined("DB_PFX"))    define("DB_PFX",    "inri_");
 if (!defined("SITE_NAME")) define("SITE_NAME", "in-ri.ru"); 
 
+if (!defined("SOURCE_SITE_CUTAWAY")) define("SOURCE_SITE_CUTAWAY", "http://cutaway.ready.in-ri.ru"); 
 
 define("CART_TYPE_DOOR", 1);
 define("CART_TYPE_CATALOGUE", 2);
