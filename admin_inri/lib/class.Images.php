@@ -313,6 +313,7 @@ class Images extends BaseCarusel{
       		  <td style="width: 50px;">Скрыть</td>
             <td style="width: 60px;">Картинка</td>
       		  <td>Название</td>
+            <td>Скачать изображение</td>
             <td>Модуль</td>
             <td>Модуль ID</td>
             <td>Ссылка</td>
@@ -348,6 +349,13 @@ class Images extends BaseCarusel{
         	  
             <td style="text-align: left;">
               <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
+            </td>
+            <td style="text-align: left;">';
+    if($img){
+      $output .= '
+              <a href="/images/'.$this->carusel_name.'/orig/'.$img.'" title="Скачать изображение" target = "_blank">'.$img.'</a>';
+    }
+    $output .= '
             </td>
             <td style="text-align: left;">'.$module.'</td>
             <td style="text-align: left;">'.$module_id.'</td>
@@ -490,10 +498,11 @@ class Images extends BaseCarusel{
       //if( in_array($key, array("color"))) $is_color = true;
       
       $type = '';
-      if( in_array($key, array("color"))) $type = 'color';
-      if( in_array($key, array("date"))) $type = 'date';
+      if( in_array($key, array("color")))    $type = 'color';
+      if( in_array($key, array("date")))     $type = 'date';
       if( in_array($key, array("datetime"))) $type = 'datetime';
-      
+      if( in_array($key, array("title", "module", "module_id", "seo_h1", "seo_title", "img_alt", "img_title"))) $type = 'text';
+        
       // Отступы SEO
       if($key == 'seo_h1'){
         if($is_open_panel_div){
@@ -540,12 +549,16 @@ class Images extends BaseCarusel{
         $is_open_panel_div = true;         
       }
       
+      if( in_array( $key, $this->checkbox_array) ){
+        $output .= $this->show_iCheck('col_'.$key, $item, $key, $val);
+        continue;  
+      }
       
       if($item){
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
           );
         }else{
           $output .= $this->show_form_row( 
@@ -558,7 +571,7 @@ class Images extends BaseCarusel{
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="">'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="">'
           );
         }else{
           $output .= $this->show_form_row( 

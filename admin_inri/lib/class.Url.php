@@ -47,10 +47,11 @@ class Url extends BaseCarusel{
   var $header = 'ЧПУ (Человеко Понятный URL)';
   
   var $date_arr = array(
-    'title' => 'Title странички ',
-    'url' => 'Чпу',
-    'module' => 'Название модуля (таблицы бд к которой привязан URL)',
+    'title'     => 'Title странички ',
+    'url'       => 'Чпу',
+    'module'    => 'Название модуля (таблицы бд к которой привязан URL)',
     'module_id' => 'Название модуля id модуля',
+    'hide'      => 'Скрыть'
   );
   var $pdo;
   
@@ -341,28 +342,62 @@ class Url extends BaseCarusel{
     $output .= '<div class = "c_form_box">';
     
     foreach($this->date_arr as $key=>$val){
+      $type = '';
       $class_input = '  class="form-control" '; $is_color = false;
-      if( in_array($key, array("tongtxt1", "tongtxt1", "tongtxt1"))) $class_input = ' class="ckeditor" '; 
-      // Если есть занчение
+      if( in_array($key, array("tongtxt1", "tongtxt1", "tongtxt1"))) $class_input = ' class="ckeditor" ';
+      if( in_array($key, array("title", "url", "module", "module_id"))) $type = 'text';
+      
+      if( in_array( $key, $this->checkbox_array) ){
+        $output .= $this->show_iCheck('col_'.$key, $item, $key, $val);
+        continue;  
+      }
+      # Если есть занчение
       if($item){
-        /*
-        $output .= ' '.$val.' :<BR/>';
-        $output .= $this->getErrorForKey($key);
-        $output .= '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50>'.htmlspecialchars($item[$key]).'</textarea><BR/><BR/>';
-        */
+        if($type){
+          $output .= $this->show_form_row( 
+            $val.$this->getErrorForKey($key), 
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
+          );
+        }else{
+          $output .= $this->show_form_row( 
+            $val.$this->getErrorForKey($key), 
+            '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50>'.htmlspecialchars($item[$key]).'</textarea>'
+          );
+        }
+        
+      }else{
+        if($type){
+          $output .= $this->show_form_row( 
+            $val.$this->getErrorForKey($key), 
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="">'
+          );
+        }else{
+          $output .= $this->show_form_row( 
+            $val.$this->getErrorForKey($key), 
+            '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50></textarea>'
+          );
+        }
+      } 
+      /*
+      if($item){
+        
+        #$output .= ' '.$val.' :<BR/>';
+        #$output .= $this->getErrorForKey($key);
+        #$output .= '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50>'.htmlspecialchars($item[$key]).'</textarea><BR/><BR/>';
+        
         $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
             '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50>'.htmlspecialchars($item[$key]).'</textarea>'
           );
       }else{
-        /*
-          $output .= ' '.$val.' :<BR/><TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50></textarea><BR/><BR/>';
-          */
+        
+          #$output .= ' '.$val.' :<BR/><TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50></textarea><BR/><BR/>';
+          
         $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
             '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50></textarea>'
           );
-      }
+      }*/
       
     }
     
@@ -384,6 +419,9 @@ class Url extends BaseCarusel{
       }
         
       ($i) ? $prefix = ', ' : $prefix = '';
+      if( in_array( $key, $this->checkbox_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
+      }
       $sql_names .= $prefix.' `'.$key.'`';
       $sql_vals .= $prefix.' \''.addslashes($_POST[$key]).'\'';
       $i++;
@@ -516,6 +554,9 @@ class Url extends BaseCarusel{
       }
       
       ($i) ? $prefix = ', ' : $prefix = '';
+      if( in_array( $key, $this->checkbox_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
+      }
       $sql_vals .= $prefix.'  `'.$key.'` = \''.addslashes($_POST[$key]).'\'';
       $i++;
     }

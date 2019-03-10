@@ -21,6 +21,7 @@ class Log extends BaseCarusel{
     'query'     => 'Запрос',
     'module'    => 'Название модуля',
     'module_id' => 'Id модуля',
+    #'hide'      => 'Скрыть'
   );
   
   var $carusel_name;
@@ -184,21 +185,6 @@ class Log extends BaseCarusel{
       return false;
     }
   }
-  
-  
-  // End Инициалицация
-  
-  // All Method
-  
-  // END All Method
-  
-  
-  // AJAX function
-  
-  // END AJAX function
-  
-  
-  // BACKEND function
   
   function show_table_header_rows(){
     $output = '
@@ -395,39 +381,61 @@ class Log extends BaseCarusel{
   
   function show_form($item = null, $output = ''){
     
-    /*echo "<pre>";
-    print_r($this->validateError_arr);
-    print_r($_POST);
-    echo "</pre>";*/
+    $dump_data = '';
     
     $output .= '<div class = "c_form_box">';
     
     foreach($this->date_arr as $key=>$val){
+      $type = '';
       $class_input = '  class="form-control" '; $is_color = false;
       if( in_array($key, array("tongtxt1", "tongtxt1", "tongtxt1"))) $class_input = ' class="ckeditor" '; 
+      if( in_array($key, array( "dump_data" ))){
+        $class_input = ' class="form-control" style = "min-height: 200px;" '; 
+        if($item['dump_data']){
+          $dump_data = unserialize($item[$key]); #pri(unserialize($item[$key]));
+        }
+      }
+      if( in_array($key, array( "query" ))) $class_input = ' class="form-control" style = "min-height: 150px;" '; 
+      if( in_array($key, array("title", "type", "user_id", "ip", "int_ip", "date", "module", "module_id"))) $type = 'text';
+      
+      if( in_array( $key, $this->checkbox_array) ){
+        $output .= $this->show_iCheck('col_'.$key, $item, $key, $val);
+        continue;  
+      }
       // Если есть занчение
       if($item){
-        /*
-        $output .= ' '.$val.' :<BR/>';
-        $output .= self::getErrorForKey($key);
-        $output .= '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50>'.htmlspecialchars($item[$key]).'</textarea><BR/><BR/>';
-        */
-        $output .= $this->show_form_row( 
+        if($type){
+          $output .= $this->show_form_row( 
+            $val.$this->getErrorForKey($key), 
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
+          );
+        }else{
+          $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
             '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50>'.htmlspecialchars($item[$key]).'</textarea>'
           );
+        }
+        
       }else{
-        /*
-          $output .= ' '.$val.' :<BR/><TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50></textarea><BR/><BR/>';
-          */
-        $output .= $this->show_form_row( 
+        if($type){
+          $output .= $this->show_form_row( 
+            $val.$this->getErrorForKey($key), 
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="">'
+          );
+        }else{
+          $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
             '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50></textarea>'
           );
-      }
+        }
+      } 
       
     }
-    
+    if($dump_data){
+        $output .= '
+        <p><b>Массив дампа записи</b><p>
+        <pre>'.print_r($dump_data, TRUE).'</pre>';  
+    }
     $output .= '</div>';
     
     return $output;

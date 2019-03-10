@@ -5,12 +5,17 @@ $admin = new Admin();
 require_once('lib/class.Files.php');
 require_once('lib/class.Image.php'); 
 
+class AllFiles extends Files{
+  
+}
+
 $date_arr = array(
-    'title' => 'Название',
-    'longtxt1' => 'Описание',
-    'module' => 'Название модуля (таблицы бд к которой привязан URL)',
+    'title'     => 'Название',
+    'longtxt1'  => 'Описание',
+    'hide'      => 'Скрыть',
+    'module'    => 'Название модуля (таблицы бд к которой привязан URL)',
     'module_id' => 'Название модуля id модуля',
-    'img_alt' => 'Alt изображение',
+    'img_alt'   => 'Alt изображение',
     'img_title' => 'Title изображение'
   );
 $pager = array(
@@ -21,7 +26,7 @@ $pager = array(
 );
 $arrfilterfield = array('title', 'file', 'module', 'module_id' );
   
-$all_files = new Files('all_files', $date_arr, true, true, $pager);
+$all_files = new AllFiles('all_files', $date_arr, true, true, $pager);
 
 $all_files->setHeader('Файлы');
 //ЧПУ
@@ -34,6 +39,7 @@ $all_files->setImg_ideal_width(450);
 $all_files->setImg_ideal_height(450); 
   
 #$all_files->setDate_arr($date_arr);
+$all_files->checkbox_array = array('hide');                # Галочка в форме
 
 if($output = $all_files->getContent($admin)){
   $admin->setContent($output);

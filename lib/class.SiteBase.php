@@ -174,9 +174,8 @@ class SiteBase {
     
     $output = '    
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="author" content="d1.ru">
-    <link rel="shortcut icon" type="image/x-icon" href="'.$this->user_favicon.'">
-    ';
+    <meta name="author" content="'.SITE_NAME.'">
+    <link rel="shortcut icon" type="image/x-icon" href="'.$this->user_favicon.'">';
     
     if($this->canonical_url){
       $output .= '

@@ -23,8 +23,8 @@ class Files extends BaseCarusel{
   );
   var $pdo;
   
-  var $url_item = null; // Генерация url
-  var $is_pager = true; // Отображать пэйджер
+  var $url_item = null; # Генерация url
+  var $is_pager = true; # Отображать пэйджер
   
   var $carusel_name;
   var $sqlTable;
@@ -37,7 +37,7 @@ class Files extends BaseCarusel{
   var $filter_field = array('title');
   
   
-  // конструктор
+  # конструктор
   function __construct ($carusel_name = null, $date_arr = null, $genSqlTable = false, $genImgDir = false, $pager = null) {
      
     //Для пересоздания раскоментить
@@ -296,7 +296,7 @@ class Files extends BaseCarusel{
       		  <td style="width: 50px;">Скрыть</td>
             <td style="width: 60px;">Картинка</td>
       		  <td>Название</td>
-            <td>файл</td>
+            <td>Скачать файл</td>
             <td>Модуль</td>
             <td>Модуль ID</td>
             <td>Ссылка</td>
@@ -334,8 +334,12 @@ class Files extends BaseCarusel{
             <td style="text-align: left;">
               <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
             </td>
-            <td style="text-align: left;">
-              <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$file.'</a>
+            <td style="text-align: left;">';
+    if($file){
+      $output .= '
+              <a href="/images/'.$this->carusel_name.'/files/'.$file.'" title="Скачать файл" target = "_blank">'.$file.'</a>';
+    }
+    $output .= '
             </td>
             <td style="text-align: left;">
               '.$module.'
@@ -477,7 +481,8 @@ class Files extends BaseCarusel{
       
       $type = '';
       if( in_array($key, array("color"))) $type = 'color';
-      if( in_array($key, array("date"))) $type = 'date';
+      if( in_array($key, array("date")))  $type = 'date';
+      if( in_array($key, array("title", "module", "module_id", "img_alt", "img_title" )))  $type = 'text';
       
       if ($key == 'file') continue;
       
@@ -527,11 +532,16 @@ class Files extends BaseCarusel{
         $is_open_panel_div = true;         
       }
       
+      if( in_array( $key, $this->checkbox_array) ){
+        $output .= $this->show_iCheck('col_'.$key, $item, $key, $val);
+        continue;  
+      }
+      
       if($item){
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
           );
         }else{
           $output .= $this->show_form_row( 
@@ -544,7 +554,7 @@ class Files extends BaseCarusel{
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="">'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="">'
           );
         }else{
           $output .= $this->show_form_row( 
