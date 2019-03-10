@@ -1,12 +1,13 @@
 <?
-if (!defined("WA_PATH"))   define("WA_PATH",   "./");
-if (!defined("NX_PATH"))   define("NX_PATH",   "./");
-if (!defined("NEX_PATH"))  define("NEX_PATH",  "../");
-if (!defined("IA_URL"))    define("IA_URL",    "/admin_inri/");
-if (!defined("ADM_DIR"))   define("ADM_DIR",   "admin_inri");
-if (!defined("CMS_NAME"))  define("CMS_NAME",  "INRI");
-if (!defined("DB_PFX"))    define("DB_PFX",    "inri_");
-if (!defined("SITE_NAME")) define("SITE_NAME", "in-ri.ru"); 
+if (!defined("WA_PATH"))    define("WA_PATH",    "./");
+if (!defined("NX_PATH"))    define("NX_PATH",    "./");
+if (!defined("NEX_PATH"))   define("NEX_PATH",   "../");
+if (!defined("IA_URL"))     define("IA_URL",     "/admin_inri/");
+if (!defined("ADM_DIR"))    define("ADM_DIR",    "admin_inri");
+if (!defined("CMS_NAME"))   define("CMS_NAME",   "INRI");
+if (!defined("DB_PFX"))     define("DB_PFX",     "inri_");
+if (!defined("ADMIN_NAME")) define("ADMIN_NAME", "Admin PANEL");
+if (!defined("SITE_NAME"))  define("SITE_NAME",  "in-ri.ru"); 
 
 if (!defined("SOURCE_SITE_CUTAWAY")) define("SOURCE_SITE_CUTAWAY", "http://cutaway.ready.in-ri.ru"); 
 

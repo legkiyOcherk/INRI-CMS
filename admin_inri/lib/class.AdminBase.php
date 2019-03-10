@@ -69,8 +69,17 @@ class BaseAdmin{
     $this->initFooterScripts();
     $this->initSearchQuery();
     
+    $this->getMineMenuListArr();
+    
+    if ( isset($_SESSION["WA_USER"]['is_admin']) && $_SESSION["WA_USER"]['is_admin']) {
+      $this->mainmenu['accounts.php'] = 'Пользователи';
+    }
+    
+  }
+  
+  function getMineMenuListArr(){
     $this->mainmenu = array(	
-      "index.php"=>"Wedadmin",
+      "index.php" => ADM_DIR,
       "mine_block.php"=>"Главная страница",
       #"smpl_article.php"=>"Содержание сайта",
       "articles.php?c_id=root"=>"Содержание сайта",     
@@ -112,11 +121,6 @@ class BaseAdmin{
       */
           
 		);
-    
-    if ( isset($_SESSION["WA_USER"]['is_admin']) && $_SESSION["WA_USER"]['is_admin']) {
-      $this->mainmenu['accounts.php'] = 'Пользователи';
-    }
-    
   }
   
   function setMineMenuAddData(){
