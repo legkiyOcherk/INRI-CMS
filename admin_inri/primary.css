@@ -36,8 +36,8 @@
 
 /* --- lib/global.lib.php  AllFunction::OneFormAdmin --- */
 .param { max-width: 1280px; margin: 0 auto; }
-.param input{ max-width: 550px; }
-.param textarea { max-width: 550px; }
+/*.param input{ max-width: 550px; }
+.param textarea { max-width: 550px; }*/
 .param textarea { min-height: 150px; }
 .param .comment { font-size: 8pt; color: #696969; }
 .param .codemirror_block{
@@ -120,4 +120,8 @@
   right: 0px;  
   border-radius: 2px;
   display: inline-block;
+}
+
+.icheckbox_flat-red{
+  margin-top: 6px !important;
 }

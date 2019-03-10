@@ -1,8 +1,8 @@
 <?php
 require_once('lib/class.Admin.php');
 $admin = new Admin();
-require_once(NX_PATH.'iladmin/lib/class.Carusel.php');
-require_once(NX_PATH.'iladmin/lib/class.Image.php');
+require_once('lib/class.Carusel.php');
+require_once('lib/class.Image.php');
 
 
 
@@ -62,48 +62,23 @@ class Reservations extends Carusel{
             <td>
               '.$date_str.'
             </td>
-        ';
-        /*
-        $output .= '
-            <td style="width: 50px;">
-        ';
-        if($img){
-          $output .= '
-            <div class="zoomImg"><img style="width:50px" src="../images/'.$this->carusel_name.'/slide/'.$img.'"></div>  
-          ';
-        }else if($color){
-          $output .= '
-            <div class="zoomImg" style = "background-color: '.$color.'">
-          ';
-        }
-        $output .= '
-            </td>
-        ';*/
-        
-        $output .= '
+            
             <td style="text-align: left;">
-              <a href="'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
+              <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
             </td>
-        	  
-      	';
-        $output .= '<td>'.$userName.'</td>';
-        $output .= '<td>'.$userPhone.'</td>';
-        
-        /*$output .= '
-            <td style="width: 60px; text-align: left; color:#000;" nowrap="" class="id">
-            '.$price.'
-              <!--<input type="text" class="span1" name="prices[1]" value="'.$price.'">-->
-            </td>
-        ';*/
-        $output .= '
+            
+            <td>'.$userName.'</td>
+            
+            <td>'.$userPhone.'</td>
+            
             <td style="" class="img-act">
-              <a  href="..'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" 
+              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
                 <i class="fa fa-pencil"></i>
-              </a>
-              
+              </a>  
               <span >
+              
               <span class="btn btn-danger btn-sm" 
                     title="удалить" 
                     onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
@@ -202,26 +177,134 @@ class Reservations extends Carusel{
     
   }
   
+  function show_form($item = null, $output = '', $id = null){
+    
+    $output .= '<div class = "c_form_box">';
+    $is_open_panel_div = false;
+    
+    //Генерация Url
+    if($this->url_item && $id && $item['title']){
+      
+      $url = $this->url_item->getUrlForModuleAndModuleId($this->prefix.$this->carusel_name, $id);
+      
+      if($url){
+        $tmp = '<a class="btn btn-info pull-right" href="/'.$url.'" target = "_blank" >Посмотреть на сайте</a>';
+        $output .= $this->show_form_row(null, $tmp);
+      }  
+      
+      $output .= $this->show_form_row('ЧПУ', $this->url_item->show_form_field($_POST['url'], $this->prefix.$this->carusel_name, $id, $item['title']));
+    }
+    
+    foreach($this->date_arr as $key=>$val){
+      
+      $class_input = ' class="form-control" '; $is_color = false;
+      if( in_array($key, array("longtxt1", "longtxt2", "longtxt3", "longtxt4"))) $class_input = ' class="ckeditor" '; 
+      //if( in_array($key, array("color"))) $is_color = true;
+      
+      $type = '';
+      if( in_array($key, array("color"))) $type = 'color';
+      if( in_array($key, array("date"))) $type = 'date';
+      if( in_array($key, array("datetime"))) $type = 'datetime';
+      if( in_array($key, array("title", "link", "userIp", "userName", "userPhone", "userMail", "userStatus" ))) $type = 'text';
+      
+      // Отступы SEO
+      if($key == 'seo_h1'){
+        if($is_open_panel_div){
+          $output .= '
+            </div>
+          </div>  
+          ';
+        }
+        $output .= ' 
+          <div class="panel panel-default"> 
+            <div class="panel-heading"> <h3 class="panel-title">SEO</h3> </div> 
+            <div class="panel-body"> 
+        ';
+        $is_open_panel_div = true;  
+      }
+      
+      if($key == 'img_alt') {
+        if($is_open_panel_div){
+          $output .= '
+            </div>
+          </div>  
+          ';
+        }
+        $output .= ' 
+          <div class="panel panel-default"> 
+            <div class="panel-heading"> <h3 class="panel-title">Атрибуты основого изображения</h3> </div> 
+            <div class="panel-body"> 
+        ';
+        $is_open_panel_div = true;         
+      }
+      
+      if( in_array( $key, $this->checkbox_array) ){
+        $output .= $this->show_iCheck('col_'.$key, $item, $key, $val);
+        continue;  
+      }
+      
+      if($item){
+        if($type){
+          $output .= $this->show_form_row( 
+            $val.$this->getErrorForKey($key), 
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
+          );
+        }else{
+          $output .= $this->show_form_row( 
+            $val.$this->getErrorForKey($key), 
+            '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50>'.htmlspecialchars($item[$key]).'</textarea>'
+          );
+        }
+        
+      }else{
+        if($type){
+          $output .= $this->show_form_row( 
+            $val.$this->getErrorForKey($key), 
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="">'
+          );
+        }else{
+          $output .= $this->show_form_row( 
+            $val.$this->getErrorForKey($key), 
+            '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50></textarea>'
+          );
+        }
+      }
+      
+    }
+    
+    if($is_open_panel_div){
+      $is_open_panel_div = false;
+      $output .= '
+        </div>
+      </div>
+      ';
+    }
+    
+    #$output .= $this->getFormPicture($id, $item);
+      
+    $output .= '</div>';
+    
+    return $output;
+    
+  }
+  
+  
 }
 
 $date_arr = array(
-    'title' => 'Название',
-    'date' => 'Дата',
-    
-    'userIp' => 'ip',
-    /*'userPrice' => 'цена',
-    'userGoodId' => 'ID Услуга',*/
-    'userName' => 'Имя',
-    'userPhone' => 'Телефон',
-    
-    /*'userPostIndex' => 'Почтовый индекс',
-    'userAddress' =>'Адрес',*/
-    
-    'userMail' => 'E-mail',
-    'userStatus' => 'Статус',
-    'longtxt1' => 'Сообщение',
-    'longtxt2' => 'Комментарий '
-    
+    'title'          => 'Название',
+    'date'           => 'Дата',
+    'userIp'         => 'ip',
+    #'userPrice'     => 'цена',
+    #'userGoodId'    => 'ID Услуга',
+    'userName'       => 'Имя',
+    'userPhone'      => 'Телефон',
+    #'userPostIndex' => 'Почтовый индекс',
+    #'userAddress'   =>'Адрес',
+    'userMail'       => 'E-mail',
+    'userStatus'     => 'Статус',
+    'longtxt1'       => 'Сообщение',
+    'longtxt2'       => 'Комментарий'
   );
   
 $carisel = new Reservations('reservations', $date_arr, false, false);
@@ -232,7 +315,7 @@ $carisel->setIsImages(false);
 $carisel->setImg_ideal_width(300);  
 $carisel->setImg_ideal_height(180); 
   
-#$carisel->setDate_arr($date_arr);
+
 if($output = $carisel->getContent($admin)){
   $admin->setContent($output);
   echo $admin->showAdmin('content');

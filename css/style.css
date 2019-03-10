@@ -89,7 +89,7 @@ body .ui-widget.ui-widget-content {
 }
 
  
-.header, .top_menu, .mine_slider, .mine_row, .block, .mine_catalog, .content, .footer{
+.header, .top_menu, .mine_slider, .mine_row, .block, .mine_catalog, .content, .footer, .cms_footer{
   margin: 0 auto;
   max-width: 1280px;
   /*overflow: hidden;*/
@@ -322,15 +322,15 @@ body .ui-widget.ui-widget-content {
   background: rgba(0,0,0,0.8);
 }
 .footer{
-  padding-top: 45px;
-  padding-bottom: 25px;
+  padding-top: 25px;
+  padding-bottom: 15px;
   color: #fff;
 } 
 .footer a{
   color: #fff;
 }
 .footer>.row>div{
-  padding-bottom: 15px;
+  padding-bottom: 5px;
 }
 
 .flogo_box{
@@ -408,6 +408,10 @@ ul.footer_menu li a:hover{
     text-align: center;
   }
 }
+.cms_footer_box{
+  /*background: #343a40;*/
+  background: rgba(0,0,0,0.8);
+}
 .footer_copyright{
   text-align: left;  
   padding-bottom: 15px;
@@ -416,6 +420,9 @@ ul.footer_menu li a:hover{
 .footer_i{
   text-align: right;
 }
+.inri_box_line{
+  text-align: right;  
+}
 .inri_box{
   padding-top: 15px;
   text-align: right;
@@ -423,13 +430,13 @@ ul.footer_menu li a:hover{
 .inri_box span {
   display: inline-block;
   float: left;
-  padding-right: 15px;
-  padding-top: 20px;
+  padding-right: 7px;
+  padding-top: 17px;
 }
 .inri_box > span > a{
   color: #ffffff;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 14px;
 }
 .inri_box > span > a:hover{
   color: #f7a421;
@@ -438,7 +445,8 @@ ul.footer_menu li a:hover{
 .inri_box a b {
   display: inline-block;
   /*margin: 0 0 0 11px;*/
-  max-width: 60px;
+  /*max-width: 60px;*/
+  max-width: 32px;
   padding-top: 2px;
   overflow: hidden;
 }
@@ -455,7 +463,7 @@ ul.footer_menu li a:hover{
 }
 .inri_box a b svg{
     width: 100%;
-    height: 60px;  
+    height: 45px;  
 }
 @media (max-width: 768px) {
   .footer_copyright{

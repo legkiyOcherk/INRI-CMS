@@ -224,7 +224,7 @@ class AdminLTEextends extends BaseAdmin{
              <li><a href="'.IA_URL.'accounts.php"><i class="fa fa-user fa-fw"></i> Пользователи</a></li>';
   }
   $output .= '
-            <li><a href="'.IA_URL.'param.php"><i class="fa fa-gear fa-fw"></i> Настройки</a></li>
+            <li><a href="'.IA_URL.'config.php"><i class="fa fa-gear fa-fw"></i> Настройки</a></li>
             <li class="divider"></li>
             <li><a href="'.IA_URL.'?logout"><i class="fa fa-sign-out fa-fw"></i> Выход</a></li>
           </ul>
@@ -536,7 +536,7 @@ class AdminLTEextends extends BaseAdmin{
         <li class="sidebar_sitelink"
           style = "
             text-align: left;
-            font-size:72px;
+            font-size:64px;
           "
         >
           <a href = "//'.$this->sitelink.'" target = "_blank">

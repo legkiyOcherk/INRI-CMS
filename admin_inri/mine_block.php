@@ -72,10 +72,11 @@ class Article extends Carusel{
     $output .= '
     <pre>
     <p>Перечень стандартных блоков</p>
-    block_mine_header => Стандартная шапка<br>
-    block_mine_top_menu => <a href="/iladmin/articles.php?c_id=1">Меню сайта</a> <br>
-    block_mine_slider => <a href="/iladmin/carusel.php">Слайдер</a><br>
-    block_inner_content => Контент на внутренних страницах
+    block_mine_header    => Стандартная шапка
+    block_mine_top_menu  => <a href="'.IA_URL.'smpl_article.php">Меню сайта</a>
+    block_mine_slider    => <a href="'.IA_URL.'carusel.php">Слайдер</a>
+    block_inner_content  => Контент на внутренних страницах
+    block_mine_footer    => Стандартный подвал
     </pre>
     ';
     
@@ -87,9 +88,12 @@ class Article extends Carusel{
 }
 
 $date_arr = array(
-    'title' => 'Название',
-    'link' => 'Стандартный блок',
-    'longtxt2' => 'Контент',
+    'title'       => 'Название',
+    'link'        => 'Стандартный блок',
+    'longtxt2'    => 'Контент',
+    'fl_is_fixed' => 'Фиксировать',
+    'hide'        => 'Скрыть',
+    
   );
 $pager = array(
   'perPage' => 50,
@@ -114,6 +118,7 @@ $carisel->setIsLog(true);
 $carisel->setImg_ideal_width(750);  
 $carisel->setImg_ideal_height(410);
 #$carisel->setDate_arr($date_arr);
+$carisel->checkbox_array = array('fl_is_fixed', 'hide');                # Галочка в форме
 
 if($output = $carisel->getContent($admin)){
   $admin->setContent($output);

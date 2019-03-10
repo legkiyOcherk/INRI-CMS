@@ -706,7 +706,10 @@ HTML;
 (2, 'Скрипты, счетчики', 'user_script', 2, 120, 0, '<script type="text/javascript">\r\n\r\n</script>\r\n', 'Яндекс метрика, liveinternet.ru и пользовательские js скрипты'),
 (3, 'Файлы', 'user_file', 3, 140, 0, '', 'Пользовательские файлы. ( путь до папки /images_ckeditor/files <a href = "/images_ckeditor/files/test.jpg" target = "_blank">тест</a> )'),
 (4, 'meta теги', 'user_meta', 2, 90, 0, '', 'Подтверждение прав: вембмастер, метрика и др.'),
-(5, 'robots.txt', 'user_robots', 2, 100, 0, 'User-agent: * \r\nHost:\r\nSitemap: /sitemap.xml\r\n', 'Пользовательские css стили');
+(5, 'robots.txt', 'user_robots', 2, 100, 0, 'User-agent: * \r\nHost:\r\nSitemap: /sitemap.xml\r\n', 'Пользовательские css стили'),
+(6, 'Логотип', 'user_logo', 0, 150, 0, '/images_ckeditor/files/logo.png', 'Логотип. ( путь до папки /images_ckeditor/files <a href = "/images_ckeditor/files/test.jpg" target = "_blank">тест</a> )'),
+(7, 'Слоган', 'user_site_slogan', 0, 160, 0, 'Слоган', ''),
+(8, 'Фавикон', 'user_favicon', 0, 170, 0, '/images_ckeditor/files/favicon.ico', '');
 HTML;
     
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
@@ -1005,7 +1008,8 @@ HTML;
 (5, 'Слайдер', '', 'block_mine_slider', '', 0, 0, 2),
 (6, 'Шапка сайта', '', 'block_mine_header', '', 1, 0, 0),
 (7, 'Меню сайта', '', 'block_mine_top_menu', '', 1, 0, 1),
-(8, 'Контент на внутренних страницах', '', 'block_inner_content', '', 1, 0, 3);
+(8, 'Контент на внутренних страницах', '', 'block_inner_content', '', 1, 0, 3),
+(9, 'Подвал сайта', '', 'block_mine_footer', '', 1, 0, 7);
 HTML;
     
     return $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name );

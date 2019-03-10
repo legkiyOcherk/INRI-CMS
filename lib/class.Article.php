@@ -789,14 +789,14 @@ class Article {
     $output = '';
     global $PDO;
     
-    $item = db::select("*", $table, "id = $id", null, null, true);
+    $item = db::select("*", $table, "id = $id", null, null, 1); #pri($item);
     
     // ------------- SEO -------------
       
     if($item['seo_title']){
       $site->siteTitle = $item['seo_title'];
     }else{
-      if($seo_title =  db::value('value', 'il_seo', "type = 'lib_text_title'" )){
+      if($seo_title =  db::value('value', DB_PFX.'seo', "type = 'lib_text_title'" )){
         $site->siteTitle = str_replace("*h1*", $item['title'], $seo_title);
       }else{
         $site->siteTitle = $item['title'];
@@ -1154,7 +1154,7 @@ class Article {
     
     $s = "
       SELECT *
-      FROM `il_all_images`
+      FROM `".DB_PFX."all_images`
       WHERE `module` = '$table'
       AND `module_id` = $m_id
       ORDER BY `module_ord`
@@ -1216,7 +1216,7 @@ class Article {
     
     $s = "
       SELECT *
-      FROM `il_all_files`
+      FROM `".DB_PFX."all_files`
       WHERE `module` = '$table'
       AND `module_id` = $m_id
       ORDER BY `module_ord`

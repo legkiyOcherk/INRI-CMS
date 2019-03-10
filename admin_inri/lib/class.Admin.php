@@ -4,7 +4,7 @@ require_once "class.AdminLTE.php";
 class AdminCutaway extends AdminLTEextends{
   
   function getMineMenuListArr(){
-    
+     
     $this->mainmenu = array(	
       "index.php"              => ADMIN_NAME,
       "smpl_article.php"       => "Содержание сайта",
@@ -18,7 +18,7 @@ class AdminCutaway extends AdminLTEextends{
       "delimiter2"             => "Администрирование",
       #---------------------------------------------------------
       "reservations.php"       => "Заявки",
-      "config.php"             => "Блок контакты",
+      "config.php"             => "Настройки",
       "seo.php"                => "SEO Настройки",
       "design.php"             => "Оформление сайта",
       
@@ -74,6 +74,13 @@ class AdminCutaway extends AdminLTEextends{
                   'short_decr' => ''
                 ); break;
                 
+          case 'Настройки':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fa fa-gear" aria-hidden="true"></i> ',
+                  'short_decr' => ''
+                ); break; 
+                
           case 'Оформление сайта':
               $this->mainmenu_add_data[$v] = 
                 array(
@@ -126,7 +133,7 @@ class AdminCutaway extends AdminLTEextends{
           case 'Пользователи':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-user fa-fw"></i>',
+                  'icon' => '<i class="fa fa-user"></i>',
                   'short_decr' => ''
                 ); break;
               
@@ -154,7 +161,7 @@ class AdminCutaway extends AdminLTEextends{
       "carusel.php"       => array("ismanag", "iscontent"),
       "reservations.php"  => array("ismanag"),
       "seo.php"           => array("ismanag"),
-      "param.php"         => array("ismanag"),
+      "config.php"        => array("ismanag"),
       "all_files.php"     => array("ismanag", "iscontent"),
       "all_images.php"    => array("ismanag", "iscontent"),
       "url.php"           => array("ismanag"),
@@ -366,7 +373,7 @@ class AdminCorporate extends AdminLTEextends{
       "carusel.php"       => array("ismanag", "iscontent"),
       "reservations.php"  => array("ismanag"),
       "seo.php"           => array("ismanag"),
-      "param.php"         => array("ismanag"),
+      "config.php"        => array("ismanag"),
       "all_files.php"     => array("ismanag", "iscontent"),
       "all_images.php"    => array("ismanag", "iscontent"),
       "url.php"           => array("ismanag"),
@@ -421,7 +428,7 @@ class AdminOnlineshop extends AdminLTEextends{
       #"orders.php"            => "Корзина",
       "reservations.php"       => "Заявки",
       "search_log.php"         => "Логи поиска",
-      "config.php"             => "Блок контакты",
+      "config.php"             => "Настройки",
       "seo.php"                => "SEO Настройки",
       "design.php"             => "Оформление сайта",
       
@@ -505,6 +512,13 @@ class AdminOnlineshop extends AdminLTEextends{
                   'short_decr' => ''
                 ); break;
                 
+          case 'Настройки':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fa fa-gear fa-fw" aria-hidden="true"></i> ',
+                  'short_decr' => ''
+                ); break; 
+                
           case 'Оформление сайта':
               $this->mainmenu_add_data[$v] = 
                 array(
@@ -578,7 +592,7 @@ class AdminOnlineshop extends AdminLTEextends{
       "carusel.php"       => array("ismanag", "iscontent"),
       "reservations.php"  => array("ismanag"),
       "seo.php"           => array("ismanag"),
-      "param.php"         => array("ismanag"),
+      "config.php"        => array("ismanag"),
       "all_files.php"     => array("ismanag", "iscontent"),
       "all_images.php"    => array("ismanag", "iscontent"),
       "url.php"           => array("ismanag"),

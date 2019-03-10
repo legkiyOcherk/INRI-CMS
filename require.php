@@ -13,9 +13,7 @@ session_start();
 date_default_timezone_set("Asia/Yekaterinburg"); 
 
 require_once('define.php');
-#require_once('lib/class.Site.php');
-require_once('lib/class.SiteСutaway.php'); # Визитка 
-
+require_once('lib/class.Site.php');
 require_once('lib/class.EMail.php');
 require_once('lib/class.Article.php');
 require_once('lib/class.Goods.php');

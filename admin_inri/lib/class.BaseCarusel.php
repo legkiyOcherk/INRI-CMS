@@ -17,6 +17,8 @@ class BaseCarusel{
   var $cont_footer = '';
   var $admin = null;
   
+  var $checkbox_array = array( 'hide' );
+      
   // Инициалицация
   function create_img_dir(){
     if (!is_dir("../images")){
@@ -214,6 +216,9 @@ class BaseCarusel{
       
     foreach($this->date_arr as $key=>$val){
       ($i) ? $prefix = ', ' : $prefix = '';
+      if( in_array( $key, $this->checkbox_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
+      }
       $sql_names .= $prefix.' `'.$key.'`';
       $sql_vals .= $prefix.' \''.addslashes($_POST[$key]).'\'';
       $i++;
@@ -225,6 +230,9 @@ class BaseCarusel{
     
     foreach($this->date_arr as $key=>$val){
       ($i) ? $prefix = ', ' : $prefix = '';
+      if( in_array( $key, $this->checkbox_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
+      }
       $sql_vals .= $prefix.'  `'.$key.'` = \''.addslashes($_POST[$key]).'\'';
       $i++;
     }
@@ -611,6 +619,31 @@ HTML;
     
     return $output;
   }
+  
+  function show_iCheck($check_class, &$item, &$key, &$val){
+    $output = '';
+    
+    ($item && $item[$key]) ? $coldate = 'checked' : $coldate = ''; #pri($coldate);
+    
+    $output .= $this->show_form_row( 
+      $val.$this->getErrorForKey($key), 
+        '<input type="checkbox" class="'.$check_class.'" name="'.$key.'" '.$coldate.'>'
+      );
+      
+    $output .= '
+        <script type="text/javascript">
+          $(document).ready(function(){
+            $(".'.$check_class.'").iCheck({
+              checkboxClass: "icheckbox_flat-red",
+              radioClass: "iradio_flat-red"
+            });
+          });
+        </script>';
+    
+    
+    return $output;
+  }
+  
   
   function getFormPicture($id, $item = null){
     $output = '';

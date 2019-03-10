@@ -407,6 +407,7 @@ class Carusel extends BaseCarusel{
       if( in_array($key, array("color"))) $type = 'color';
       if( in_array($key, array("date"))) $type = 'date';
       if( in_array($key, array("datetime"))) $type = 'datetime';
+      if( in_array($key, array("title", "link", "seo_h1" ,"seo_title", "seo_keywords", "img_alt", "img_title" ))) $type = 'text';
       
       // Отступы SEO
       if($key == 'seo_h1'){
@@ -439,11 +440,16 @@ class Carusel extends BaseCarusel{
         $is_open_panel_div = true;         
       }
       
+      if( in_array( $key, $this->checkbox_array) ){
+        $output .= $this->show_iCheck('col_'.$key, $item, $key, $val);
+        continue;  
+      }
+      
       if($item){
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
           );
         }else{
           $output .= $this->show_form_row( 
@@ -456,7 +462,7 @@ class Carusel extends BaseCarusel{
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="">'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="">'
           );
         }else{
           $output .= $this->show_form_row( 

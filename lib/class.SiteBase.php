@@ -1,5 +1,5 @@
 <?php
-class Site {
+class SiteBase {
   
   var $siteDoctype = '<!DOCTYPE html>';
   var $siteCharset = '<meta http-equiv="Content-Type" content="text/html" charset="utf-8">';
@@ -72,8 +72,19 @@ class Site {
     }
     // ------------- END SEO -------------
     
+    if(!$this->logo_path     = db::value("value", DB_PFX."design", "type = 'user_logo'")){
+      $this->logo_path       = '/css/img/logo2.png';
+    }
     
-    if(!$this->phone_header = db::value("val", DB_PFX."config", "name = 'phone'")){
+    if(!$this->site_slogan   = db::value("value", DB_PFX."design", "type = 'user_site_slogan'")){
+      $this->site_slogan     = '';
+    }
+    
+    if(!$this->user_favicon  = db::value("value", DB_PFX."design", "type = 'user_favicon'")){
+      $this->user_favicon    = '/css/img/favicon/favicon.ico';
+    }
+    
+    if(!$this->phone_header  = db::value("val", DB_PFX."config", "name = 'phone'")){
       $this->phone_header = '
         <a href="tel:88000000000">8-800-000-00-00</a>';
     }
@@ -92,11 +103,11 @@ class Site {
       $this->working_hour    = 'Время работы:<br>ПН-ПТ: с 9:00 до 18:00';
     }
     
-    $this->soc_net          = db::value("val", DB_PFX."config", "name = 'soc_net'"); 
+    $this->soc_net           = db::value("val", DB_PFX."config", "name = 'soc_net'"); 
     
-    $this->user_script      = db::value("value", DB_PFX."design", "type = 'user_script'");
+    $this->user_script       = db::value("value", DB_PFX."design", "type = 'user_script'");
     
-    if(!$this->user_style   = db::value("value", DB_PFX."design", "type = 'user_style'") ){
+    if(!$this->user_style    = db::value("value", DB_PFX."design", "type = 'user_style'") ){
       $this->user_style = '';
     }
     
@@ -164,7 +175,7 @@ class Site {
     $output = '    
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="d1.ru">
-    <link rel="shortcut icon" type="image/x-icon" href="/css/img/favicon/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="'.$this->user_favicon.'">
     ';
     
     if($this->canonical_url){
@@ -203,7 +214,7 @@ class Site {
               
                 <div class="col-12 col-sm-4 col-lg-auto">
                   <div class="logo_box">
-                    <a href="/"><img class="logo" src="/css/img/logo2.png" alt=""></a>
+                    <a href="/"><img class="logo" src="'.$this->logo_path.'" alt="'.$this->site_slogan.'" title="'.$this->site_slogan.'"></a>
                   </div>
                 </div>
                 
@@ -282,37 +293,17 @@ class Site {
     return $output;
   }
   
-  function getFooter(){
+  function getCmsFooter(){
     $output = '';
-        
-    $output .= '
-      </div>
-    </div>
-    ';
     
     $output .= '
-    <!-- footer -->
-    <div class="footer_box">
-      <div class="footer">
+    <div class="cms_footer_box">
+      <div class="cms_footer">
         
         <div class="row">
-          <div class="col-12 footer_menu_box">
-            <ul class="footer_menu ">
-              '.Article::show_simple_menu($this).'
-            </ul>
-          </div>
-          
-          <div class="col-12 soc_net_box">
-            <div class = "soc_net">'.$this->soc_net.'</div>
-          </div>
-          
-        </div>';
-        
-    $output .= '
-        <div class="row">
-          <div class="col tac">
+          <div class="col inri_box_line"> 
             <div class="inri_box">
-              <span><a href="//in-ri.ru" target="_blank">Разработано</a></span> 
+              <span><a href="//in-ri.ru" target="_blank">© '.date('Y').' '.SITE_NAME.'</a></span> 
               <a href="//in-ri.ru" target="_blank"><b>
                 <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="549.392px" height="530.999px" viewBox="0 0 549.392 530.999" enable-background="new 0 0 549.392 530.999" xml:space="preserve">
                   <g>
@@ -373,13 +364,65 @@ class Site {
             </div>
             
           </div>
-        </div>';
+        </div>
             
-    $output .= '
         <div class="row">
           <div class="col">'.$this->user_script.'</div>
-        </div>';
+        </div>
+      </div>
+    </div>
+    ';
+    
+    return $output;
+  }
+   
+  function getFooter(){
+    $output = '';
         
+    $output .= '
+      </div>
+    </div>
+    ';
+    
+    $output .= '
+    <!-- footer -->
+    <div class="footer_box">
+      <div class="footer">
+        
+        <div class="row">
+          <div class="col-12 footer_menu_box">
+            <ul class="footer_menu ">';
+    #$output .= Article::show_footer_menu($this);
+    $output .= Article::show_simple_menu($this);
+    $output .= '
+            </ul>
+          </div>';
+    
+    if($this->soc_net){
+      $output .= '
+          <div class="col-12 soc_net_box">
+            <div class = "soc_net">'.$this->soc_net.'</div>
+          </div>';
+    }
+          
+    $output .= '      
+        </div>';
+    if( isset($this->phone_header) && $this->phone_header ){
+      $output .= '
+        <div class="row">
+          <div class="col-12 tac">
+            '.$this->phone_header.'
+          </div>
+        </div>';
+    }
+    if( isset($this->adress_header) && $this->adress_header ){
+      $output .= '
+        <div class="row">
+          <div class="col-12 tac">
+            '.$this->adress_header.'
+          </div>
+        </div>';
+    }
     $output .= '
       </div>
     </div>
@@ -742,6 +785,12 @@ class Site {
                   $output .= $this->getMineNews(); break;
             case  'block_ferrum_form':
                   $output .= $this->getMineFerrumForm(); break;
+            case  'block_mine_footer':
+                  $output .= $this->getFooter(); break;
+                  
+            case  'block_inner_content': // Контент на внутренних страницах
+                  $output .= $this->addEditAdminLink($cont, '/iladmin'.$this->adminLink); 
+                  break;
                   
             default:
                   if($r['longtxt2']){
@@ -777,10 +826,10 @@ class Site {
   
   
   
-  function getInnerContent($cont){
+  function getInnerContent($cont){ 
     $output = '';
     
-    if(db::value('link', '".DB_PFX."mine_block', 'link = "block_inner_content"' )){
+    if(db::value('link', DB_PFX.'mine_block', 'link = "block_inner_content"' )){
       $this->is_block_inner_content = true;
       $s = "
         SELECT `".DB_PFX."mine_block`.*, `".DB_PFX."url`.`url`
@@ -792,7 +841,7 @@ class Site {
         ORDER BY `".DB_PFX."mine_block`.`ord`
       "; #pri($s);
       
-      $output .= $this->getBlockSwitchSelector($s);
+      $output .= $this->getBlockSwitchSelector($s, $cont);
       
     }else{
       $output .= $cont;
@@ -847,8 +896,8 @@ class Site {
         $this->adminLink = "/smpl_article.php";
         if($this->module_id) $this->adminLink .= "?edits=".$this->module_id;
         
-        $left_menu = true;
-        $cont = Article::getSmplItems($this, $this->module_id, '".DB_PFX."smpl_article');
+        $cont = Article::getSmplItems($this, $this->module_id, DB_PFX.'smpl_article');
+        
         $cont = $this->getContentPrefix($left_menu).$cont.$this->getContentPostfix($left_menu);
         break;
       
@@ -1601,7 +1650,7 @@ class Site {
     
     $this->siteHead = self::getHead();
     $this->siteHeader = self::getHeader(); 
-    $this->siteFooter = self::getFooter(); 
+    $this->siteFooter = self::getCmsFooter(); 
     
     $output = '';
     

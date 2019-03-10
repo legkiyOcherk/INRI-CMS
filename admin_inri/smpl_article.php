@@ -3,7 +3,7 @@ require_once('lib/class.Admin.php');
 $admin = new Admin();
 require_once('lib/class.Carusel.php');
 require_once('lib/class.Image.php');
-require_once('../vendors/phpmorphy/phpmorphy_init.php'); // Морфология
+require_once('../vendors/phpmorphy/phpmorphy_init.php'); # Морфология
 
 
 function get_phpmorphy($descr_str) {
@@ -191,12 +191,13 @@ class Article extends Carusel{
       
       $class_input = ' class="form-control" '; $is_color = false;
       if( in_array($key, array("longtxt1", "longtxt2", "longtxt3", "longtxt4"))) $class_input = ' class="ckeditor" '; 
-      //if( in_array($key, array("color"))) $is_color = true;
       
       $type = '';
       if( in_array($key, array("color"))) $type = 'color';
       if( in_array($key, array("date"))) $type = 'date';
       if( in_array($key, array("datetime"))) $type = 'datetime';
+      if( in_array($key, array("title", "link", "seo_h1" ,"seo_title", "seo_keywords", "img_alt", "img_title" ))) $type = 'text';
+
       
       // Вспомогательные поля для храниения поискового индекса
       if(($key == 'orm_search_name') || ($key == 'orm_search')) continue;
@@ -231,11 +232,17 @@ class Article extends Carusel{
         ';
         $is_open_panel_div = true;         
       }
+      
+      if( in_array( $key, $this->checkbox_array) ){
+        $output .= $this->show_iCheck('col_'.$key, $item, $key, $val);
+        continue;  
+      }
+      
       if($item){
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
           );
         }else{
           $output .= $this->show_form_row( 
@@ -248,7 +255,7 @@ class Article extends Carusel{
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="">'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="">'
           );
         }else{
           $output .= $this->show_form_row( 
@@ -287,6 +294,9 @@ class Article extends Carusel{
     
     foreach($this->date_arr as $key=>$val){
       ($i) ? $prefix = ', ' : $prefix = '';
+      if( in_array( $key, $this->checkbox_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
+      }
       $sql_names .= $prefix.' `'.$key.'`';
       $sql_vals .= $prefix.' \''.addslashes($_POST[$key]).'\'';
       $i++;
@@ -306,6 +316,9 @@ class Article extends Carusel{
     
     foreach($this->date_arr as $key=>$val){
       ($i) ? $prefix = ', ' : $prefix = '';
+      if( in_array( $key, $this->checkbox_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
+      }
       $sql_vals .= $prefix.'  `'.$key.'` = \''.addslashes($_POST[$key]).'\'';
       $i++;
     }
@@ -314,33 +327,35 @@ class Article extends Carusel{
 }
 
 $date_arr = array(
-    'title' => 'Название',
-    'date'  => 'Дата',
-    'link' => 'Ссылка',
-    'longtxt1' => 'Краткий текст',
-    'longtxt2' => 'Полный текст (для отдельной страницы)',
-    'fl_mine_menu' => 'Являентся пунктом меню',
-    'seo_h1' => 'SEO H1',
-    'seo_title' => 'SEO Title',
+    'title'           => 'Название',
+    'date'            => 'Дата',
+    'link'            => 'Ссылка',
+    'longtxt1'        => 'Краткий текст',
+    'longtxt2'        => 'Полный текст (для отдельной страницы)',
+    'fl_mine_menu'    => 'Являентся пунктом меню',
+    'hide'            => 'Скрыть',
+    'seo_h1'          => 'SEO H1',
+    'seo_title'       => 'SEO Title',
     'seo_description' => 'SEO Description',
-    'seo_keywords' => 'SEO Keywords',
-    'img_alt' => 'Alt изображение',
-    'img_title' => 'Title изображение',
-    'orm_search_name' => 'поле для поискового индекса orm_search_name', // Вспомогательное поле для храниения поискового индекса
-    'orm_search' => 'поле для поискового индекса orm_search', // Вспомогательное поле для храниения поискового индекса
+    'seo_keywords'    => 'SEO Keywords',
+    'img_alt'         => 'Alt изображение',
+    'img_title'       => 'Title изображение',
+    'orm_search_name' => 'поле для поискового индекса orm_search_name', # Вспомогательное поле 
+    'orm_search'      => 'поле для поискового индекса orm_search',      # Вспомогательное поле 
   );
 $pager = array(
-  'perPage' => 50,
-  'page' => 1,
-  'url' => '',
-  'items_per_page' => array( 50, 100, 500, 1000, 5000)
+  'perPage'           => 50,
+  'page'              => 1,
+  'url'               => '',
+  'items_per_page'    => array( 50, 100, 500, 1000, 5000)
 );
 
 $arrfilterfield = array('title', 'date', 'longtxt1', 'longtxt2');
 
 $carisel = new Article('smpl_article', $date_arr, false, false, $pager);
 
-$carisel->setHeader('Статьи');
+$carisel->checkbox_array = array('fl_mine_menu', 'hide');                # Галочка в форме
+$carisel->setHeader('Содержание сайта');
 $carisel->setIsUrl(true);
 $carisel->setIsImages(true);
 $carisel->setIsFiles(true);

@@ -3,9 +3,9 @@
 $CFG = array(
 #db_config
 	"db_hostname" => "localhost",
-	"db_username" => "inri",
+	"db_username" => "cms",
 	"db_password" => "eEKBcXPr75CZcJEF",
-	"db_basename" => "inri" 
+	"db_basename" => "cms " 
 #end_db_config
 );
 

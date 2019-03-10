@@ -104,7 +104,7 @@ class BaseAdmin{
       "orders.php"=>"Корзина",
       "reservations.php"=>"Заявки",
       "search_log.php"=>"Логи поиска",
-      "param.php"=>"Блок контакты",
+      "config.php"=>"Блок контакты",
       "seo.php"=>"SEO Настройки",
       "design.php"=>"Оформление сайта",
       
@@ -335,7 +335,7 @@ class BaseAdmin{
     $output .= '
         <script type="text/javascript" src="'.IA_URL.'js/json2.js"></script>
         
-        <link rel="icon" type="image/png" href="/favicon.ico" />';
+        <link rel="icon" type="image/png" href="'.ADMIN_FAVICON.'" />';
 
     
     return $output;
@@ -472,7 +472,7 @@ HTML;
              <li><a href="'.IA_URL.'accounts.php"><i class="fa fa-user fa-fw"></i> Пользователи</a></li>';
   }
   $output .= '
-            <li><a href="'.IA_URL.'param.php"><i class="fa fa-gear fa-fw"></i> Настройки</a></li>
+            <li><a href="'.IA_URL.'config.php"><i class="fa fa-gear fa-fw"></i> Настройки</a></li> 
             <li class="divider"></li>
             <li><a href="'.IA_URL.'?logout"><i class="fa fa-sign-out fa-fw"></i> Выход</a></li>
           </ul>
@@ -643,7 +643,7 @@ HTML;
       "carusel.php"       => array("ismanag", "iscontent"),
       "reservations.php"  => array("ismanag"),
       "seo.php"           => array("ismanag"),
-      "param.php"         => array("ismanag"),
+      "config.php"        => array("ismanag"),
       "all_files.php"     => array("ismanag", "iscontent"),
       "all_images.php"    => array("ismanag", "iscontent"),
       "url.php"           => array("ismanag"),

@@ -1,51 +1,6 @@
 <?php
 require_once('require.php');
 
-if(isset($_POST['setcity'])){
-  if(!$_POST['city_id']) echo 'error';
-  if($_SESSION['city_id'] = intval($_POST['city_id'])){
-    $default_phone = db::value("val", "config", "name = 'phone'", 0 );
-    $city_id = $_SESSION['city_id'];
-    $r_city = db::row('*', 'il_cities', "id = $city_id");
-    #pri($r_city);
-    if($r_city['phone']){
-      #echo $r_city;
-      $output_arr = (array('city_phone'=>$r_city['phone'], 'city_title'=>$r_city['title']));
-    }else{
-      $output_arr =  array('city_phone'=>$default_phone, 'city_title'=>$r_city['title']);
-    }
-    echo json_encode($output_arr);
-    
-  }
-}
-
-if(isset($_POST['show_filter'])){
-  $fl_error = false; $txt_error = 'Упс что то пошло не так!!!';
-  if(!isset($_POST['surface_id'])) $fl_error = true;
-  if(!isset($_POST['color_id'])) $fl_error = true;
-  if(!isset($_POST['texture_id'])) $fl_error = true;
-  
-  $surface_id = $_POST['surface_id'];
-  $color_id = $_POST['color_id'];
-  $texture_id = $_POST['texture_id'];
-  
-  if( ($surface_id == 0) && ($color_id == 0) && ($texture_id == 0)  ){
-    $fl_error = true;
-    $txt_error = 'Выбирете хотя бы один параметр.';
-  }
-  
-  if($fl_error){
-    echo $txt_error;
-    return $txt_error;
-  }else{
-    $_SESSION['surface_id'] = $_POST['surface_id'];
-    $_SESSION['color_id'] = $_POST['color_id'];
-    $_SESSION['texture_id'] = $_POST['texture_id'];
-    echo 'ok';
-    return 'ok';
-  }
-}
-
 if(isset($_POST['hide_hpv_panel'])){
   $hide_hpv_panel = $_POST['hide_hpv_panel'];
   
@@ -82,19 +37,10 @@ if(isset($_POST['search_query'])){
     }
     
     #session_destroy();
-    if($search_quer != $_SESSION['search_q']){
-     
-      #echo "ne sovpadaet";
-      
+    if($search_quer != $_SESSION['search_q']){#echo "ne sovpadaet";
       $_SESSION['search_q'] = $search_quer;
-      
     }else{ 
-      
     }
-    
-    /*echo "<pre>";
-    print_r($_SESSION);
-    echo "</pre>";*/
 
     echo "ok";
   }else{
@@ -131,7 +77,7 @@ if(isset($_POST['good_buy'])){
   }
   
   $mail = EMail::Factory();
-  $email_order = db::value('val', 'config', "name = 'email_order'");
+  $email_order = db::value('val', DB_PFX.'config', "name = 'email_order'");
   
   $id_good = 0;
   #$id_good = intval($_POST['id_good']);
@@ -204,11 +150,11 @@ if(isset($_POST['good_buy'])){
     
     if($id_good){
       $sg = "
-        SELECT `il_goods`.*, `il_url`.`url` 
-        FROM `il_goods`
-        LEFT JOIN `il_url`
-        ON (`il_url`.`module` = 'il_goods') AND (`il_url`.`module_id` = `il_goods`.`id`)
-        WHERE `il_goods`.`id` = $id_good
+        SELECT `".DB_PFX."goods`.*, `".DB_PFX."url`.`url` 
+        FROM `".DB_PFX."goods`
+        LEFT JOIN `".DB_PFX."url`
+        ON (`".DB_PFX."url`.`module` = '".DB_PFX."goods') AND (`".DB_PFX."url`.`module_id` = `".DB_PFX."goods`.`id`)
+        WHERE `".DB_PFX."goods`.`id` = $id_good
       ";
       //echo $sg;
       $qg = mysql_query($sg);
@@ -226,7 +172,7 @@ if(isset($_POST['good_buy'])){
 
     
     $st = $PDO->prepare("
-          INSERT INTO `il_reservations` 
+          INSERT INTO `".DB_PFX."reservations` 
               (`title`, `userStatus`, `date`, `userPhone`, `userName`, `userMail`, `longTxt1`, `userIp`, `hide`) 
       VALUES  (:title,  'Новая',      :date,  :userPhone,  :userName,  :userMail,  :longTxt1,  :userIp,   0    )
     ");
@@ -241,14 +187,9 @@ if(isset($_POST['good_buy'])){
                             )
                           )
               ) {
-            //ошибка
-            die('cant rew');
+            
+            die('cant rew'); #ошибка
         }
-    
-    /*echo "<pre>$s</pre>";
-    die();*/
-    #mysql_query($s);
-    #$nuber = mysql_insert_id();
     
     $nuber = $PDO->lastInsertId();
      
@@ -277,21 +218,13 @@ if(isset($_POST['good_buy'])){
         
         IP: '.$_SERVER['REMOTE_ADDR'].'<br>
      
-        <a href = "http://'.$_SERVER["HTTP_HOST"].'/iladmin/reservations.php?edits='.$nuber.'">Перейти в админку</a><br><br>
+        <a href = "http://'.$_SERVER["HTTP_HOST"].'/'.ADM_DIR.'/reservations.php?edits='.$nuber.'">Перейти в админку</a><br><br>
     ';
         
     $tosend = $message;
         
   	if(isset($_SESSION['city_id']) && $_SESSION['city_id']  ){
-      $default_phone = db::value("val", "config", "name = 'phone'", 0 );
-      $city_id = $_SESSION['city_id'];
-      $r_city = db::row('*', 'il_cities', "id = $city_id");
-      #pri($r_city);
-      if($r_city['email']){
-        $arr_email = array($email_order, $r_city['email']);
-        unset($email_order);
-        $email_order = $arr_email; 
-      }  
+      $default_phone = db::value("val", DB_PFX."config", "name = 'phone'", 0 );
     }
         
     $res = $mail->smtpmail ($email_order, $subject, $tosend);
@@ -336,7 +269,7 @@ if(isset($_POST['feedback'])){
   $fio = $phone = $error = $is_send = '';
   
   $mail = EMail::Factory();
-  $email_order = db::value('val', 'config', "name = 'email_order'");
+  $email_order = db::value('val', DB_PFX.'config', "name = 'email_order'");
   $fio = substr(htmlspecialchars(trim($_POST['requestName'])), 0, 1000);
   $phone = substr(htmlspecialchars(trim($_POST['requestPhone'])), 0, 1000);
   
@@ -354,7 +287,7 @@ if(isset($_POST['feedback'])){
     $ip = $_SERVER['REMOTE_ADDR'];
     
     $s = "
-      INSERT INTO `il_feedback` 
+      INSERT INTO `".DB_PFX."feedback` 
               (`title`, `txt3`,  `date`,  `phone`,  `txt1`, `hide`) 
       VALUES  ('$fio',  'Новая', '$date', '$phone', '$ip',   0);
     ";
@@ -373,7 +306,7 @@ if(isset($_POST['feedback'])){
         Телефон: '.$phone.'<br>
         IP: '.$_SERVER['REMOTE_ADDR'].'<br>
      
-        <a href = "http://'.$_SERVER["HTTP_HOST"].'/iladmin/feedback.php?edits='.$nuber.'">Перейти в админку</a><br><br>
+        <a href = "http://'.$_SERVER["HTTP_HOST"].'/'.ADM_DIR.'/feedback.php?edits='.$nuber.'">Перейти в админку</a><br><br>
     ';
         
     $tosend = $message;

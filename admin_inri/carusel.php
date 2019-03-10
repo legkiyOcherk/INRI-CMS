@@ -59,15 +59,16 @@ class MineCarusel extends Carusel{
     
     return $output;
   }
-  
+   
 }
 
 $date_arr = array(
-    'title' => 'Название',
-    'link' => 'Ссылка',
-    'txt1' => 'Текст',
-    'longtxt1' => 'Описание',
-    'img_alt' => 'Alt изображение',
+    'title'     => 'Название',
+    'link'      => 'Ссылка',
+    'txt1'      => 'Текст',
+    'longtxt1'  => 'Описание',
+    'hide'      => 'Скрыть',
+    'img_alt'   => 'Alt изображение',
     'img_title' => 'Title изображение',
   );
 
@@ -81,6 +82,7 @@ $carisel->setIsPager(true);
 $carisel->setIsLog(true);
 $carisel->setImg_ideal_width(1920);  
 $carisel->setImg_ideal_height(666); 
+$carisel->checkbox_array = array('hide');                # Галочка в форме
 
 if($output = $carisel->getContent($admin)){
   $admin->setContent($output);
