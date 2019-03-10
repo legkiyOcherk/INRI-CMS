@@ -37,7 +37,7 @@ class Setup{
     $output = '    
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="'.SITE_NAME.'">
-    <link rel="shortcut icon" type="image/x-icon" href="/css/img/favicon/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="'.ADMIN_FAVICON.'">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     ';
     return $output;
@@ -748,14 +748,11 @@ HTML;
     $sql = "
       CREATE TABLE IF NOT EXISTS `$table` (
         `id` int(20) NOT NULL AUTO_INCREMENT,
-        `onec_id` varchar(255) DEFAULT NULL,
-        `onec_id_company` varchar(255) DEFAULT NULL,
         `title` varchar(255) DEFAULT NULL,
         `img` varchar(255) DEFAULT NULL,
         `login` varchar(255) NOT NULL DEFAULT '',
         `key` varchar(32) NOT NULL DEFAULT '',
         `hash` varchar(32) NOT NULL DEFAULT '',
-        `debug_pass` varchar(255) DEFAULT NULL,
         `fullname` varchar(255) NOT NULL DEFAULT '',
         `is_admin` tinyint(1) NOT NULL DEFAULT '0',
         `is_programmer` tinyint(1) NOT NULL DEFAULT '0',
@@ -764,21 +761,20 @@ HTML;
         `ismanag` tinyint(4) NOT NULL DEFAULT '0',
         `iscatalog` tinyint(4) NOT NULL DEFAULT '0',
         `isjournalist` tinyint(1) NOT NULL DEFAULT '0',
-        `id_company` int(11) DEFAULT '0',
         `email` varchar(255) DEFAULT NULL,
         `phone` varchar(255) DEFAULT NULL,
         `longtxt1` text,
-        `is_client` tinyint(1) NOT NULL DEFAULT '1',
-        `is_active` tinyint(1) NOT NULL DEFAULT '1',
-        `is_bye` tinyint(1) NOT NULL DEFAULT '1',
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
         `ord` int(11) NOT NULL,
         PRIMARY KEY (`id`)
       ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
     $sql_insert = "
-      INSERT INTO `$table` (`id`, `onec_id`, `onec_id_company`, `title`, `img`, `login`, `key`, `hash`, `debug_pass`, `fullname`, `is_admin`, `is_programmer`, `untouchible`, `iscontent`, `ismanag`, `iscatalog`, `isjournalist`, `id_company`, `email`, `phone`, `longtxt1`, `is_client`, `is_active`, `is_bye`, `ord`) VALUES ";
+      INSERT INTO `$table` (`id`, `title`, `img`, `login`, `key`, `hash`, `fullname`, `is_admin`, `is_programmer`, `untouchible`, `iscontent`, `ismanag`, `iscatalog`, `isjournalist`, `email`, `phone`, `longtxt1`, `hide`, `ord`) VALUES ";
     $sql_insert .=<<<HTML
-        (35, NULL, NULL, 'Администратор', NULL, 'd', 'f5a90e6da513e45848a39a1689aa8261', '555f9dc6ac9e3abbcd05b4e46a0d57f4', NULL, 'Илья Ощепков', 1, 0, 0, 1, 1, 1, 1, 0, 'ilya.oshepkov@gmail.com', '9058010809', '', 1, 1, 1, 5)
+      (1, 'Администратор', '1552249940.jpeg', 'd', '1d319e1b83c1b7ec90328bcca7e6e200', '7d86b76f7b71aae04d6cd2d59090b4e9', 'Илья Ощепков', 1, 1, 0, 1, 1, 1, 1, 'ilya.oshepkov@gmail.com', '9058010809', '', 0, 0);
 HTML;
+    $this->create_img_dir( $name );
+    
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
   

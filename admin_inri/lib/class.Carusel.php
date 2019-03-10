@@ -288,7 +288,6 @@ class Carusel extends BaseCarusel{
                 <i class="fa fa-trash-o"></i>
               </span>
             </td>
-  			  </tr>
   			  </tr>';
     
     return $output;

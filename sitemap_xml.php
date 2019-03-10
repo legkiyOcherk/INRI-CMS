@@ -11,19 +11,19 @@ $prefix="<url><loc>http://".$_SERVER["SERVER_NAME"]."/";
 $suffix="</loc></url>"."\r\n";
 
 require_once('define.php');
-require_once(NX_PATH.'iladmin/lib/global.lib.php');
-require_once(NX_PATH.'iladmin/config.inc.php');
-require_once(NX_PATH.'iladmin/lib/mysql.lib.php');
-require_once(NX_PATH.'iladmin/lib/class.db.php');
+require_once(NX_PATH.ADM_DIR.'/lib/global.lib.php');
+require_once(NX_PATH.ADM_DIR.'/config.inc.php');
+require_once(NX_PATH.ADM_DIR.'/lib/mysql.lib.php');
+require_once(NX_PATH.ADM_DIR.'/lib/class.db.php');
 
 function get_table_link( $table,  $prefix, $suffix ){
   $output = '';
   global $PDO;
   $s = "
-    SELECT `$table`.*, `il_url`.`url` 
+    SELECT `$table`.*, `".DB_PFX."url`.`url` 
     FROM `$table`
-    LEFT JOIN `il_url`
-    ON (`il_url`.`module` = '$table') AND (`il_url`.`module_id` = `$table`.`id`)
+    LEFT JOIN `".DB_PFX."url`
+    ON (`".DB_PFX."url`.`module` = '$table') AND (`".DB_PFX."url`.`module_id` = `$table`.`id`)
     AND `$table`.`hide`  = 0 
   ";
 
@@ -49,6 +49,6 @@ print '<?xml version="1.0" encoding="UTF-8"?>'."\r\n";
 print '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\r\n";
 echo $prefix.$suffix;
 
-print get_table_link( 'il_smpl_article',  $prefix, $suffix);
+print get_table_link( DB_PFX.'smpl_article',  $prefix, $suffix);
 
 print '</urlset>';

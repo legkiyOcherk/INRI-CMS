@@ -5,6 +5,7 @@ class AdminLTEextends extends BaseAdmin{
   
   var $style_admin = 'AdminLTE';
   var $is_admin_navigation = true;
+  var $profile_img = '';
  
   function __construct () {
     
@@ -154,21 +155,21 @@ class AdminLTEextends extends BaseAdmin{
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">';
     #$output .= $this->getHeaderNotificationLTE();
-    
+    $user_name = $this->getUserName();
     $output .= '
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="'.IA_URL.'admin_style/a_lte/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">'.$this->getUserName().'</span>
+              <img src="'.$this->profile_img.'" class="user-image" alt="User Image">
+              <span class="hidden-xs">'.$user_name.'</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="'.IA_URL.'admin_style/a_lte/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="'.$this->profile_img.'" class="img-circle" alt="User Image">
 
                 <p>
-                  '.$this->getUserName().' - Должность
+                  '.$user_name.' - '.$this->user['title'].' 
                   <small>Последняя активность '.date("d.m.Y").'</small>
                 </p>
               </li>';
@@ -192,7 +193,7 @@ class AdminLTEextends extends BaseAdmin{
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="'.IA_URL.'accounts.php" class="btn btn-default btn-flat">Аккаунт</a>
+                  <a href="'.IA_URL.'accounts.php?edits='.$this->user['id'].'" class="btn btn-default btn-flat">Аккаунт</a>
                 </div>
                 <div class="pull-right">
                   <a href="'.IA_URL.'?logout" class="btn btn-default btn-flat">Выход</a>
@@ -489,8 +490,18 @@ class AdminLTEextends extends BaseAdmin{
     return $output;
   }
   
+  function getProfilImg(){
+    if(isset($_SESSION["WA_USER"]["img"]) && $_SESSION["WA_USER"]["img"]){
+      $this->profile_img = '/images/accounts/slide/'.$_SESSION["WA_USER"]["img"];
+    }else{
+      $this->profile_img = IA_URL.'admin_style/a_lte/dist/img/user2-160x160.jpg';
+    }
+  }
+  
   function getUserName(){
     $output = '';
+    
+    $this->getProfilImg();
     
     if(isset($_SESSION["WA_USER"]["fullname"]) && $_SESSION["WA_USER"]["fullname"]){
       $output .= $_SESSION["WA_USER"]["fullname"];
@@ -510,7 +521,7 @@ class AdminLTEextends extends BaseAdmin{
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="'.IA_URL.'admin_style/a_lte/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="'.$this->profile_img.'" class="img-circle" alt="'.$this->user['fullname'].'">
         </div>
         <div class="pull-left info">
           <p>'.$this->getUserName().'</p>     

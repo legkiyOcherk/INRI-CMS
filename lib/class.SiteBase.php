@@ -788,7 +788,7 @@ class SiteBase {
                   $output .= $this->getFooter(); break;
                   
             case  'block_inner_content': // Контент на внутренних страницах
-                  $output .= $this->addEditAdminLink($cont, '/iladmin'.$this->adminLink); 
+                  $output .= $this->addEditAdminLink($cont, '/'.ADM_DIR.$this->adminLink); 
                   break;
                   
             default:

@@ -329,7 +329,7 @@ $hide = 1;
             
          
 Зайти в админку:
-http://".$_SERVER['SERVER_NAME']."/iladmin/reviews.php?edits=$last_id\n 
+http://".$_SERVER['SERVER_NAME']."/".ADM_DIR."/reviews.php?edits=$last_id\n 
         
 ";
 

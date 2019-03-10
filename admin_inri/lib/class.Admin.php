@@ -28,6 +28,7 @@ class AdminCutaway extends AdminLTEextends{
       "all_files.php"          => "Файлы",
       "all_images.php"         => "Изображения",
       "all_log.php"            => "Логи",
+      "admin_logs.php"         => "Логи входа в панель", 
       "url.php"                => "ЧПУ",
       
 		);
@@ -123,6 +124,13 @@ class AdminCutaway extends AdminLTEextends{
                   'short_decr' => ''
                 ); break;
                 
+          case 'Логи входа в панель':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fa fa-exchange" aria-hidden="true"></i>',
+                  'short_decr' => ''
+                ); break;      
+                
           case 'ЧПУ':
               $this->mainmenu_add_data[$v] = 
                 array(
@@ -177,7 +185,7 @@ class AdminCutaway extends AdminLTEextends{
   	if (isset($user["iscatalog"])    && $user["iscatalog"])	    $this->current_rights[]="iscatalog";
   	if (isset($user["isjournalist"]) && $user["isjournalist"])	$this->current_rights[]="isjournalist";
 
-  	$check=str_replace("/iladmin/","",$_SERVER["PHP_SELF"]);
+  	$check=str_replace( IA_URL, "", $_SERVER["PHP_SELF"] );
     
     $this->user = $user;
     $this->check = $check;
@@ -389,7 +397,7 @@ class AdminCorporate extends AdminLTEextends{
   	if (isset($user["iscatalog"])    && $user["iscatalog"])	    $this->current_rights[]="iscatalog";
   	if (isset($user["isjournalist"]) && $user["isjournalist"])	$this->current_rights[]="isjournalist";
 
-  	$check=str_replace("/iladmin/","",$_SERVER["PHP_SELF"]);
+  	$check=str_replace( IA_URL, "", $_SERVER["PHP_SELF"] );
     
     $this->user = $user;
     $this->check = $check;
@@ -608,7 +616,7 @@ class AdminOnlineshop extends AdminLTEextends{
   	if (isset($user["iscatalog"])    && $user["iscatalog"])	    $this->current_rights[]="iscatalog";
   	if (isset($user["isjournalist"]) && $user["isjournalist"])	$this->current_rights[]="isjournalist";
 
-  	$check=str_replace("/iladmin/","",$_SERVER["PHP_SELF"]);
+  	$check=str_replace( IA_URL, "", $_SERVER["PHP_SELF"] );
     
     $this->user = $user;
     $this->check = $check;

@@ -13,10 +13,7 @@ class Accounts extends Carusel{
         'iscontent',
         'ismanag',
         'iscatalog',
-        'isjournalist',
-        'is_client',
-        'is_active',
-        'is_bye'
+        'isjournalist'
       );
   
   function show_table_header_rows(){
@@ -24,13 +21,11 @@ class Accounts extends Carusel{
     $output = '
           <tr class="th nodrop nodrag">
           	<td style="width: 55px;">#</td>
-      		  <td style="width: 50px;">Является<br/>заказчиком</td>
-            <td style="width: 50px;">Активный</td>
-            <td style="width: 50px;">Разрешено<br/>делать<br/>заявки</td>
-            <td style="width: 60px;">Картинка</td>
-      		  <td>Название</td>
+            <td style="width: 50px;">Скрыть</td>
+            <td style="width: 60px;">Фото</td>
+      		  <td>Должность</td>
+            <td>Логин</td>
             <td>Полное имя</td>
-            <td>Компания</td>
             <td>Email</td>
             <td>Телефон</td>
       		  <td style="width: 80px">Действие</td>
@@ -48,24 +43,14 @@ class Accounts extends Carusel{
             <td>
               <input type="checkbox" class="group_checkbox" name="group_item[]" value="'.$id.'"> '.$id.'
               <input type="hidden" value="'.$id.'" name="itSort[]">
-          </td>';
-          #<td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>
-          
-    $output .= '
-          <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'is_client\')" class="star_check '.$this->getStarValStyle($is_client).'" id="is_client_'.$id.'"></div></td>
-          
-          <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'is_active\')" class="star_check '.$this->getStarValStyle($is_active).'" id="is_active_'.$id.'"></div></td>
-          
-          <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'is_bye\')" class="star_check '.$this->getStarValStyle($is_bye).'" id="is_bye_'.$id.'"></div></td>';
-          
+          </td>
+          <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>';
+    
     $output .= '
             <td style="max-width: 60px;">';
     if($img){
       $output .= '
             <div class="zoomImg" ><img style="width:50px;" src="../images/'.$this->carusel_name.'/slide/'.$img.'"></div>        ';
-    }elseif($color){
-      $output .= '
-            <div class="zoomImg" style = "background-color: '.$color.'">';
     }
     $output .= '
             </td>
@@ -205,20 +190,9 @@ class Accounts extends Carusel{
         continue;  
       }
       
-      // Выбор компании
-      if($key == 'id_company'){
-        $tmp = $this->show_select('wed_company', 'title', $item, $key, true );
-        $tmp .= ' <a href="'.IA_URL.'company.php" target="_blank"> Компании </a>';
-        $output .= $this->show_form_row( $val, $tmp);
-        continue;  
-      }
-      
       if( $key == 'password' ){
         $item[$key] == '';
       }
-      
-      
-      
       
       
       if($item){
@@ -289,7 +263,6 @@ class Accounts extends Carusel{
     
     return $output;
   }
-  
   
   function getCreateSlide_SqlNames_SqlVals(&$sql_names, &$sql_vals){
     $i=0;
@@ -384,36 +357,33 @@ class Accounts extends Carusel{
 }
 
 $date_arr = array(
-    'key' => '',
-    'hash' => '',
+    /*'key' => '',
+    'hash' => '',*/
     
-    'title' => 'Торговая точка <span style = "color: red;">*</span>',
-    'fullname' => 'Полное имя',
-    'id_company' => 'Компания',
-    'email' => 'Email адрес',
-    'phone' => 'Телефон',
-    'longtxt1' => 'Описание',
+    'title'         => 'Должность <span style = "color: red;">*</span>',
+    'fullname'      => 'Полное имя',
+    'email'         => 'Email адрес',
+    'phone'         => 'Телефон',
+    'longtxt1'      => 'Описание',
     
-    'is_admin' => 'Администратор (всемогущий)',
-    'is_client' => 'Является заказчиком', 
-    'is_active' => 'Активный<br><small>Разрешить пользователью<br>заходить в кабинет</small>',
-    'is_bye' => 'Разрешено делать заявки',
+    'is_admin'      => 'Администратор (всемогущий)',
     
-    'login' => 'Логин',
-    'password' => 'Новый пароль</br><small style = "color: red;">(необязательно)</small>',
+    'login'         => 'Логин',
+    'password'      => 'Новый пароль</br><small style = "color: red;">(необязательно)</small>',
 
     'is_programmer' => 'Программист',
-    #'untouchible' => 'Неприкасаемый',
-    'iscontent' => 'Контент-менеджер',
-    'ismanag' => 'Менеджер',
-    'iscatalog' => 'Менеджер каталога',
-    'isjournalist' => 'Журналист',
+    'iscontent'     => 'Контент-менеджер',
+    'ismanag'       => 'Менеджер',
+    #'iscatalog'     => 'Менеджер каталога',
+    #'isjournalist'  => 'Журналист',
+    
+    #'untouchible'  => 'Неприкасаемый',
   );
   
 $pager = array(
   'perPage' => 50,
-  'page' => 1,
-  'url' => '',
+  'page'    => 1,
+  'url'     => '',
   'items_per_page' => array( 50, 100, 500, 1000, 5000)
 );
 
@@ -430,8 +400,8 @@ $carisel->setIsFilter(false);
 $carisel->setIsLog(true);
 #$carisel->setFilterField($arrfilterfield); 
 
-$carisel->setImg_ideal_width(750);  
-$carisel->setImg_ideal_height(410);
+$carisel->setImg_ideal_width(160);  
+$carisel->setImg_ideal_height(160);
 #$carisel->setDate_arr($date_arr);
 
 if($output = $carisel->getContent($admin)){

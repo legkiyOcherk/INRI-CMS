@@ -670,7 +670,7 @@ HTML;
   	if (isset($user["iscatalog"])    && $user["iscatalog"])	    $this->current_rights[]="iscatalog";
   	if (isset($user["isjournalist"]) && $user["isjournalist"])	$this->current_rights[]="isjournalist";
 
-  	$check=str_replace("/iladmin/","",$_SERVER["PHP_SELF"]);
+  	$check=str_replace( IA_URL, "", $_SERVER["PHP_SELF"]);
     
     $this->user = $user;
     $this->check = $check;
@@ -698,7 +698,7 @@ HTML;
   function logsWrite(){
     $ip=$_SERVER["REMOTE_ADDR"];
     $user=$_SESSION["WA_USER"];
-    $script=str_replace("/iladmin/","",$_SERVER["PHP_SELF"]);
+    $script=str_replace( IA_URL, "", $_SERVER["PHP_SELF"] );
     if ($user["id"]) $user_logged=$user["id"]; else $user_logged=0;
     if ($_POST)
     {
