@@ -704,8 +704,8 @@ HTML;
     {
     	#mysql_query("INSERT INTO `".DB_PFX."admin_logs` SET `ip`='$ip', `script`='$script',`date_time`=now(), `user_id`=$user_logged");
     	#$log_id=mysql_insert_id();
-      
-      $query = $this->pdo->query("INSERT INTO `".DB_PFX."admin_logs` SET `ip`='$ip', `script`='$script',`date_time`=now(), `user_id`=$user_logged");
+      $now_date_time = date('Y-m-d H:i:s');
+      $query = $this->pdo->query("INSERT INTO `".DB_PFX."admin_logs` SET `ip`='$ip', `script`='$script',`date_time`='$now_date_time', `user_id`=$user_logged"); 
       $log_id = $this->pdo->lastInsertId();
       switch ($script)
     	{
