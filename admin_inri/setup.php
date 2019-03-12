@@ -22,7 +22,9 @@ class SetupSite extends Setup{
     
     parent::setup_database_module_all();
     
-    $this->setup_database_module_cutaway(); #Сайт визитка  
+    #$this->setup_database_module_cutaway();  #Сайт визитка 
+     
+    $this->setup_database_module_corporate(); #Корпаротивный/новостной сайт 
     
   }
   

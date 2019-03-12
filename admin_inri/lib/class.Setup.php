@@ -1083,8 +1083,6 @@ HTML;
     return $output;
   }
   
-  
-  #--------------------- setup_database_module_onlineshop ---------------------
   function setup_module_smpl_article_cutaway( $title, $name ){
     
     $table = DB_PFX.$name;
@@ -1125,6 +1123,194 @@ HTML;
 HTML;
     return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
   }
+  
+  #--------------------- setup_database_module_corporate ---------------------
+  function insert_def_module_carusel_corporate( $title, $name ){
+    $output = '';
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `img`, `link`, `txt1`, `longtxt1`, `img_alt`, `img_title`, `hide`, `ord`) VALUES ";
+    $sql_insert .=<<<HTML
+(1, 'Слайд №1', '1531731471.jpg', '', '', '', '', '', 0, 0),
+(2, 'Слайд №2', '1531731498.jpg', '', 'Текст', '<p>Описание описание описание описание</p>\r\n', 'Alt изображение', 'Title изображение', 0, 1),
+(3, 'Слайд №3', '1531731518.jpg', '', '', '', '', '', 0, 2),
+(4, 'Слайд №4', '1531731541.jpg', '', '', '', '', '', 0, 3),
+(5, 'Слайд №5', '1531731565.jpg', '', '', '', '', '', 0, 4);
+HTML;
+    
+    $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CORPORATE );
+    
+    return $output;
+  }
+  
+  function insert_def_module_url_corporate( $title, $name ){
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `url`, `module`, `module_id`, `hide`, `ord`) VALUES ";
+    $sql_insert .=<<<HTML
+      (8, 'Блок 1', 'blok', 'wed_mine_block', 2, 0, 6),
+      (9, 'Блок 2', 'blok-74548', 'wed_mine_block', 3, 0, 7),
+      (10, 'Блок 3', 'blok-86291', 'wed_mine_block', 4, 0, 8),
+      (11, 'Слайдер на главной', 'slayder-na-glavnoy', 'wed_mine_block', 5, 0, 9),
+      (13, 'Шапка сайта', 'shapka-sayta', 'wed_mine_block', 6, 0, 11),
+      (14, 'Главное меню', 'glavnoe-menyu', 'wed_mine_block', 7, 0, 12),
+      (15, 'Контент на внутренних страницах', 'kontent-na-vnutrennih-stranicah', 'wed_mine_block', 8, 0, 13),
+      (16, 'robots.txt', 'robots_txt', 'robots_txt', 0, 0, 14),
+      (17, 'Главное меню', 'glavnoe-menyu-65489', 'wed_cat_articles', 1, 0, 15),
+      (18, 'Главная', 'glavnaya', 'wed_cat_articles', 2, 0, 16),
+      (19, 'О компании', 'kompanii', 'wed_cat_articles', 3, 0, 17),
+      (20, 'Контакты', 'kontakty', 'wed_cat_articles', 4, 0, 18),
+      (21, 'Статьи', 'stati', 'wed_cat_articles', 5, 0, 19),
+      (22, 'Основатель диджитал-студии Finch — о веб-дизайне в России и США', 'osnovatel-didzhitalstudii-finch-o', 'wed_articles', 1, 0, 20),
+      (23, 'Киану Ривз: «Россия ассоциируется у меня с моральной силой»', 'kianu-rivz-rossiya-associiruetsya', 'wed_articles', 2, 0, 21),
+      (24, 'От бритвы до автомобиля: почему мир переходит к сервисам по подписке', 'britvy-do-avtomobilya-pochemu-mir', 'wed_articles', 3, 0, 22),
+      (25, 'Контент', 'kontent', 'wed_cat_articles', 6, 0, 23),
+      (26, 'Фотогалерея', 'fotogalereya', 'wed_cat_articles', 7, 0, 24),
+      (27, 'Документы', 'dokumenty', 'wed_cat_articles', 8, 0, 25),
+      (28, 'Новости', 'news', 'wed_news', 0, 0, 26),
+      (29, 'Блог', 'blog', 'wed_blog', 0, 0, 27),
+      (30, 'Новости', 'novosti', 'wed_cat_articles', 9, 0, 28),
+      (31, 'Петросян отреагировал на сообщения о разделе имущества со Степаненко', 'petrosyan-otreagiroval-na-soobscheniya-o', 'wed_news', 1, 0, 29),
+      (32, 'Ученые назвали причину исчезновения кораблей в Бермудском треугольнике', 'uchenye-nazvali-prichinu-ischeznoveniya', 'wed_news', 2, 0, 30),
+      (33, 'Марафон «Европа-Азия» соберёт более шести тысяч участников', 'marafon-evropaaziya-soberyot-bolee', 'wed_news', 3, 0, 31);
+HTML;
+        
+    return $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name );
+  }
+  
+  function insert_def_module_mine_block_corporate( $title, $name ){
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `img`, `link`, `longtxt2`, `fl_is_fixed`, `hide`, `ord`) VALUES ";  
+    $sql_insert .=<<<HTML
+(2, 'Блок 3', '', '', '<div class="block_box">\r\n<div class="block">\r\n<h1>Блок</h1>\r\n\r\n<h2 style="text-align: center;">Контакты</h2>\r\n</div>\r\n</div>\r\n<!-- сontacts_inretactive -->\r\n\r\n<div class="сontacts_inretactive_box">\r\n<div class="сontacts_inretactive">\r\n<div class="ya_map"><script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Abbe514650299016758f03759051467d1a8adc3faf2e49e2556ec55580a030390&amp;width=100%25&amp;height=500&amp;lang=ru_RU&amp;scroll=false"></script></div>\r\n\r\n<div class="сontacts_descr">\r\n<p><b>Наш адрес:</b><br />\r\n620100, г. Екатеринбург, ул Сибирский тракт 12/2, офис 404</p>\r\n\r\n<p><b>Телефоны:</b><br />\r\n<a href="tel:+79058010809">+7 (905) 801-08-09</a></p>\r\n\r\n<p><b>Электропочта:</b><br />\r\n<a href="mailto:1@in-ri.ru">1@in-ri.ru</a></p>\r\n</div>\r\n<!-- End сontacts_inretactive --></div>\r\n</div>\r\n<style type="text/css">/* --- сontacts --- */\r\n.сontacts_box{\r\n  background: url("img/mc_bg.png") no-repeat center center;\r\n  background-size: cover;\r\n  min-height: 490px;\r\n  padding-bottom: 0px;\r\n}\r\n.сontacts{\r\n  padding-bottom: 20px;\r\n}\r\n.сontacts_descr{\r\n  max-width: 335px;\r\n  background: #ffffff;\r\n  margin: 0 auto;\r\n  margin-top: 10px;\r\n  padding: 15px 25px;\r\n  border: 10px solid #17a2b8;\r\n  text-align: center;\r\n}\r\n.сontacts_descr b{\r\n  font: 400 25px/30px AvantGardeGothicBdITC-Reg, Arial, sans-serif;\r\n  color: #000000;\r\n}\r\n.сontacts_descr a{\r\n  color: #000000;\r\n}\r\n/* --- End сontacts --- */\r\n  \r\n  /* --- сontacts_inretactive_box --- */\r\n.сontacts_inretactive_box{\r\n  min-height: 500px;\r\n  padding-bottom: 0px;\r\n  \r\n}\r\n.сontacts_inretactive{\r\n  padding-bottom: 20px;\r\n  position: relative;\r\n}\r\n.ya_map{\r\n  position: absolute;\r\n  top: 0;\r\n  height: 500px;\r\n  width: 100%;\r\n}\r\n.сontacts_inretactive .mtitle_box{\r\n  /*position: relative;\r\n  z-index: 1;\r\n  text-align: right;\r\n  margin-right: 15px;*/\r\n}\r\n\r\n.сontacts_inretactive .сontacts_descr{\r\n  margin: 55px 15px 15px 25px;\r\n  position: relative;\r\n  z-index: 1;\r\n  max-width: 335px;\r\n  background: #ffffff;\r\n  float: right;\r\n}\r\n@media (max-width: 768px){\r\n  .сontacts_inretactive .сontacts_descr{\r\n    margin: 0 auto 0 auto;\r\n    float: none;\r\n  }\r\n  .сontacts_inretactive{\r\n    padding-top: 525px;\r\n  }\r\n}\r\n/* --- End сontacts_inretactive --- */\r\n</style>\r\n', 0, 0, 6),
+(3, 'Блок 1', '', '', '<div class="block_box">\r\n<div class="block">\r\n<h2>Блок</h2>\r\n</div>\r\n</div>\r\n\r\n<div class="block_box bl_bg" style="">\r\n<div class="block_b" style="background: rgba(0, 0, 0, 0.3);\r\n    padding-top: 150px;\r\n    padding-bottom: 150px;">\r\n<div class="block">\r\n<h2 style="color: #fff;">ПРОЕКТИРОВАНИЕ И ДИЗАЙН</h2>\r\n\r\n<p>Внешний вид сайта - лицо компании. Важно, чтобы он был не только красивым, но и удобным. Интуитивно понятный интерфейс пользователя плюс отзывчивый дизайн увеличивают конверсию и продажи.</p>\r\n\r\n<h2 style="color: #fff;">РАЗРАБОТКА</h2>\r\n\r\n<p>На этапе разработки учитывается адаптивность сайта. Он должен корректно отображаться в любом браузере и на всех видах устройств. Удобная система управления сайтом позволит вам вести проект самостоятельно.</p>\r\n\r\n<h2 style="color: #fff;">ПРОДВИЖЕНИЕ И ПОДДЕРЖКА</h2>\r\n\r\n<p>Как не потеряться в медиа пространстве? Мы готовы сотрудничать с вами, отзываясь на любые просьбы и следим за тем, чтобы ваш сайт был в топе поисковиков.</p>\r\n\r\n<p><b>ВЕБ-студия <a href="//in-ri.ru" style="color: #dc3545;">in-ri.ru</a> занимается разработкой сайтов, поддержкой, созданием интернет-магазинов, интернет-рекламой и&nbsp;поисковой оптимизацией.</b></p>\r\n</div>\r\n</div>\r\n</div>\r\n<style type="text/css">.bl_bg{\r\n    background-image: url(/images_ckeditor/files/test.jpg);\r\n    background-attachment: fixed;\r\n    background-size: cover;\r\n    background-position: center center;\r\n    text-shadow: 1px 1px 16px rgba(0, 0, 0, 0.8);\r\n    color: #ffffff;\r\n    padding-top: 0;\r\n    padding-bottom: 0;\r\n    margin-bottom: 0px;\r\n    /*-webkit-transform: translate3d(0,0,0);*/\r\n    -webkit-backface-visibility: hidden;\r\n  }\r\n  .admin_edit_box .bl_bg{\r\n    /*position: relative;\r\n    z-index: 1600;*/\r\n  }\r\n</style>\r\n', 0, 0, 5),
+(4, 'Блок 2', '', '', '<div class="block_box">\r\n<div class="block">\r\n<h2>Блок&nbsp;</h2>\r\n\r\n<div class="scheme">\r\n<div class="row">\r\n<div class="col-12 col-md-4">\r\n<div class="c_img_box"><i class="fas fa-globe fa-5x">&nbsp;</i></div>\r\n\r\n<div class="c_title">Встречи 1 раз в неделю</div>\r\n</div>\r\n\r\n<div class="col-12 col-md-4">\r\n<div class="c_img_box"><i class="fas fa-tasks fa-5x">&nbsp;</i></div>\r\n\r\n<div class="c_title">График работы</div>\r\n</div>\r\n\r\n<div class="col-12 col-md-4">\r\n<div class="c_img_box"><i class="fas fa-external-link-alt fa-5x">&nbsp;</i></div>\r\n\r\n<div class="c_title">Новые техники</div>\r\n</div>\r\n</div>\r\n\r\n<div class="row">\r\n<div class="col-12 col-md-4">\r\n<div class="c_img_box"><i class="far fa-clock fa-5x">&nbsp;</i></div>\r\n\r\n<div class="c_title">Поддержка</div>\r\n</div>\r\n\r\n<div class="col-12 col-md-4">\r\n<div class="c_img_box"><i class="fas fa-percent fa-5x">&nbsp;</i></div>\r\n\r\n<div class="c_title">100%</div>\r\n</div>\r\n\r\n<div class="col-12 col-md-4">\r\n<div class="c_img_box"><i class="far fa-sun fa-5x">&nbsp;</i></div>\r\n\r\n<div class="c_title">Качественный результат</div>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n<style type="text/css">/* --- scheme --- */\r\n.scheme{\r\n	margin-top: 25px;\r\n  margin-bottom: 25px;\r\n}\r\n.scheme .c_img_box{\r\n  text-align:center;\r\n  /*color: #28a745;*/\r\n  padding-bottom: 25px;\r\n  padding-top: 15px;\r\n}\r\n.scheme .c_title{\r\n	text-align:center;\r\n  padding-bottom: 35px;\r\n  font-size: 24px;\r\n  font-weight: bold;\r\n}\r\n.steps{\r\n  \r\n}\r\n.steps .rim{\r\n  display: inline-block;\r\n  width: 25px;\r\n  text-align:center;\r\n}\r\n.steps .left{\r\n  /*text-align:right;*/\r\n}\r\n.steps .right{\r\n  border-left: 2px solid #37373e59;\r\n  border-right: 2px solid #37373e59;\r\n  border-top: 2px solid #37373e59;\r\n  padding-top: 20px;\r\n  padding-bottom: 20px;\r\n  /*min-height: 75px;*/\r\n}\r\n.steps .row:last-child {\r\n  \r\n  /*border-bottom: 3px solid #37373e;*/\r\n}\r\n/* --- END scheme --- */\r\n</style>\r\n', 1, 0, 4),
+(5, 'Слайдер', '', 'block_mine_slider', '', 0, 0, 2),
+(6, 'Шапка сайта', '', 'block_mine_header', '', 1, 0, 0),
+(7, 'Меню сайта', '', 'block_mine_top_menu', '', 1, 0, 1),
+(8, 'Контент на внутренних страницах', '', 'block_inner_content', '', 1, 0, 3),
+(9, 'Подвал сайта', '', 'block_mine_footer', '', 1, 0, 7);
+HTML;
+    
+    return $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name );
+  }
+  
+  function insert_def_module_all_images_corporate( $title, $name ){
+    $output = '';
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `module`, `module_id`, `img`, `longtxt1`, `longtxt2`, `seo_h1`, `seo_title`, `seo_description`, `img_alt`, `img_title`, `hide`, `ord`, `module_ord`) VALUES ";
+    $sql_insert .=<<<HTML
+(60, '1531733498_0.jpg', 'wed_cat_articles', 7, '1533298966_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 1, 0),
+(61, '1531733498_1.jpg', 'wed_cat_articles', 7, '1533298966_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 2, 0),
+(62, '1531733498_2.jpg', 'wed_cat_articles', 7, '1533298966_2.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 3, 0),
+(63, '1531733498_3.jpg', 'wed_cat_articles', 7, '1533298966_3.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 4, 0),
+(64, '1531733498_4.jpg', 'wed_cat_articles', 7, '1533298966_4.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 5, 0),
+(65, '1531733498_5.jpg', 'wed_cat_articles', 7, '1533298966_5.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 6, 0),
+(66, '1531733498_6.jpg', 'wed_cat_articles', 7, '1533298966_6.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 7, 0),
+(67, '1531733498_7.jpg', 'wed_cat_articles', 7, '1533298966_7.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 8, 0),
+(68, '1531733498_8.jpg', 'wed_cat_articles', 7, '1533298966_8.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 9, 0),
+(69, '1531733498_9.jpg', 'wed_cat_articles', 7, '1533298966_9.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 10, 0),
+(70, '1531733498_10.jpg', 'wed_cat_articles', 7, '1533298966_10.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 11, 0),
+(71, '1531733498_11.jpg', 'wed_cat_articles', 7, '1533298966_11.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 12, 0),
+(72, '1531733498_12.jpg', 'wed_cat_articles', 7, '1533298966_12.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 13, 0);
+HTML;
+    $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CORPORATE );
+    
+    return $output;
+  }
+  
+  function insert_def_module_all_files_corporate( $title, $name ){
+    $output = '';
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `module`, `module_id`, `img`, `file`, `longtxt1`, `img_alt`, `img_title`, `hide`, `ord`, `module_ord`) VALUES ";
+    $sql_insert .=<<<HTML
+(6, '1972.pdf', 'wed_cat_articles', 8, '', '1533299057_0.pdf', NULL, NULL, NULL, 0, 0, 0),
+(7, '1973.pdf', 'wed_cat_articles', 8, '', '1533299057_1.pdf', NULL, NULL, NULL, 0, 0, 0),
+(8, '1974.pdf', 'wed_cat_articles', 8, '', '1533299057_2.pdf', NULL, NULL, NULL, 0, 0, 0),
+(9, '1975.pdf', 'wed_cat_articles', 8, '', '1533299057_3.pdf', NULL, NULL, NULL, 0, 0, 0),
+(10, '1976.pdf', 'wed_cat_articles', 8, '', '1533299057_4.pdf', NULL, NULL, NULL, 0, 0, 0),
+(11, '1977.pdf', 'wed_cat_articles', 8, '', '1533299057_5.pdf', NULL, NULL, NULL, 0, 0, 0),
+(12, '1978.pdf', 'wed_cat_articles', 8, '', '1533299057_6.pdf', NULL, NULL, NULL, 0, 0, 0),
+(13, '1979.pdf', 'wed_cat_articles', 8, '', '1533299057_7.pdf', NULL, NULL, NULL, 0, 0, 0),
+(14, '1980.pdf', 'wed_cat_articles', 8, '', '1533299057_8.pdf', NULL, NULL, NULL, 0, 0, 0),
+(15, '1981.pdf', 'wed_cat_articles', 8, '', '1533299057_9.pdf', NULL, NULL, NULL, 0, 0, 0),
+(16, '1982.pdf', 'wed_cat_articles', 8, '', '1533299057_10.pdf', NULL, NULL, NULL, 0, 0, 0),
+(17, '1983.pdf', 'wed_cat_articles', 8, '', '1533299057_11.pdf', NULL, NULL, NULL, 0, 0, 0),
+(18, '1984.pdf', 'wed_cat_articles', 8, '', '1533299057_12.pdf', NULL, NULL, NULL, 0, 0, 0),
+(19, '1985.pdf', 'wed_cat_articles', 8, '', '1533299057_13.pdf', NULL, NULL, NULL, 0, 0, 0),
+(20, '1986.pdf', 'wed_cat_articles', 8, '', '1533299057_14.pdf', NULL, NULL, NULL, 0, 0, 0),
+(21, '1987.pdf', 'wed_cat_articles', 8, '', '1533299057_15.pdf', NULL, NULL, NULL, 0, 0, 0),
+(22, '1988.pdf', 'wed_cat_articles', 8, '', '1533299057_16.pdf', NULL, NULL, NULL, 0, 0, 0),
+(23, '1989.pdf', 'wed_cat_articles', 8, '', '1533299057_17.pdf', NULL, NULL, NULL, 0, 0, 0),
+(24, '1990.pdf', 'wed_cat_articles', 8, '', '1533299057_18.pdf', NULL, NULL, NULL, 0, 0, 0),
+(25, '1991.pdf', 'wed_cat_articles', 8, '', '1533299057_19.pdf', NULL, NULL, NULL, 0, 0, 0);
+HTML;
+    
+    $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CORPORATE );
+    $output .= $this->copy_file_module( $name, SOURCE_SITE_CORPORATE );
+    
+    return $output;
+  }
+  
+  function setup_module_news_cutaway( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `date` varchar(10) DEFAULT NULL,
+        `longtxt1` text,
+        `longtxt2` text,
+        `fl_show_mine` tinyint(1) DEFAULT NULL,
+        `orm_search_name` varchar(255) DEFAULT NULL,
+        `orm_search` text,
+        `seo_h1` varchar(255) DEFAULT NULL,
+        `seo_title` varchar(255) DEFAULT NULL,
+        `seo_description` varchar(255) DEFAULT NULL,
+        `seo_keywords` varchar(255) DEFAULT NULL,
+        `img_alt` varchar(255) DEFAULT NULL,
+        `img_title` varchar(255) DEFAULT NULL,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `img`, `date`, `longtxt1`, `longtxt2`, `fl_show_mine`, `orm_search_name`, `orm_search`, `seo_h1`, `seo_title`, `seo_description`, `seo_keywords`, `img_alt`, `img_title`, `hide`, `ord`) VALUES  ";
+    $sql_insert .=<<<HTML
+(1, 'Петросян отреагировал на сообщения о разделе имущества со Степаненко', '1533303902.jpg', '2018-08-02', 'Отмечалось, что иск подала Степаненко. Петросян назвал эти новости &quot;недоразумением&quot;. Юморист, телеведущий и певец Владимир Винокур позднее заявил, что раздел имущества между Евгением Петросяном и Еленой Степаненко не должен становиться предметом интереса СМИ.', '<p>Юмористы <strong>Евгений Петросян</strong> и <strong>Елена Степаненко</strong> делят совместно нажитое имущество в&nbsp;Хамовническом суде, сообщает агентство городских новостей &laquo;<a href="https://www.mskagency.ru/materials/2805128" target="_blank">Москва</a>&raquo;.</p>\r\n\r\n<p class="image-in-text" itemprop="image" itemscope="" itemtype="https://schema.org/ImageObject"><img data-author="Фото: скриншот" src="/images/news/orig/1533303902.jpg" /><span class="title"></span><br />\r\n<span class="author">Фото: скриншот</span></p>\r\n\r\n<p>С&nbsp;иском в&nbsp;суд обратилась Степаненко, сообщили в&nbsp;пресс-службе суда. Заявление будет рассмотрено 6&nbsp;августа.</p>\r\n\r\n<p>Петросян заявил, что ему об&nbsp;этом ничего неизвестно,&nbsp;&mdash; по&nbsp;его словам, &laquo;это какое-то недоразумение&raquo;.</p>\r\n\r\n<p>Также народный артист отказался комментировать информацию о&nbsp;разводе со&nbsp;Степаненко. &laquo;Давайте без комментариев. Какая вам разница, что у&nbsp;меня происходит? Без комментариев&raquo;,&nbsp;&mdash; сказал Евгений Петросян.</p>\r\n\r\n<p>Официально юмористы о&nbsp;своем разводе не&nbsp;объявляли.</p>\r\n', 0, 'ПЕТРОСЯН ОТРЕАГИРОВАТЬ НА СООБЩЕНИЕ О РАЗДЕЛ ИМУЩЕСТВО СО СТЕПАНЕНКО', 'ЮМОРИСТ ЕВГЕНИЯ ПЕТРОСЯН И ЕЛЕНА СТЕПАНЕНКО ДЕЛИТЬ СОВМЕСТНО НАЖИТОЕ ИМУЩЕСТВО В NBSP ХАМОВНИЧЕСКИЙ СУД СООБЩАТЬ АГЕНТСТВО ГОРОДСКОЙ НОВОСТЬ LAQUO МОСКВА RAQUO ФОТО СКРИНШОТ С NBSP ИСКОМЫЙ В NBSP СУД ОБРАТИТЬСЯ СТЕПАНЕНКО СООБЩИТЬ В NBSP ПРЕСС-СЛУЖБА СУД ЗАЯВЛЕНИЕ БЫТЬ РАССМОТРЕТЬ 6 NBSP АВГУСТ ПЕТРОСЯН ЗАЯВИТЬ ЧТО ОН ОБ NBSP ЭТО НИЧЕГО НЕИЗВЕСТНЫЙ NBSP MDASH ПО NBSP ЕГО СЛОВО LAQUO ЭТО КАКОЙ-ТО НЕДОРАЗУМЕНИЕ RAQUO ТАКЖЕ НАРОДНЫЙ АРТИСТ ОТКАЗАТЬСЯ КОММЕНТИРОВАТЬ ИНФОРМАЦИЯ О NBSP РАЗВОД СО NBSP СТЕПАНЕНКО LAQUO ДАВАТЬ БЕЗ КОММЕНТАРИЙ КАКАТЬ ВЫ РАЗНИЦА ЧТО У NBSP МЕНЬ ПРОИСХОДИТЬ БЕЗ КОММЕНТАРИЙ RAQUO NBSP MDASH СКАЗАТЬ ЕВГЕНИЯ ПЕТРОСЯН ОФИЦИАЛЬНО ЮМОРИСТ О NBSP СВОЕ РАЗВОД НЕ NBSP ОБЪЯВЛЯТЬ', '', '', '', '', '', '', 0, 0),
+(2, 'Ученые назвали причину исчезновения кораблей в Бермудском треугольнике', '1533304968.jpg', '2018-08-03', 'Ученые из&nbsp;Университета Саутгемптона проверили одну из&nbsp;наиболее вероятных версий исчезновения кораблей в&nbsp;Бермудском треугольнике&nbsp;&mdash; блуждающие волны. Об этом говорится в&nbsp;документальном фильме &quot;Загадка Бермудского треугольника&quot; на&nbsp;Channel 5, сообщает Daily Star.', '<div itemprop="articleBody">\r\n<p>Ученые из&nbsp;Университета Саутгемптона (Великобритания) проверили одну из&nbsp;наиболее вероятных версий исчезновения кораблей в&nbsp;Бермудском треугольнике &ndash; блуждающие волны. Об этом говорится в&nbsp;документальном фильме &quot;Загадка Бермудского треугольника&quot; на&nbsp;Channel 5, сообщает британская газета Daily Star.</p>\r\n\r\n<p>Район Атлантического океана, ограниченный треугольником, вершинами которого являются Флорида, Бермудские острова и&nbsp;Пуэрто-Рико, известен тем, что там, как&nbsp;считается, чаще, чем в&nbsp;других районах пропадают морские и&nbsp;воздушные суда.&nbsp;</p>\r\n\r\n<div id="">\r\n<div><img alt="Поселение на Бермудских островах" src="/images_ckeditor/images/news/1479120401.jpg" style="float: left; margin: 5px 5px 5px 0px;" title="Поселение на Бермудских островах" /></div>\r\n\r\n<div>Биофизик: тайна Бермудского треугольника, возможно, близка к разгадке</div>\r\n</div>\r\n\r\n<p>Существуют множество версий загадочных исчезновений, однако основные научные: мощные выбросы метана, генерация волнами инфразвука, слишком быстрое течение и&nbsp;блуждающие волны. Последние представляют собой гигантские одиночные волны, внезапно возникающие в&nbsp;океане, высотой 20-30 метров.&nbsp;&nbsp;</p>\r\n\r\n<p><span style="font-size: 1rem;">Исследователи из&nbsp;Саутгемптона решили сосредоточиться именно на&nbsp;этой версии. Они смоделировали &quot;волну-убийцу&quot; на&nbsp;компьютере и&nbsp;направили к&nbsp;ней модель судна. Как и&nbsp;ожидалось, корабль &quot;затонул&quot; за&nbsp;считанные минуты.</span></p>\r\n\r\n<p>По мнению ученых, блуждающие волны могут объяснить исчезновение кораблей, но&nbsp;не самолетов. Поэтому говорить о&nbsp;полном раскрытии секрета загадочного треугольника пока рано.</p>\r\n\r\n<p>Ведущий научный сотрудник Института физики Земли им. О.Ю. Шмидта РАН Александр Жигалин в&nbsp;эфире радио Sputnik прокомментировал выводы британских ученых.&nbsp;</p>\r\n\r\n<p>&quot;Бермудский треугольник &ndash; это такая модная загадка, которую очень долго разгадывают, но&nbsp;так до&nbsp;конца и&nbsp;не ясно, что там происходит. Сначала одной из&nbsp;ведущих версий было то, что в&nbsp;этом районе часты густые туманы. Кстати, эта гипотеза объясняет исчезновения как&nbsp;кораблей, так и&nbsp;самолетов. А вот что касается огромных волн, то как&nbsp;раз этим данный район особенно не&nbsp;грешит: море там не&nbsp;очень глубокое, там много водорослей, и&nbsp;подняться таким волнам там очень непросто. Во всяком случае, до&nbsp;сих пор об&nbsp;этом ничего не&nbsp;было слышно. А вот &quot;метановая гипотеза&quot; с&nbsp;точки зрения физики, на&nbsp;мой взгляд, достаточно оправдана: насыщенная пузырьками газа вода обладает пониженной несущей способностью, и&nbsp;корабли при&nbsp;определенных условиях могут в&nbsp;такой воде потонуть. Что касается существования огромных &quot;волн-убийцы&quot;, то это можно считать установленным фактом &ndash; свидетельств неожиданного появления таких волн вполне достаточно. Но их появление именно в&nbsp;данном районе у&nbsp;меня вызывает сильные сомнения&quot;, &ndash; сказал Александр Жигалин.&nbsp;</p>\r\n\r\n<p>Он уверен, что компьютерное моделирование &ndash; это способ проверки гипотез, а&nbsp;строить на&nbsp;нем гипотезу нельзя.</p>\r\n\r\n<p>&quot;Я не&nbsp;очень доверяю моделированию. Мой многолетний опыт работы как&nbsp;геофизика показывает, что моделирование &ndash; это немножко лукавая вещь. Поскольку, грубо говоря, что в&nbsp;машину заложишь, то на&nbsp;выходе и&nbsp;получишь. Вот хочется нам получить волну в&nbsp;30 метров &ndash; так мы ее, скорее всего, и&nbsp;получим. Надо изучать любое явление в&nbsp;реальности, а&nbsp;не только в&nbsp;компьютере &ndash; только так мы получим ясный ответ на&nbsp;все вопросы. Моделирование &ndash; это способ проверки гипотез, а&nbsp;строить на&nbsp;нем гипотезу нельзя&quot;, &ndash; заключил Александр Жигалин.&nbsp;</p>\r\n</div>\r\n', 0, 'УЧЕНЫЙ НАЗВАТЬ ПРИЧИНА ИСЧЕЗНОВЕНИЕ КОРАБЛЬ В БЕРМУДСКИЙ ТРЕУГОЛЬНИК', 'УЧЕНЫЙ ИЗ NBSP УНИВЕРСИТЕТ САУТГЕМПТОН ВЕЛИКОБРИТАНИЯ ПРОВЕРИТЬ ОДИН ИЗ NBSP НАИБОЛЕЕ ВЕРОЯТНЫЙ ВЕРСИЯ ИСЧЕЗНОВЕНИЕ КОРАБЛЬ В NBSP БЕРМУДСКИЙ ТРЕУГОЛЬНИК NDASH БЛУЖДАТЬ ВОЛНА ОБ ЭТО ГОВОРИТЬСЯ В NBSP ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ QUOT ЗАГАДКА БЕРМУДСКИЙ ТРЕУГОЛЬНИК QUOT НА NBSP CHANNEL 5 СООБЩАТЬ БРИТАНСКИЙ ГАЗЕТА DAILY STAR РАЙОН АТЛАНТИЧЕСКИЙ ОКЕАН ОГРАНИЧЕННЫЙ ТРЕУГОЛЬНИК ВЕРШИНА КОТОРЫЙ ЯВЛЯТЬСЯ ФЛОРИДА БЕРМУДСКИЙ ОСТРОВ И NBSP ПУЭРТО-РИКО ИЗВЕСТНЫЙ ТЕМ ЧТО ТАМ КАК NBSP СЧИТАТЬСЯ ЧАЩА ЧЕМ В NBSP ДРУГОЙ РАЙОН ПРОПАДАТЬ МОРСКОЙ И NBSP ВОЗДУШНЫЙ СУД NBSP БИОФИЗИК ТАЙНА БЕРМУДСКИЙ ТРЕУГОЛЬНИК ВОЗМОЖНО БЛИЗКИЙ К РАЗГАДКА СУЩЕСТВОВАТЬ МНОЖЕСТВО ВЕРСИЯ ЗАГАДОЧНЫЙ ИСЧЕЗНОВЕНИЕ ОДНАКО ОСНОВНЫЙ НАУЧНЫЙ МОЩНЫЙ ВЫБРОС МЕТАН ГЕНЕРАЦИЯ ВОЛНА ИНФРАЗВУК СЛИШКОМ БЫСТРЫЙ ТЕЧЕНИЕ И NBSP БЛУЖДАТЬ ВОЛНА ПОСЛЕДНИЙ ПРЕДСТАВЛЯТЬ СЕБЯ ГИГАНТСКИЙ ОДИНОЧНЫЙ ВОЛНА ВНЕЗАПНО ВОЗНИКАТЬ В NBSP ОКЕАН ВЫСОТА 20-30 МЕТР NBSP NBSP ИССЛЕДОВАТЕЛЬ ИЗ NBSP САУТГЕМПТОН РЕШИТЬ СОСРЕДОТОЧИТЬСЯ ИМЕННО НА NBSP ЭТОТ ВЕРСИЯ ОНИ СМОДЕЛИРОВАТЬ QUOT ВОЛНУ-УБИЙЦА QUOT НА NBSP КОМПЬЮТЕР И NBSP НАПРАВИТЬ К NBSP ОНА МОДЕЛЬ СУДНЫЙ КАК И NBSP ОЖИДАТЬСЯ КОРАБЛЬ QUOT ЗАТОНУТЬ QUOT ЗА NBSP СЧИТАТЬ МИНУТА ПО МНЕНИЕ УЧЕНЫЙ БЛУЖДАТЬ ВОЛНА МОЧЬ ОБЪЯСНИТЬ ИСЧЕЗНОВЕНИЕ КОРАБЛЬ НО NBSP НЕ САМОЛЁТ ПОЭТОМУ ГОВОРИТЬ О NBSP ПОЛНЫЙ РАСКРЫТИЕ СЕКРЕТ ЗАГАДОЧНЫЙ ТРЕУГОЛЬНИК ПОКА РАНО ВЕДУЩИЙ НАУЧНЫЙ СОТРУДНИК ИНСТИТУТ ФИЗИК ЗЕМЛЯ ИМЯ О Ю ШМИДТ РАНА АЛЕКСАНДР ЖИГАЛИНА В NBSP ЭФИР РАДИО SPUTNIK ПРОКОММЕНТИРОВАТЬ ВЫВОД БРИТАНСКИЙ УЧЕНЫЙ NBSP QUOT БЕРМУДСКИЙ ТРЕУГОЛЬНИК NDASH ЭТО ТАКАТЬ МОДНЫЙ ЗАГАДКА КОТОРЫЙ ОЧЕНЬ ДОЛГО РАЗГАДЫВАТЬ НО NBSP ТАК ДО NBSP КОНЕЦ И NBSP НЕ ЯСНО ЧТО ТАМ ПРОИСХОДИТЬ СНАЧАЛА ОДИН ИЗ NBSP ВЕДУЩИЙ ВЕРСИЯ БЫЛО ТО ЧТО В NBSP ЭТО РАЙОН ЧАСТЫЙ ГУСТОЙ ТУМАН КСТАТИ ЭТОТ ГИПОТЕЗА ОБЪЯСНЯТЬ ИСЧЕЗНОВЕНИЕ КАК NBSP КОРАБЛЬ ТАК И NBSP САМОЛЁТ А ВОТ ЧТО КАСАТЬСЯ ОГРОМНЫЙ ВОЛНА ТО КАК NBSP РАЗ ЭТО ДАННЫЙ РАЙОН ОСОБЕННО НЕ NBSP ГРЕШИТЬ МОР ТАМ НЕ NBSP ОЧЕНЬ ГЛУБОКИЙ ТАМ МНОГО ВОДОРОСЛЬ И NBSP ПОДНЯТЬСЯ ТАКОЙ ВОЛНА ТАМ ОЧЕНЬ НЕПРОСТО ВО ВСЯКИЙ СЛУЧАЙ ДО NBSP СЕЙ ПОРА ОБ NBSP ЭТО НИЧЕГО НЕ NBSP БЫЛО СЛЫШНО А ВОТ QUOT МЕТАНОВЫЙ ГИПОТЕЗА QUOT С NBSP ТОЧКА ЗРЕНИЕ ФИЗИК НА NBSP МЫТЬ ВЗГЛЯД ДОСТАТОЧНО ОПРАВДАТЬ НАСЫЩЕННЫЙ ПУЗЫРЁК ГАЗ ВОД ОБЛАДАТЬ ПОНИЖЕННЫЙ НЕСУЩИЙ СПОСОБНОСТЬ И NBSP КОРАБЛЬ ПРИ NBSP ОПРЕДЕЛЕННЫЙ УСЛОВИЕ МОЧЬ В NBSP ТАКОЙ ВОД ПОТОНУТЬ ЧТО КАСАТЬСЯ СУЩЕСТВОВАНИЕ ОГРОМНЫЙ QUOT ВОЛН-УБИЙЦА QUOT ТО ЭТО МОЖНО СЧИТАТЬ УСТАНОВЛЕННЫЙ ФАКТ NDASH СВИДЕТЕЛЬСТВО НЕОЖИДАННЫЙ ПОЯВЛЕНИЕ ТАКОЙ ВОЛНА ВПОЛНЕ ДОСТАТОЧНО НО ИХ ПОЯВЛЕНИЕ ИМЕННО В NBSP ДАННЫЙ РАЙОН У NBSP МЕНЬ ВЫЗЫВАТЬ СИЛЬНЫЙ СОМНЕНИЕ QUOT NDASH СКАЗАТЬ АЛЕКСАНДР ЖИГАЛИНА NBSP ОН УВЕРИТЬ ЧТО КОМПЬЮТЕРНЫЙ МОДЕЛИРОВАНИЕ NDASH ЭТО СПОСОБ ПРОВЕРКА ГИПОТЕЗА А NBSP СТРОИТЬ НА NBSP НЕМОЙ ГИПОТЕЗА НЕЛЬЗЯ QUOT Я НЕ NBSP ОЧЕНЬ ДОВЕРЯТЬ МОДЕЛИРОВАНИЕ МЫТЬ МНОГОЛЕТНИЙ ОПЫТ РАБОТА КАК NBSP ГЕОФИЗИК ПОКАЗЫВАТЬ ЧТО МОДЕЛИРОВАНИЕ NDASH ЭТО НЕМНОЖКО ЛУКАВЫЙ ВЕЩЬ ПОСКОЛЬКУ ГРУБО ГОВОРИТЬ ЧТО В NBSP МАШИН ЗАЛОЖИТЬ ТО НА NBSP ВЫХОД И NBSP ПОЛУЧИТЬ ВОТ ХОТЕТЬСЯ МЫ ПОЛУЧИТЬ ВОЛНА В NBSP 30 МЕТР NDASH ТАК МЫ ЕЕ СКОРЫЙ ВСЕГО И NBSP ПОЛУЧИТЬ НАДО ИЗУЧАТЬ ЛЮБОЙ ЯВЛЕНИЕ В NBSP РЕАЛЬНОСТЬ А NBSP НЕ ТОЛЬКО В NBSP КОМПЬЮТЕР NDASH ТОЛЬКО ТАК МЫ ПОЛУЧИТЬ ЯСНЫЙ ОТВЕТ НА NBSP ВСЕ ВОПРОС МОДЕЛИРОВАНИЕ NDASH ЭТО СПОСОБ ПРОВЕРКА ГИПОТЕЗА А NBSP СТРОИТЬ НА NBSP НЕМОЙ ГИПОТЕЗА НЕЛЬЗЯ QUOT NDASH ЗАКЛЮЧИТЬ АЛЕКСАНДР ЖИГАЛИНА NBSP', '', '', '', '', '', '', 0, 0),
+(3, 'Марафон «Европа-Азия» соберёт более шести тысяч участников', '1533305394.jpg', '2018-08-01', 'Велосипедисты смогут проехать по дистанциям в 2, 14, 34 и 50 километров.', '<div>Продолжается офлайн-регистрация участников IV Международного легкоатлетического марафона &laquo;Европа &mdash; Азия&raquo;, который пройдет в Екатеринбурге в это воскресенье, 5 августа. На данный момент на одну из дистанций уже зарегистрировались более шести тысяч человек. Но организаторы ожидают еще больше участников, так как многие спортсмены регистрируются за день до марафона.<br />\r\n<br />\r\nУчастникам предлагают дистанции в 3, 10, 21 и 42 километра. Старт организуют на площади 1905 года. Через каждые пять километров марафонцев будет ждать пункт, где можно перекусить и освежиться.<br />\r\n<br />\r\nНапомним, что из-за марафона будут перекрываться улицы:<br />\r\n<br />\r\n&ndash; с 00:00 до 18:00 проспект Ленина (от переулка Банковского до улицы 8 Марта);<br />\r\n<br />\r\n&ndash; с 07:00 до 15:00 проспект Ленина (от Репина до переулка Банковского), Репина (от Металлургов до проспекта Ленина), четная сторона улицы Металлургов (от автодороги Пермь &mdash; Екатеринбург до Репина);<br />\r\n<br />\r\n&ndash; с 07:00 до 10:00 проспект Ленина (от 8 Марта до площади Кирова), площадь Кирова (от проспекта Ленина до улицы Мира), улица Мира (от Малышева до Первомайской), Толмачева (от проспекта Ленина до Царской), Царская (от Толмачева до Николая Никонова), Бориса Ельцина (от 8 Марта до Челюскинцев), 8 Марта (от проспекта Ленина до улицы Бориса Ельцина).<br />\r\n<br />\r\nТакже с 07:00 до 14:00 будет закрыто движение по дороге Пермь &mdash; Екатеринбург (с 343-го по 345-й километр, обратное направление), с 4 по 6 августа не будет работать парковка на площади 1905 года.<br />\r\n<br />\r\nКроме того, из-за забега схему движения <!--colorstart:#CC0000--><span style="color:#CC0000"><!--/colorstart--><u>изменят</u><!--colorend--></span><!--/colorend--> 17 трамвайных, девять троллейбусных маршрутов, 17 муниципальных и 29 коммерческих автобусов.</div>\r\n', 0, 'МАРАФОН ?ЕВРОПА-АЗИЯ ? СОБРАТЬ БОЛЕЕ ШЕСТЬ ТЫСЯЧА УЧАСТНИК', 'ПРОДОЛЖАТЬСЯ ОФЛАЙН-РЕГИСТРАЦИЯ УЧАСТНИК IV МЕЖДУНАРОДНЫЙ ЛЕГКОАТЛЕТИЧЕСКИЙ МАРАФОН LAQUO ЕВРОПА MDASH АЗИЯ RAQUO КОТОРЫЙ ПРОЙДЕТ В ЕКАТЕРИНБУРГ В ЭТО ВОСКРЕСЕНИЕ 5 АВГУСТ НА ДАННЫЙ МОМЕНТ НА ОДИН ИЗ ДИСТАНЦИЯ УЖЕ ЗАРЕГИСТРИРОВАТЬСЯ БОЛЕЕ ШЕСТЬ ТЫСЯЧА ЧЕЛОВЕК НО ОРГАНИЗАТОР ОЖИДАТЬ ЕЩИЙ БОЛЬШИЙ УЧАСТНИК ТАК КАК МНОГИЙ СПОРТСМЕН РЕГИСТРИРОВАТЬСЯ ЗА ДЕТЬ ДО МАРАФОН УЧАСТНИК ПРЕДЛАГАТЬ ДИСТАНЦИЯ В 3 10 21 И 42 КИЛОМЕТР СТАРТ ОРГАНИЗОВАТЬ НА ПЛОЩАДЬ 1905 ГОД ЧЕРЕЗ КАЖДЫЙ ПЯТЬ КИЛОМЕТРОВЫЙ МАРАФОНЕЦ БЫТЬ ЖДАТЬ ПУНКТ ГДЕ МОЖНО ПЕРЕКУСИТЬ И ОСВЕЖИТЬСЯ НАПОМНИТЬ ЧТО ИЗ-ЗА МАРАФОН БЫТЬ ПЕРЕКРЫВАТЬСЯ УЛИЦА NDASH С 00 00 ДО 18 00 ПРОСПЕКТ ЛЕНИН ОТ ПЕРЕУЛОК БАНКОВСКИЙ ДО УЛИЦА 8 МАРТ NDASH С 07 00 ДО 15 00 ПРОСПЕКТ ЛЕНИН ОТ РЕПИН ДО ПЕРЕУЛОК БАНКОВСКИЙ РЕПИН ОТ МЕТАЛЛУРГ ДО ПРОСПЕКТ ЛЕНИН ЧЕТНЫЙ СТОРОНА УЛИЦА МЕТАЛЛУРГ ОТ АВТОДОРОГА ПЕРМЬ MDASH ЕКАТЕРИНБУРГ ДО РЕПИН NDASH С 07 00 ДО 10 00 ПРОСПЕКТ ЛЕНИН ОТ 8 МАРТ ДО ПЛОЩАДЬ КИРОВ ПЛОЩАДЬ КИРОВ ОТ ПРОСПЕКТ ЛЕНИН ДО УЛИЦА МИР УЛИЦА МИР ОТ МАЛЫШЕВ ДО ПЕРВОМАЙСКИЙ ТОЛМАЧЕВ ОТ ПРОСПЕКТ ЛЕНИН ДО ЦАРСКИЙ ЦАРСКИЙ ОТ ТОЛМАЧЕВ ДО НИКОЛАЙ НИКОНОВ БОРИС ЕЛЬЦИН ОТ 8 МАРТ ДО ЧЕЛЮСКИНЕЦ 8 МАРТ ОТ ПРОСПЕКТ ЛЕНИН ДО УЛИЦА БОРИС ЕЛЬЦИН ТАКЖЕ С 07 00 ДО 14 00 БЫТЬ ЗАКРЫТЫЙ ДВИЖЕНИЕ ПО ДОРОГА ПЕРМЬ MDASH ЕКАТЕРИНБУРГ С 343-ГО ПО 345-Й КИЛОМЕТР ОБРАТНЫЙ НАПРАВЛЕНИЕ С 4 ПО 6 АВГУСТ НЕ БЫТЬ РАБОТАТЬ ПАРКОВКА НА ПЛОЩАДЬ 1905 ГОД КРОМЕ ТОГО ИЗ-ЗА ЗАБЕГ СХЕМА ДВИЖЕНИЕ ИЗМЕНИТЬ 17 ТРАМВАЙНЫЙ ДЕВЯТЬ ТРОЛЛЕЙБУСНЫЙ МАРШРУТ 17 МУНИЦИПАЛЬНЫЙ И 29 КОММЕРЧЕСКИЙ АВТОБУС', '', '', '', '', '', '', 0, 0);
+HTML;
+    $output = '';
+    $this->create_img_dir( $name );
+    $output .= $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CORPORATE );
+    
+    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+  }
+  
+  
+  #--------------------- setup_database_module_onlineshop ---------------------
   
   
   
@@ -1189,6 +1375,31 @@ HTML;
                                             
     $this->add_content( $this->wrap_block(  # Дополнительныe файлы
                                             $this->insert_def_module_all_files_cutaway( 'Дополнительныe файлы', 'all_files' )  ));
+  }
+  
+  function setup_database_module_corporate(){ # Корпаротивный/новостной сайт
+    
+    $this->add_content( $this->wrap_block(  "<h2>Корпаротивный/новостной сайт</h2>" ));
+    
+    
+    $this->add_content( $this->wrap_block(  # Новости
+                                            $this->setup_module_news_cutaway( 'Новости', 'news' )  ));
+    
+    $this->add_content( $this->wrap_block(  # Слайдер
+                                            $this->insert_def_module_carusel_corporate('Слайдер', 'carusel')  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Блоки на главной странице
+                                            $this->insert_def_module_mine_block_corporate( 'Блоки на главной странице', 'mine_block')  ));
+                                            
+    $this->add_content( $this->wrap_block(  # ЧПУ
+                                            $this->insert_def_module_url_corporate( 'Человеко-понятные адреса', 'url' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Дополнительныe изображения
+                                            $this->insert_def_module_all_images_corporate( 'Дополнительныe изображения', 'all_images' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Дополнительныe файлы
+                                            $this->insert_def_module_all_files_corporate( 'Дополнительныe файлы', 'all_files' )  ));
+                                            
   }
   
   function setup_database_module_onlineshop(){ # Интернет магазин
