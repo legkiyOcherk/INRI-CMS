@@ -1,9 +1,9 @@
 <?php
 require_once('lib/class.Admin.php');
 $admin = new Admin();
-require_once(NX_PATH.'iladmin/lib/class.CatCarusel.php');
-require_once(NX_PATH.'iladmin/lib/class.Image.php');
-require_once(NX_PATH.'vendors/phpmorphy/phpmorphy_init.php'); // Морфология
+require_once('lib/class.CatCarusel.php');
+require_once('lib/class.Image.php');
+require_once('../vendors/phpmorphy/phpmorphy_init.php'); // Морфология
 
 
 function get_phpmorphy($descr_str) {
@@ -112,14 +112,14 @@ class Article extends CatCarusel{
               
               if(!$val_is_cildren && !$val_is_items){
                 $output .= '
-                    <a href="..'.IA_URL.'$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}"
+                    <a href="..'.IA_URL.$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}"
                           class="btn btn-danger btn-sm" 
                           title="удалить" 
                           onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
                       <i class="fa fa-trash-o"></i>
                     </a>
                 ';
-                /*<a href="..'.IA_URL.'$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}">
+                /*<a href="..'.IA_URL.$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}">
                       <img src="..'.IA_URL.'images/icons/b_drop.png" width="16" height="16" border="0">
                     </a>*/
               }
@@ -171,19 +171,19 @@ class Article extends CatCarusel{
             </td>
         	  
             <td style="text-align: left;">
-              <a  href="..'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'"  
+              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'"  
                   class = "btn btn-info btn-sm"
                   title = "Редактировать"
                   style = "color: #fff;">
                   <i class="fa fa-pencil"></i>
               </a> &nbsp;
-              <a href="'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a><br />
-              <a href="'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$longtxt1.'</a>
+              <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a><br />
+              <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$longtxt1.'</a>
               
             </td>
 
             <td style="" class="img-act">
-              <a  href="..'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" 
+              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
                 <i class="fa fa-pencil"></i>

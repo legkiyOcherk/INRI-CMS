@@ -22,10 +22,23 @@ class SetupSite extends Setup{
     
     parent::setup_database_module_all();
     
-    #$this->setup_database_module_cutaway();  #Сайт визитка 
-     
-    $this->setup_database_module_corporate(); #Корпаротивный/новостной сайт 
-    
+    switch(SITE_TYPE){
+      case 'CUTAWAY':
+        $this->setup_database_module_cutaway();    #Сайт визитка 
+        break;
+      
+      case 'CORPORATE':
+        $this->setup_database_module_corporate();  #Корпаротивный/новостной сайт 
+        break;
+        
+      case 'ONLINESHOP':
+        $this->setup_database_module_onlineshop(); #Онлайн магазин 
+        break;
+      
+      default:
+        break;
+    }
+
   }
   
   function show(){

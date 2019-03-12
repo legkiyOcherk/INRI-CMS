@@ -201,7 +201,6 @@ class AdminCorporate extends AdminLTEextends{
     $this->mainmenu = array(	
       "index.php"              => ADM_DIR,
       "mine_block.php"         => "Главная страница",
-      #"smpl_article.php"      => "Содержание сайта",
       "articles.php?c_id=root" => "Содержание сайта",     
       "goods.php?c_id=1"       => "Каталог товаров", 
       "goods.php?view_tree"    => "Дерево всех категорий", 
@@ -376,7 +375,7 @@ class AdminCorporate extends AdminLTEextends{
     $this->scripts=array(	
 			"index.php"         => array("iscontent","is_programmer","ismanag","iscatalog","isjournalist"),
       "search.php"        => array("iscontent","is_programmer","ismanag","iscatalog","isjournalist"),
-      "smpl_article.php"  => array("ismanag", "iscontent"),
+      "articles.php"      => array("ismanag", "iscontent"),
       "mine_block.php"    => array("ismanag", "iscontent"),
       "carusel.php"       => array("ismanag", "iscontent"),
       "reservations.php"  => array("ismanag"),
@@ -625,9 +624,21 @@ class AdminOnlineshop extends AdminLTEextends{
   
 }
 
-
-
-class Admin extends AdminCutaway{
+require_once('../define.php');
+switch(SITE_TYPE){
+  case 'CUTAWAY':
+    class Admin extends AdminCutaway{};
+    break;
   
+  case 'CORPORATE':
+    class Admin extends AdminCorporate{};
+    break;
+    
+  case 'ONLINESHOP':
+    class Admin extends AdminOnlineshop{};
+    break;
+  
+  default:
+    die('Не задан тип сайта');
+    break;
 }
-
