@@ -198,12 +198,10 @@ class AdminCorporate extends AdminLTEextends{
   
   function getMineMenuListArr(){
     
-    $this->mainmenu = array(	
-      "index.php"              => ADM_DIR,
-      "mine_block.php"         => "Главная страница",
+    $this->mainmenu = array(
+      "index.php"              => ADMIN_NAME,
       "articles.php?c_id=root" => "Содержание сайта",     
-      "goods.php?c_id=1"       => "Каталог товаров", 
-      "goods.php?view_tree"    => "Дерево всех категорий", 
+      "mine_block.php"         => "Главная страница",
       "news.php"               => "Новости",
       
       #---------------------------------------------------------
@@ -211,28 +209,20 @@ class AdminCorporate extends AdminLTEextends{
       #---------------------------------------------------------
       "carusel.php"            => "Слайдер на главной",
       #---------------------------------------------------------
-      "delimiter2"             => "Справочники",
+      "delimiter2"             => "Администрирование",
       #---------------------------------------------------------
-      "availability.php"       => "Варианты наличия",
-      "country.php"            => "Страны",
-      "brand.php"              => "Бренд",
-      "units.php"              => "Ед. измерения",
-      #---------------------------------------------------------
-      "delimiter3"             => "Администрирование",
-      #---------------------------------------------------------
-      #"orders.php"            => "Корзина",
       "reservations.php"       => "Заявки",
-      "search_log.php"         => "Логи поиска",
-      "config.php"             => "Блок контакты",
+      "config.php"             => "Настройки",
       "seo.php"                => "SEO Настройки",
       "design.php"             => "Оформление сайта",
       
       #---------------------------------------------------------
-      "delimiter4"             => "Система",
+      "delimiter3"             => "Система",
       #---------------------------------------------------------
       "all_files.php"          => "Файлы",
       "all_images.php"         => "Изображения",
       "all_log.php"            => "Логи",
+      "admin_logs.php"         => "Логи входа в панель", 
       "url.php"                => "ЧПУ",
       
       /*""=>"---- --- --- ----",
@@ -260,16 +250,21 @@ class AdminCorporate extends AdminLTEextends{
                   'short_decr' => ''
                 ); break;
                 
+          case 'Главная страница':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fa fa-university" aria-hidden="true"></i>',
+                  'short_decr' => ''
+                ); break;
+                
           case 'Новости':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-list-ul" aria-hidden="true"></i>',
+                  'icon' => '<i class="fa fa-newspaper-o" aria-hidden="true"></i>',
                   'short_decr' => ''
                 ); break;
                 
           case 'Слайдер на главной':
-          case 'Слайдер Гостиница':
-          case 'Слайдер Кафе':
           case 'Изображения':
               $this->mainmenu_add_data[$v] = 
                 array(
@@ -277,40 +272,25 @@ class AdminCorporate extends AdminLTEextends{
                   'short_decr' => ''
                 ); break;
                 
-          case 'Каталог':
-              $this->mainmenu_add_data[$v] = 
-                array(
-                  'icon' => '<i class="fa fa-folder-open-o"></i>',
-                  'short_decr' => ''
-                ); break;
-          
-          case 'Полный каталог':
-              $this->mainmenu_add_data[$v] = 
-                array(
-                  'icon' => '<i class="fa fa-sitemap" aria-hidden="true"></i>',
-                  'short_decr' => ''
-                ); break;      
-                
-          case 'Отзывы':
-              $this->mainmenu_add_data[$v] = 
-                array(
-                  'icon' => '<i class="fa fa-comment-o" aria-hidden="true"></i>',
-                  'short_decr' => ''
-                ); break;
-               
-               
           case 'Партнеры':
           case 'Блок контакты':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-handshake-o" aria-hidden="true"></i> ',
+                  'icon' => '<i class="fa fa-handshake-o" aria-hidden="true"></i>',
                   'short_decr' => ''
                 ); break;
+                
+          case 'Настройки':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fa fa-gear" aria-hidden="true"></i> ',
+                  'short_decr' => ''
+                ); break; 
                 
           case 'Оформление сайта':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-play" aria-hidden="true"></i> ',
+                  'icon' => '<i class="fa fa-paint-brush" aria-hidden="true"></i>',
                   'short_decr' => ''
                 ); break;
                 
@@ -349,10 +329,24 @@ class AdminCorporate extends AdminLTEextends{
                   'short_decr' => ''
                 ); break;
                 
+          case 'Логи входа в панель':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fa fa-exchange" aria-hidden="true"></i>',
+                  'short_decr' => ''
+                ); break;      
+                
+          case 'ЧПУ':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fa fa-link" aria-hidden="true"></i>',
+                  'short_decr' => ''
+                ); break;      
+                
           case 'Пользователи':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-user fa-fw"></i>',
+                  'icon' => '<i class="fa fa-user"></i>',
                   'short_decr' => ''
                 ); break;
               

@@ -1175,31 +1175,30 @@ HTML;
     $sql_insert = "
       INSERT INTO `$table` (`id`, `title`, `url`, `module`, `module_id`, `hide`, `ord`) VALUES ";
     $sql_insert .=<<<HTML
-      (8, 'Блок 1', 'blok', 'wed_mine_block', 2, 0, 6),
-      (9, 'Блок 2', 'blok-74548', 'wed_mine_block', 3, 0, 7),
-      (10, 'Блок 3', 'blok-86291', 'wed_mine_block', 4, 0, 8),
-      (11, 'Слайдер на главной', 'slayder-na-glavnoy', 'wed_mine_block', 5, 0, 9),
-      (13, 'Шапка сайта', 'shapka-sayta', 'wed_mine_block', 6, 0, 11),
-      (14, 'Главное меню', 'glavnoe-menyu', 'wed_mine_block', 7, 0, 12),
-      (15, 'Контент на внутренних страницах', 'kontent-na-vnutrennih-stranicah', 'wed_mine_block', 8, 0, 13),
+      (8, 'Блок 1', 'blok', 'inri_mine_block', 2, 0, 6),
+      (9, 'Блок 2', 'blok-74548', 'inri_mine_block', 3, 0, 7),
+      (10, 'Блок 3', 'blok-86291', 'inri_mine_block', 4, 0, 8),
+      (11, 'Слайдер на главной', 'slayder-na-glavnoy', 'inri_mine_block', 5, 0, 9),
+      (13, 'Шапка сайта', 'shapka-sayta', 'inri_mine_block', 6, 0, 11),
+      (14, 'Главное меню', 'glavnoe-menyu', 'inri_mine_block', 7, 0, 12),
+      (15, 'Контент на внутренних страницах', 'kontent-na-vnutrennih-stranicah', 'inri_mine_block', 8, 0, 13),
       (16, 'robots.txt', 'robots_txt', 'robots_txt', 0, 0, 14),
-      (17, 'Главное меню', 'glavnoe-menyu-65489', 'wed_cat_articles', 1, 0, 15),
-      (18, 'Главная', 'glavnaya', 'wed_cat_articles', 2, 0, 16),
-      (19, 'О компании', 'kompanii', 'wed_cat_articles', 3, 0, 17),
-      (20, 'Контакты', 'kontakty', 'wed_cat_articles', 4, 0, 18),
-      (21, 'Статьи', 'stati', 'wed_cat_articles', 5, 0, 19),
+      (17, 'Главное меню', 'glavnoe-menyu-65489', 'inri_articles_cat', 1, 0, 15),
+      (18, 'Главная', 'glavnaya', 'inri_articles_cat', 2, 0, 16),
+      (19, 'О компании', 'kompanii', 'inri_articles_cat', 3, 0, 17),
+      (20, 'Контакты', 'kontakty', 'inri_articles_cat', 4, 0, 18),
+      (21, 'Статьи', 'stati', 'inri_articles_cat', 5, 0, 19),
       (22, 'Основатель диджитал-студии Finch — о веб-дизайне в России и США', 'osnovatel-didzhitalstudii-finch-o', 'inri_articles', 1, 0, 20),
       (23, 'Киану Ривз: «Россия ассоциируется у меня с моральной силой»', 'kianu-rivz-rossiya-associiruetsya', 'inri_articles', 2, 0, 21),
       (24, 'От бритвы до автомобиля: почему мир переходит к сервисам по подписке', 'britvy-do-avtomobilya-pochemu-mir', 'inri_articles', 3, 0, 22),
-      (25, 'Контент', 'kontent', 'wed_cat_articles', 6, 0, 23),
-      (26, 'Фотогалерея', 'fotogalereya', 'wed_cat_articles', 7, 0, 24),
-      (27, 'Документы', 'dokumenty', 'wed_cat_articles', 8, 0, 25),
-      (28, 'Новости', 'news', 'wed_news', 0, 0, 26),
-      (29, 'Блог', 'blog', 'wed_blog', 0, 0, 27),
-      (30, 'Новости', 'novosti', 'wed_cat_articles', 9, 0, 28),
-      (31, 'Петросян отреагировал на сообщения о разделе имущества со Степаненко', 'petrosyan-otreagiroval-na-soobscheniya-o', 'wed_news', 1, 0, 29),
-      (32, 'Ученые назвали причину исчезновения кораблей в Бермудском треугольнике', 'uchenye-nazvali-prichinu-ischeznoveniya', 'wed_news', 2, 0, 30),
-      (33, 'Марафон «Европа-Азия» соберёт более шести тысяч участников', 'marafon-evropaaziya-soberyot-bolee', 'wed_news', 3, 0, 31);
+      (25, 'Контент', 'kontent', 'inri_articles_cat', 6, 0, 23),
+      (26, 'Фотогалерея', 'fotogalereya', 'inri_articles_cat', 7, 0, 24),
+      (27, 'Документы', 'dokumenty', 'inri_articles_cat', 8, 0, 25),
+      (28, 'Новости', 'news', 'inri_news', 0, 0, 26), 
+      (30, 'Новости', 'novosti', 'inri_articles_cat', 9, 0, 28),
+      (31, 'Петросян отреагировал на сообщения о разделе имущества со Степаненко', 'petrosyan-otreagiroval-na-soobscheniya-o', 'inri_news', 1, 0, 29),
+      (32, 'Ученые назвали причину исчезновения кораблей в Бермудском треугольнике', 'uchenye-nazvali-prichinu-ischeznoveniya', 'inri_news', 2, 0, 30),
+      (33, 'Марафон «Европа-Азия» соберёт более шести тысяч участников', 'marafon-evropaaziya-soberyot-bolee', 'inri_news', 3, 0, 31);
 HTML;
         
     return $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name );
@@ -1233,19 +1232,19 @@ HTML;
     $sql_insert = "
       INSERT INTO `$table` (`id`, `title`, `module`, `module_id`, `img`, `longtxt1`, `longtxt2`, `seo_h1`, `seo_title`, `seo_description`, `img_alt`, `img_title`, `hide`, `ord`, `module_ord`) VALUES ";
     $sql_insert .=<<<HTML
-(60, '1531733498_0.jpg', 'wed_cat_articles', 7, '1533298966_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 1, 0),
-(61, '1531733498_1.jpg', 'wed_cat_articles', 7, '1533298966_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 2, 0),
-(62, '1531733498_2.jpg', 'wed_cat_articles', 7, '1533298966_2.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 3, 0),
-(63, '1531733498_3.jpg', 'wed_cat_articles', 7, '1533298966_3.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 4, 0),
-(64, '1531733498_4.jpg', 'wed_cat_articles', 7, '1533298966_4.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 5, 0),
-(65, '1531733498_5.jpg', 'wed_cat_articles', 7, '1533298966_5.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 6, 0),
-(66, '1531733498_6.jpg', 'wed_cat_articles', 7, '1533298966_6.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 7, 0),
-(67, '1531733498_7.jpg', 'wed_cat_articles', 7, '1533298966_7.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 8, 0),
-(68, '1531733498_8.jpg', 'wed_cat_articles', 7, '1533298966_8.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 9, 0),
-(69, '1531733498_9.jpg', 'wed_cat_articles', 7, '1533298966_9.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 10, 0),
-(70, '1531733498_10.jpg', 'wed_cat_articles', 7, '1533298966_10.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 11, 0),
-(71, '1531733498_11.jpg', 'wed_cat_articles', 7, '1533298966_11.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 12, 0),
-(72, '1531733498_12.jpg', 'wed_cat_articles', 7, '1533298966_12.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 13, 0);
+(60, '1531733498_0.jpg', 'inri_articles_cat', 7, '1533298966_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 1, 0),
+(61, '1531733498_1.jpg', 'inri_articles_cat', 7, '1533298966_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 2, 0),
+(62, '1531733498_2.jpg', 'inri_articles_cat', 7, '1533298966_2.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 3, 0),
+(63, '1531733498_3.jpg', 'inri_articles_cat', 7, '1533298966_3.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 4, 0),
+(64, '1531733498_4.jpg', 'inri_articles_cat', 7, '1533298966_4.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 5, 0),
+(65, '1531733498_5.jpg', 'inri_articles_cat', 7, '1533298966_5.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 6, 0),
+(66, '1531733498_6.jpg', 'inri_articles_cat', 7, '1533298966_6.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 7, 0),
+(67, '1531733498_7.jpg', 'inri_articles_cat', 7, '1533298966_7.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 8, 0),
+(68, '1531733498_8.jpg', 'inri_articles_cat', 7, '1533298966_8.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 9, 0),
+(69, '1531733498_9.jpg', 'inri_articles_cat', 7, '1533298966_9.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 10, 0),
+(70, '1531733498_10.jpg', 'inri_articles_cat', 7, '1533298966_10.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 11, 0),
+(71, '1531733498_11.jpg', 'inri_articles_cat', 7, '1533298966_11.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 12, 0),
+(72, '1531733498_12.jpg', 'inri_articles_cat', 7, '1533298966_12.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 13, 0);
 HTML;
     $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
     $output .= $this->copy_img_module( $name, SOURCE_SITE_CORPORATE );
@@ -1261,26 +1260,26 @@ HTML;
     $sql_insert = "
       INSERT INTO `$table` (`id`, `title`, `module`, `module_id`, `img`, `file`, `longtxt1`, `img_alt`, `img_title`, `hide`, `ord`, `module_ord`) VALUES ";
     $sql_insert .=<<<HTML
-(6, '1972.pdf', 'wed_cat_articles', 8, '', '1533299057_0.pdf', NULL, NULL, NULL, 0, 0, 0),
-(7, '1973.pdf', 'wed_cat_articles', 8, '', '1533299057_1.pdf', NULL, NULL, NULL, 0, 0, 0),
-(8, '1974.pdf', 'wed_cat_articles', 8, '', '1533299057_2.pdf', NULL, NULL, NULL, 0, 0, 0),
-(9, '1975.pdf', 'wed_cat_articles', 8, '', '1533299057_3.pdf', NULL, NULL, NULL, 0, 0, 0),
-(10, '1976.pdf', 'wed_cat_articles', 8, '', '1533299057_4.pdf', NULL, NULL, NULL, 0, 0, 0),
-(11, '1977.pdf', 'wed_cat_articles', 8, '', '1533299057_5.pdf', NULL, NULL, NULL, 0, 0, 0),
-(12, '1978.pdf', 'wed_cat_articles', 8, '', '1533299057_6.pdf', NULL, NULL, NULL, 0, 0, 0),
-(13, '1979.pdf', 'wed_cat_articles', 8, '', '1533299057_7.pdf', NULL, NULL, NULL, 0, 0, 0),
-(14, '1980.pdf', 'wed_cat_articles', 8, '', '1533299057_8.pdf', NULL, NULL, NULL, 0, 0, 0),
-(15, '1981.pdf', 'wed_cat_articles', 8, '', '1533299057_9.pdf', NULL, NULL, NULL, 0, 0, 0),
-(16, '1982.pdf', 'wed_cat_articles', 8, '', '1533299057_10.pdf', NULL, NULL, NULL, 0, 0, 0),
-(17, '1983.pdf', 'wed_cat_articles', 8, '', '1533299057_11.pdf', NULL, NULL, NULL, 0, 0, 0),
-(18, '1984.pdf', 'wed_cat_articles', 8, '', '1533299057_12.pdf', NULL, NULL, NULL, 0, 0, 0),
-(19, '1985.pdf', 'wed_cat_articles', 8, '', '1533299057_13.pdf', NULL, NULL, NULL, 0, 0, 0),
-(20, '1986.pdf', 'wed_cat_articles', 8, '', '1533299057_14.pdf', NULL, NULL, NULL, 0, 0, 0),
-(21, '1987.pdf', 'wed_cat_articles', 8, '', '1533299057_15.pdf', NULL, NULL, NULL, 0, 0, 0),
-(22, '1988.pdf', 'wed_cat_articles', 8, '', '1533299057_16.pdf', NULL, NULL, NULL, 0, 0, 0),
-(23, '1989.pdf', 'wed_cat_articles', 8, '', '1533299057_17.pdf', NULL, NULL, NULL, 0, 0, 0),
-(24, '1990.pdf', 'wed_cat_articles', 8, '', '1533299057_18.pdf', NULL, NULL, NULL, 0, 0, 0),
-(25, '1991.pdf', 'wed_cat_articles', 8, '', '1533299057_19.pdf', NULL, NULL, NULL, 0, 0, 0);
+(6, '1972.pdf', 'inri_articles_cat', 8, '', '1533299057_0.pdf', NULL, NULL, NULL, 0, 0, 0),
+(7, '1973.pdf', 'inri_articles_cat', 8, '', '1533299057_1.pdf', NULL, NULL, NULL, 0, 0, 0),
+(8, '1974.pdf', 'inri_articles_cat', 8, '', '1533299057_2.pdf', NULL, NULL, NULL, 0, 0, 0),
+(9, '1975.pdf', 'inri_articles_cat', 8, '', '1533299057_3.pdf', NULL, NULL, NULL, 0, 0, 0),
+(10, '1976.pdf', 'inri_articles_cat', 8, '', '1533299057_4.pdf', NULL, NULL, NULL, 0, 0, 0),
+(11, '1977.pdf', 'inri_articles_cat', 8, '', '1533299057_5.pdf', NULL, NULL, NULL, 0, 0, 0),
+(12, '1978.pdf', 'inri_articles_cat', 8, '', '1533299057_6.pdf', NULL, NULL, NULL, 0, 0, 0),
+(13, '1979.pdf', 'inri_articles_cat', 8, '', '1533299057_7.pdf', NULL, NULL, NULL, 0, 0, 0),
+(14, '1980.pdf', 'inri_articles_cat', 8, '', '1533299057_8.pdf', NULL, NULL, NULL, 0, 0, 0),
+(15, '1981.pdf', 'inri_articles_cat', 8, '', '1533299057_9.pdf', NULL, NULL, NULL, 0, 0, 0),
+(16, '1982.pdf', 'inri_articles_cat', 8, '', '1533299057_10.pdf', NULL, NULL, NULL, 0, 0, 0),
+(17, '1983.pdf', 'inri_articles_cat', 8, '', '1533299057_11.pdf', NULL, NULL, NULL, 0, 0, 0),
+(18, '1984.pdf', 'inri_articles_cat', 8, '', '1533299057_12.pdf', NULL, NULL, NULL, 0, 0, 0),
+(19, '1985.pdf', 'inri_articles_cat', 8, '', '1533299057_13.pdf', NULL, NULL, NULL, 0, 0, 0),
+(20, '1986.pdf', 'inri_articles_cat', 8, '', '1533299057_14.pdf', NULL, NULL, NULL, 0, 0, 0),
+(21, '1987.pdf', 'inri_articles_cat', 8, '', '1533299057_15.pdf', NULL, NULL, NULL, 0, 0, 0),
+(22, '1988.pdf', 'inri_articles_cat', 8, '', '1533299057_16.pdf', NULL, NULL, NULL, 0, 0, 0),
+(23, '1989.pdf', 'inri_articles_cat', 8, '', '1533299057_17.pdf', NULL, NULL, NULL, 0, 0, 0),
+(24, '1990.pdf', 'inri_articles_cat', 8, '', '1533299057_18.pdf', NULL, NULL, NULL, 0, 0, 0),
+(25, '1991.pdf', 'inri_articles_cat', 8, '', '1533299057_19.pdf', NULL, NULL, NULL, 0, 0, 0);
 HTML;
     
     $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 

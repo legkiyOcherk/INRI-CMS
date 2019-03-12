@@ -30,7 +30,7 @@ class SiteCorporate extends SiteBase{
                 <div class="collapse navbar-collapse" id="navbarsTop">
                   
                   <ul class="navbar-nav mr-auto">';
-    $output .= Article::show_head_chief_menu2($this); # Меню с выподашкой cat_articles
+    $output .= Article::show_head_chief_menu2($this, DB_PFX.'articles_cat', DB_PFX.'articles', DB_PFX.'url'); # Меню с выподашкой cat_articles
     #$output .= Article::show_head_chief_menu($this); # Меню cat_articles
     #$output .= Article::show_simple_menu($this);     # Меню smpl_article
     $output .= '
@@ -48,6 +48,63 @@ class SiteCorporate extends SiteBase{
     
     return $output;
   }
+  
+    function getFooter(){
+    $output = '';
+        
+    $output .= '
+      </div>
+    </div>
+    ';
+    
+    $output .= '
+    <!-- footer -->
+    <div class="footer_box">
+      <div class="footer">
+        
+        <div class="row">
+          <div class="col-12 footer_menu_box">
+            <ul class="footer_menu ">';
+    $output .= Article::show_footer_menu($this, DB_PFX.'articles_cat', DB_PFX.'articles', DB_PFX.'url');
+    #$output .= Article::show_simple_menu($this);
+    $output .= '
+            </ul>
+          </div>';
+    
+    if($this->soc_net){
+      $output .= '
+          <div class="col-12 soc_net_box">
+            <div class = "soc_net">'.$this->soc_net.'</div>
+          </div>';
+    }
+          
+    $output .= '      
+        </div>';
+    if( isset($this->phone_header) && $this->phone_header ){
+      $output .= '
+        <div class="row">
+          <div class="col-12 tac">
+            '.$this->phone_header.'
+          </div>
+        </div>';
+    }
+    if( isset($this->adress_header) && $this->adress_header ){
+      $output .= '
+        <div class="row">
+          <div class="col-12 tac">
+            '.$this->adress_header.'
+          </div>
+        </div>';
+    }
+    $output .= '
+      </div>
+    </div>
+    <!-- End footer -->';
+    
+    
+    return  $output;
+  }
+  
  
 }
 

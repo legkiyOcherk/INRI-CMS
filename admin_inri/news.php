@@ -119,7 +119,7 @@ class News extends Carusel{
         case "09": $month = ' сентября ';break;       
         case "10": $month = ' октября '; break;       
         case "11": $month = ' ноября ';  break;       
-        case "12": $month = ' декобря '; break; 
+        case "12": $month = ' декабря '; break; 
       }
       
       $date_str = $day.' '.$month.' '.$year;

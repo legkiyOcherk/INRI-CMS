@@ -60,17 +60,19 @@ class Article {
     }
     
     return $output;
-  }
+  } 
   
-  static function show_head_chief_menu2($site, &$sub_menu = ''){
+  static function show_head_chief_menu2($site, $cat_table_name, $table_name, $url_table_name, &$sub_menu = ''){
     $output = $all_sub_menu = '';
-    $menu_items = db::select("*", "il_cat_articles", "parent_id	= 1 AND hide = 0 ", "`ord`" );
     $arr_act_cat_items = array();
-    if($site->getModule() == 'il_cat_articles' && $site->getModuleId()){
+    
+    $menu_items = db::select("*", $cat_table_name, "parent_id	= 1 AND hide = 0 ", "`ord`" );
+    
+    if($site->getModule() == $cat_table_name && $site->getModuleId()){
       $arr_act_cat_items[] = $site->getModuleId();
       $arr_act_cat_items = self::get_arr_act_cat_items($site->getModuleId(), $arr_act_cat_items); 
-    }elseif($site->getModule() == 'il_articles' && $site->getModuleId()){
-      $act_cat_id = db::value('cat_id', 'il_articles', 'id = '.$site->getModuleId());
+    }elseif($site->getModule() == $table_name && $site->getModuleId()){
+      $act_cat_id = db::value('cat_id', $table_name, 'id = '.$site->getModuleId());
       $arr_act_cat_items[] = $act_cat_id;
       $arr_act_cat_items = self::get_arr_act_cat_items($act_cat_id, $arr_act_cat_items); 
     }
@@ -88,7 +90,7 @@ class Article {
         if ($link){
           $href = $link;   
         }else{
-          $href = "/".Url::getStaticUrlForModuleAndModuleId('il_url', 'il_cat_articles', $id);
+          $href = "/".Url::getStaticUrlForModuleAndModuleId($url_table_name, $cat_table_name, $id);
         }
         
         /*(!$i) ? $active = ' active ' : $active = ''; */
@@ -105,14 +107,14 @@ class Article {
             <a class="nav-link" href="'.$href.'">'.$title.'</a>';
             
         $s_sub = "
-            SELECT `il_cat_articles`.*,  `il_url`.`url` 
-            FROM `il_cat_articles`
-            LEFT JOIN `il_url`
-            ON (`il_url`.`module` = 'il_cat_articles') AND (`il_url`.`module_id` = `il_cat_articles`.`id`)
-            WHERE `il_cat_articles`.`parent_id` = ".$id."
-            AND `il_cat_articles`.`hide` = 0
-            ORDER BY `il_cat_articles`.`ord`
-          "; #pri($s_sub);
+            SELECT `$cat_table_name`.*,  `$url_table_name`.`url` 
+            FROM `$cat_table_name`
+            LEFT JOIN `$url_table_name`
+            ON (`$url_table_name`.`module` = '$cat_table_name') AND (`$url_table_name`.`module_id` = `$cat_table_name`.`id`)
+            WHERE `$cat_table_name`.`parent_id` = ".$id."
+            AND `$cat_table_name`.`hide` = 0
+            ORDER BY `$cat_table_name`.`ord`
+          "; #pri($s_sub); 
           if( $q_sub = $site->pdo->query($s_sub))
             if($q_sub->rowCount()){
               $output .= '
@@ -139,13 +141,13 @@ class Article {
         
         
           $s_sub = "
-            SELECT `il_cat_articles`.*,  `il_url`.`url` 
-            FROM `il_cat_articles`
-            LEFT JOIN `il_url`
-            ON (`il_url`.`module` = 'il_cat_articles') AND (`il_url`.`module_id` = `il_cat_articles`.`id`)
-            WHERE `il_cat_articles`.`parent_id` = ".$id."
-            AND `il_cat_articles`.`hide` = 0
-            ORDER BY `il_cat_articles`.`ord`
+            SELECT `$cat_table_name`.*,  `$url_table_name`.`url` 
+            FROM `$cat_table_name`
+            LEFT JOIN `$url_table_name`
+            ON (`$url_table_name`.`module` = '$cat_table_name') AND (`$url_table_name`.`module_id` = `$cat_table_name`.`id`)
+            WHERE `$cat_table_name`.`parent_id` = ".$id."
+            AND `$cat_table_name`.`hide` = 0
+            ORDER BY `$cat_table_name`.`ord`
           ";  
           
           if($q_sub = $site->pdo->query($s_sub))
@@ -505,17 +507,17 @@ class Article {
     return $output;
   }
   
-  static function show_footer_menu(&$site){
+  static function show_footer_menu(&$site, $cat_table_name, $table_name, $url_table_name){
     $output = '';
     
     $s = "
-      SELECT `il_cat_articles`.*,  `il_url`.`url` 
-      FROM `il_cat_articles`
-      LEFT JOIN `il_url`
-      ON (`il_url`.`module` = 'il_cat_articles') AND (`il_url`.`module_id` = `il_cat_articles`.`id`)
-      WHERE `il_cat_articles`.`parent_id` = 1
-      AND `il_cat_articles`.`hide` = 0
-      ORDER BY `il_cat_articles`.`ord`
+      SELECT `$cat_table_name`.*,  `$url_table_name`.`url` 
+      FROM `$cat_table_name`
+      LEFT JOIN `$url_table_name`
+      ON (`$url_table_name`.`module` = '$cat_table_name') AND (`$url_table_name`.`module_id` = `$cat_table_name`.`id`)
+      WHERE `$cat_table_name`.`parent_id` = 1
+      AND `$cat_table_name`.`hide` = 0
+      ORDER BY `$cat_table_name`.`ord`
     "; #pri($s);
     
     if($q = $site->pdo->query($s))

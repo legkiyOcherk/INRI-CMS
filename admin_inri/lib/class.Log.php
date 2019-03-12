@@ -224,9 +224,10 @@ class Log extends BaseCarusel{
     
     if($type && ( $type != 'delete') && $module && $module_id ){
           
-      if(substr_count($module, $this->prefix."cat_")){
-        $ed = "editc";
-        $md = str_replace($this->prefix."cat_", '', $module);  
+      if(substr_count($module, "_cat") && substr_count($module, $this->prefix) ){
+        $ed = "editc"; 
+        $md = str_replace("_cat", '', $module);
+        $md = str_replace($this->prefix, '', $md);   
       }else{
         $ed = "edits";
         $md = str_replace($this->prefix, '', $module);  

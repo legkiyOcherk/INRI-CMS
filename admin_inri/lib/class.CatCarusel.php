@@ -1,6 +1,6 @@
 <?php
 require_once "class.BaseCarusel.php"; 
-
+ 
 class CatCarusel extends BaseCarusel{
 
   var $img_ideal_width = 960;
@@ -73,9 +73,10 @@ class CatCarusel extends BaseCarusel{
     $this->pdo = db_open();
     $this->carusel_name = "carusel_01";
     
+    
     if($carusel_name){ 
       $this->carusel_name = $carusel_name;
-      $this->cat_carusel_name = $carusel_name.'_cat';;
+      $this->cat_carusel_name = $this->prefix.$carusel_name.'_cat';
     }else{
       $this->carusel_name = "carusel_01"; 
       $this->cat_carusel_name = "carusel_01_cat"; 
@@ -469,7 +470,7 @@ class CatCarusel extends BaseCarusel{
 		$where = ($parent) ? "parent_id = $parent" : "parent_id = 0 ";
     $s = "
       SELECT `id`, `title`
-      FROM `".$this->prefix."cat_".$this->carusel_name."`
+      FROM `".$this->cat_carusel_name."`
       WHERE $where
       ORDER BY `ord`
     ";
@@ -1313,14 +1314,14 @@ HTML;
     //Генерация Url
     if($this->url_item && $id && $item['title']){
       
-      $url = $this->url_item->getUrlForModuleAndModuleId($this->prefix."cat_".$this->carusel_name, $id);
+      $url = $this->url_item->getUrlForModuleAndModuleId($this->cat_carusel_name, $id);
       
       if($url){
         $tmp = '<a class="btn btn-info pull-right" href="/'.$url.'" target = "_blank" >Посмотреть на сайте</a>';
         $output .= $this->show_form_row(null, $tmp);
       } 
         
-       $output .= $this->show_form_row('ЧПУ', $this->url_item->show_form_field($_POST['url'], $this->prefix."cat_".$this->carusel_name, $id, $item['title']));  
+       $output .= $this->show_form_row('ЧПУ', $this->url_item->show_form_field($_POST['url'], $this->cat_carusel_name, $id, $item['title']));  
       
     }
     
@@ -1335,6 +1336,7 @@ HTML;
       $type = '';
       if( in_array($key, array("color"))) $type = 'color';
       if( in_array($key, array("date"))) $type = 'date';
+      if( in_array($key, array("title", "link", "seo_h1", "seo_title", "seo_keywords", "img_alt", "img_title" ))) $type = 'text';
       
       if($key == 'parent_id'){
         ($item) ? $item_cat_id = htmlspecialchars($item[$key]) : $item_cat_id = $_SESSION[$this->carusel_name]['c_id'];
@@ -1386,7 +1388,7 @@ HTML;
           
           $output .= $this->show_form_row( 
             $val.$this->getCatErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'">'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'">'
           );
           
         }else{
@@ -1401,7 +1403,7 @@ HTML;
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getCatErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="#FFFFFF">'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="#FFFFFF">'
           );
           
         }else{
@@ -1463,7 +1465,7 @@ HTML;
     $output .= ' <BR/><BR/><INPUT type="submit" value="сохранить" class="btn btn-success btn-large" id="submit">';
     $output .= '</FORM></div>';
     
-    $sql="SHOW TABLE STATUS LIKE '".$this->prefix."cat_".$this->carusel_name."'";
+    $sql="SHOW TABLE STATUS LIKE '".$this->cat_carusel_name."'";
  		$result = $this->pdo->query($sql);
     $arr = $result->fetch();
     $nextid=$arr['Auto_increment'];
@@ -1500,32 +1502,32 @@ HTML;
       if(
         $this->pdo->query(
           $s = "
-            INSERT INTO `".$this->prefix."cat_".$this->carusel_name."` ($sql_names) 
-            VALUES                                              ($sql_vals)
+            INSERT INTO `".$this->cat_carusel_name."` ($sql_names) 
+            VALUES                                    ($sql_vals)
           "
         )
       ){
         $id = $this->pdo->lastInsertId();
         
         if($this->log) // Ведение лога
-          $res_log = $this->log->addLogRecord("Создание", "create", $this->prefix."cat_".$this->carusel_name, $id, ''/*, addslashes($s)*/);
+          $res_log = $this->log->addLogRecord("Создание", "create", $this->cat_carusel_name, $id, ''/*, addslashes($s)*/);
         
       }else{
         echo "<pre>s = $s</pre>";
         $carusel_error = "Произошла ошибка при СОЗДАНИИ записи в бд функсия create_cat_slide()";
         
         if($this->log) // Ведение лога
-          $res_log = $this->log->addLogRecord($carusel_error, "error", $this->prefix."cat_".$this->carusel_name, 0, '', addslashes($s) );
+          $res_log = $this->log->addLogRecord($carusel_error, "error", $this->cat_carusel_name, 0, '', addslashes($s) );
           
         exit;
       }
       
 
       if ($name = $this->load_cat_picture()){
-  		  $this->pdo->query("UPDATE `".$this->prefix."cat_".$this->carusel_name."` SET `img` = '$name' WHERE `id` = '$id'");
+  		  $this->pdo->query("UPDATE `".$this->cat_carusel_name."` SET `img` = '$name' WHERE `id` = '$id'");
         
         if($this->log)// Ведение лога
-          $res_log = $this->log->addLogRecord("Загрузка изображения", "load_picture", $this->prefix."cat_".$this->carusel_name, $id );
+          $res_log = $this->log->addLogRecord("Загрузка изображения", "load_picture", $this->cat_carusel_name, $id );
       
   	  }
       
@@ -1574,8 +1576,8 @@ HTML;
     (!is_null($this->admin)) ?  : $output .=  '<h3>'.$title.'</h3><br><br>';
     
     if(is_null($item)){
-       #$item =  mysql_fetch_array(mysql_query("SELECT * FROM `".$this->prefix."cat_".$this->carusel_name."` WHERE `id` = '$id'"));
-       $s = "SELECT * FROM `".$this->prefix."cat_".$this->carusel_name."` WHERE `id` = '$id'";
+       #$item =  mysql_fetch_array(mysql_query("SELECT * FROM `".$this->cat_carusel_name."` WHERE `id` = '$id'"));
+       $s = "SELECT * FROM `".$this->cat_carusel_name."` WHERE `id` = '$id'";
        $q = $this->pdo->query($s);
        $item = $q->fetch();
     }else{
@@ -1593,15 +1595,15 @@ HTML;
       
       //Генерация Url
       if($this->url_item && $id && !isset($_POST['url'])){
-        $_POST['url'] = $this->url_item->getUrlForModuleAndModuleId($this->prefix."cat_".$this->carusel_name, $id);
+        $_POST['url'] = $this->url_item->getUrlForModuleAndModuleId($this->cat_carusel_name, $id);
       }
       
       $output .= $this->show_cat_form($item, '', $id);
       
       $item_img = $item['img'];
       if(!$item_img){
-        #$item_img = db::value('img', $this->prefix."cat_".$this->carusel_name, "id = $id");
-        $s = "SELECT img FROM `".$this->prefix."cat_".$this->carusel_name."` WHERE `id` = $id";
+        #$item_img = db::value('img', $this->cat_carusel_name, "id = $id");
+        $s = "SELECT img FROM `".$this->cat_carusel_name."` WHERE `id` = $id";
         $q = $this->pdo->query($s);
         $r = $q->fetch();
         $item_img = $r['img'];
@@ -1618,12 +1620,12 @@ HTML;
       
       //Модуль картинок
       if($this->images_items && $id ){
-        $output .= $this->images_items->showImageForm($this->prefix."cat_".$this->carusel_name, $id);
+        $output .= $this->images_items->showImageForm($this->cat_carusel_name, $id);
       }
       
       //Модуль файлов
       if($this->files_items && $id ){
-        $output .= $this->files_items->showFilesForm($this->prefix."cat_".$this->carusel_name, $id);
+        $output .= $this->files_items->showFilesForm($this->cat_carusel_name, $id);
       }
     }
     
@@ -1649,26 +1651,26 @@ HTML;
     if($this->validationCatValue($id)){
 
       if ($name = $this->load_cat_picture()){
-  			$this->pdo->query("UPDATE `".$this->prefix."cat_".$this->carusel_name."` SET `img` = '$name' WHERE `id` = '$id'");
+  			$this->pdo->query("UPDATE `".$this->cat_carusel_name."` SET `img` = '$name' WHERE `id` = '$id'");
         
         if($this->log) // Ведение лога
-          $res_log = $this->log->addLogRecord("Загрузка изображения", "load_picture", $this->prefix."cat_".$this->carusel_name, $id, $name );
+          $res_log = $this->log->addLogRecord("Загрузка изображения", "load_picture", $this->cat_carusel_name, $id, $name );
           
   		}
   		
       $sql_vals = $this->getUpdateCatSlide_SqlVals();
       
       if($this->log)  // Ведение лога
-        $backUpItem = serialize ( db::row("*", $this->prefix."cat_".$this->carusel_name, "id = ".$id) );
+        $backUpItem = serialize ( db::row("*", $this->cat_carusel_name, "id = ".$id) );
        
-      if($this->pdo->query("UPDATE `".$this->prefix."cat_".$this->carusel_name."` SET $sql_vals WHERE `id` = '$id'")){
+      if($this->pdo->query("UPDATE `".$this->cat_carusel_name."` SET $sql_vals WHERE `id` = '$id'")){
         
         if($this->log){ // Ведение лога
-          $newBackUpItem = serialize ( db::row("*", $this->prefix."cat_".$this->carusel_name, "id = ".$id) );
+          $newBackUpItem = serialize ( db::row("*", $this->cat_carusel_name, "id = ".$id) );
           if($backUpItem != $newBackUpItem){
-            $res_log = $this->log->addLogRecord("Редактирование", "update", $this->prefix."cat_".$this->carusel_name, $id, $backUpItem/*, addslashes($s)*/);
+            $res_log = $this->log->addLogRecord("Редактирование", "update", $this->cat_carusel_name, $id, $backUpItem/*, addslashes($s)*/);
           }else{
-            $res_log = $this->log->addLogRecord("Просмотр/изменения", "view", $this->prefix."cat_".$this->carusel_name, $id/*, $backUpItem/*, addslashes($s)*/);
+            $res_log = $this->log->addLogRecord("Просмотр/изменения", "view", $this->cat_carusel_name, $id/*, $backUpItem/*, addslashes($s)*/);
           }
         }
         
@@ -1677,7 +1679,7 @@ HTML;
         echo $carusel_error;
         
         if($this->log) // Ведение лога
-          $res_log = $this->log->addLogRecord($carusel_error, "error", $this->prefix."cat_".$this->carusel_name, $id, $backUpItem, addslashes($s) );
+          $res_log = $this->log->addLogRecord($carusel_error, "error", $this->cat_carusel_name, $id, $backUpItem, addslashes($s) );
           
         exit;
       }
@@ -1739,7 +1741,7 @@ HTML;
 	  # select filename
 	  # delete pic_filename
 	  # update
-		$string="select img from `".$this->prefix."cat_".$this->carusel_name."` where `id`=$id";	
+		$string="select img from `".$this->cat_carusel_name."` where `id`=$id";	
 		$q = $this->pdo->query($string);
     $r = $q->fetch();
     $pic_filename = $r['img'];
@@ -1751,7 +1753,7 @@ HTML;
     if (is_file($c_path.$pic_filename)){
 			unlink($c_path.$pic_filename);
 		}
-		$string="update `".$this->prefix."cat_".$this->carusel_name."` set img='' where `id`='$id'";
+		$string="update `".$this->cat_carusel_name."` set img='' where `id`='$id'";
 		$this->pdo->query($string);
 		#print	"<B>Картинка $pic_filename удалена</B><BR>";
     
@@ -1768,25 +1770,25 @@ HTML;
   		
       // Удаление Url, если подключен
       if($this->url_item && $id){
-        $this->url_item->deleteUrlForModuleAndModuleId($this->prefix."cat_".$this->carusel_name, $id);
+        $this->url_item->deleteUrlForModuleAndModuleId($this->cat_carusel_name, $id);
       }
       
       // Удаление Дополнительных картинок, если подключены
       if($this->images_items && $id){
-        $this->images_items->deleteImageForModuleAndModuleId($this->prefix."cat_".$this->carusel_name, $id);
+        $this->images_items->deleteImageForModuleAndModuleId($this->cat_carusel_name, $id);
       }
       
       // Удаление Дополнитеьных файлов, если подключен
       if($this->files_items && $id){
-        $this->files_items->deleteImageForModuleAndModuleId($this->prefix."cat_".$this->carusel_name, $id);
+        $this->files_items->deleteImageForModuleAndModuleId($this->cat_carusel_name, $id);
       }
       
       if($this->log){ // Ведение лога
-        $backUpItem = serialize ( db::row("*", $this->prefix."cat_".$this->carusel_name, "id = ".$id) );
-        $res_log = $this->log->addLogRecord("Удаление", "delete", $this->prefix."cat_".$this->carusel_name, $id, $backUpItem, addslashes($s));
+        $backUpItem = serialize ( db::row("*", $this->cat_carusel_name, "id = ".$id) );
+        $res_log = $this->log->addLogRecord("Удаление", "delete", $this->cat_carusel_name, $id, $backUpItem, addslashes($s));
       }
       
-      $this->pdo->query("DELETE FROM `".$this->prefix."cat_".$this->carusel_name."` WHERE `id` = '$id'");
+      $this->pdo->query("DELETE FROM `".$this->cat_carusel_name."` WHERE `id` = '$id'");
     }  
     $output = $this->show_table();
     
@@ -1807,10 +1809,10 @@ HTML;
   
   function show_tree_catalog($parent = 0, $output = '') {
 		
-		#$list = db::select('id, title', '`'.$this->prefix."cat_".$this->carusel_name.'`', "parent_id = $parent", "`ord`");
+		#$list = db::select('id, title', '`'.$this->cat_carusel_name.'`', "parent_id = $parent", "`ord`");
     $s = "
       SELECT `id`, `title`
-      FROM `".$this->prefix."cat_".$this->carusel_name."`
+      FROM `".$this->cat_carusel_name."`
       WHERE `parent_id` = $parent
       ORDER BY `ord`
     ";
@@ -1923,11 +1925,11 @@ HTML;
   
   function show_entrie_catalog($parent = 0) {
     
-		#$list = db::select('id, title, `hide`, `img`', '`'.$this->prefix."cat_".$this->carusel_name.'`', "parent_id = $parent", "`ord`");
+		#$list = db::select('id, title, `hide`, `img`', '`'.$this->cat_carusel_name.'`', "parent_id = $parent", "`ord`");
     
     $s = "
       SELECT `id`, `title`, `hide`, `img`
-      FROM `".$this->prefix."cat_".$this->carusel_name."`
+      FROM `".$this->cat_carusel_name."`
       WHERE `parent_id` = $parent
       ORDER BY `ord`
     ";
@@ -2055,10 +2057,10 @@ HTML;
           `".$this->prefix.$this->carusel_name."`.`hide`,  
           `".$this->prefix.$this->carusel_name."`.`longtxt2`, 
           `".$this->prefix.$this->carusel_name."`.`id` AS id,
-          `".$this->prefix."cat_".$this->carusel_name."`.`title` AS cat_title
+          `".$this->cat_carusel_name."`.`title` AS cat_title
         FROM `".$this->prefix.$this->carusel_name."` 
-        LEFT JOIN `".$this->prefix."cat_".$this->carusel_name."` 
-        ON `".$this->prefix.$this->carusel_name."`.`cat_id`=`".$this->prefix."cat_".$this->carusel_name."`.`id` 
+        LEFT JOIN `".$this->cat_carusel_name."` 
+        ON `".$this->prefix.$this->carusel_name."`.`cat_id`=`".$this->cat_carusel_name."`.`id` 
         WHERE 
           $where 
         LIMIT 30

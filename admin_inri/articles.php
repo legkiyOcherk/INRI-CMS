@@ -340,14 +340,14 @@ class Article extends CatCarusel{
     //Генерация Url
     if($this->url_item && $id && $item['title']){
       
-      $url = $this->url_item->getUrlForModuleAndModuleId($this->prefix."cat_".$this->carusel_name, $id);
+      $url = $this->url_item->getUrlForModuleAndModuleId($this->cat_carusel_name, $id);
       
       if($url){
         $tmp = '<a class="btn btn-info pull-right" href="/'.$url.'" target = "_blank" >Посмотреть на сайте</a>';
         $output .= $this->show_form_row(null, $tmp);
       } 
         
-       $output .= $this->show_form_row('ЧПУ', $this->url_item->show_form_field($_POST['url'], $this->prefix."cat_".$this->carusel_name, $id, $item['title']));  
+       $output .= $this->show_form_row('ЧПУ', $this->url_item->show_form_field($_POST['url'], $this->cat_carusel_name, $id, $item['title']));  
       
     }
     
@@ -362,6 +362,7 @@ class Article extends CatCarusel{
       $type = '';
       if( in_array($key, array("color"))) $type = 'color';
       if( in_array($key, array("date"))) $type = 'date';
+      if( in_array($key, array("title", "link", "seo_h1", "seo_title", "seo_keywords", "img_alt", "img_title" ))) $type = 'text';
       
       if($key == 'is_enlarge_photos'){
         ($item && $item[$key]) ? $coldate = 'checked' : $coldate = ''; #pri($coldate);
@@ -443,7 +444,7 @@ class Article extends CatCarusel{
           
           $output .= $this->show_form_row( 
             $val.$this->getCatErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'">'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'">'
           );
           
         }else{
@@ -458,7 +459,7 @@ class Article extends CatCarusel{
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getCatErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="#FFFFFF">'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="#FFFFFF">'
           );
           
         }else{
