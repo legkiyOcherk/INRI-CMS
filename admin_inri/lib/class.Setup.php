@@ -961,10 +961,12 @@ HTML;
         `module_ord` int(11) NOT NULL DEFAULT '0',
         PRIMARY KEY (`id`)
       ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    $output = '';
+    $output .= $this->create_file_dir( $name );
+    $output .= $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CUTAWAY );
     
-    $this->create_file_dir( $name );
-    
-    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+    return $output;
   }
   
   
@@ -1309,7 +1311,7 @@ HTML;
 HTML;
     
     $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
-    $output .= $this->copy_img_module( $name, SOURCE_SITE_CORPORATE );
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CORPORATE ); 
     $output .= $this->copy_file_module( $name, SOURCE_SITE_CORPORATE );
     
     return $output;
