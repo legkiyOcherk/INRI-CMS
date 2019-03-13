@@ -1182,8 +1182,8 @@ HTML;
     $sql_insert = "
       INSERT INTO `$table` (`id`, `title`, `type`, `view`, `ord`, `hide`, `value`, `comment`) VALUES ";
     $sql_insert .=<<<HTML
-      (1, 'Title главой', 'mine_title', NULL, 10, 0, 'Сайт визитка', NULL),
-      (2, 'Description Главной', 'mine_description', 1, 20, 0, 'Сайт визитка', NULL),
+      (1, 'Title главой', 'mine_title', NULL, 10, 0, 'Корпоративный сайт', NULL),
+      (2, 'Description Главной', 'mine_description', 1, 20, 0, 'Корпоративный сайт', NULL),
       (3, 'Keywords главной', 'mine_keywords', NULL, 21, 0, '', NULL),
       (4, 'Title текстовой статьи', 'lib_text_title', NULL, 110, 0, '*h1* ', NULL),
       (5, 'Title текстового раздела', 'lib_cat_title', NULL, 100, 0, '*h1*', NULL),
