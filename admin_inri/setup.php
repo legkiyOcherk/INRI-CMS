@@ -11,11 +11,18 @@ class SetupSite extends Setup{
     
     parent::__construct();
     
-    $this->nav_items_arr['/'.ADM_DIR.'/'.$this->script_name.'?step=setup_database_access' ] = '1. Доступ к базе данных';
+    $this->nav_items_arr['/'.ADM_DIR.'/'.$this->script_name.'?step=setup_database_access' ] = '<span class = "btn btn-sm btn-info">1. Доступ к базе данных</span>';
     
-    $this->nav_items_arr['/'.ADM_DIR.'/'.$this->script_name.'?step=setup_database_module' ] = '2. Установка модулей';
-  }
+    $this->nav_items_arr['/'.ADM_DIR.'/'.$this->script_name.'?step=setup_database_module' ] = '<span class = "btn btn-sm btn-info">2. Установка модулей</span>';
+    
   
+    $this->nav_items_arr['/'] = '<span class = "btn btn-sm btn-outline-primary">Сайт</span>';
+    
+    $this->nav_items_arr['/'.ADM_DIR.'/index.php'] = '<span class = "btn btn-sm btn-outline-success">Админка</span>';
+    
+    $this->nav_items_arr['/'.ADM_DIR.'/'.$this->script_name.'?step=delete_all' ] = '<span class = "btn btn-sm btn-danger"> X &nbsp; Удалить все</span>';
+  
+  }
   
   
   function setup_database_module_all(){
@@ -55,8 +62,12 @@ class SetupSite extends Setup{
         $this->setup_database_module();
         break;
       
-      case 'delete_database_module': #Установка модулей
+      case 'delete_database_module': #Удаление модуля
         $this->delete_database_module();
+        break;
+        
+      case 'delete_all': #Удаление всего база данных + кратинки `/images`
+        $this->delete_all();
         break;
     }
     
