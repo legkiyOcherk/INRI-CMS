@@ -1311,7 +1311,7 @@ HTML;
 HTML;
     
     $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
-    $output .= $this->copy_img_module( $name, SOURCE_SITE_CORPORATE ); 
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CORPORATE );
     $output .= $this->copy_file_module( $name, SOURCE_SITE_CORPORATE );
     
     return $output;
