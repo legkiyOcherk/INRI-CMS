@@ -779,9 +779,12 @@ HTML;
     $sql_insert .=<<<HTML
       (1, 'Администратор', '1552249940.jpeg', 'd', '1d319e1b83c1b7ec90328bcca7e6e200', '7d86b76f7b71aae04d6cd2d59090b4e9', 'Илья Ощепков', 1, 1, 0, 1, 1, 1, 1, 'ilya.oshepkov@gmail.com', '9058010809', '', 0, 0);
 HTML;
-    $this->create_img_dir( $name );
     
-    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+    $output .= $this->create_img_dir( $name );
+    $output .= $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CUTAWAY );
+    
+    return $output;
   }
   
   function setup_module_mine_block( $title, $name ){
