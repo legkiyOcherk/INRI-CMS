@@ -944,6 +944,45 @@ class SiteBase {
     return $output;
   }
   
+  function getPlane(){
+    $output = '';
+    
+    $output .= '
+    <style>
+    .content_box{
+      position: relative;
+    }
+    #world_box{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 765px;
+    }
+    #world {
+    	position: absolute;
+    	width: 100%;
+    	height: 100%;
+    	overflow: hidden;
+    	background: linear-gradient(#e4e0ba, #f7d9aa);
+    }
+    .bread_crumbs_box, .md_content_h1, .text404 {
+      z-index: 10;
+      position: relative;
+    }
+    
+    </style>
+    <div id="world_box">
+      <div id="world"></div>
+    </div>
+    
+    <script src="/404/three.js"></script>
+    <script  src="/404/js/index.js"></script>
+    ';
+    
+    return $output;
+  }
+  
   function get404Content(){
     $output = '';
     $this->setSiteTitle('Ошибка 404. Страница не найдена.');
@@ -958,6 +997,13 @@ class SiteBase {
     
     $prefix = $this->getContentPrefix(false);
     $postfix = $this->getContentPostfix(false);
+    /*$postfix =  '
+        </div>
+      </div>
+      '.$this->getPlane().'
+    </div>
+    <!-- End content -->
+    ';*/
     
     $output .= '
       
@@ -968,15 +1014,19 @@ class SiteBase {
           <div class="line_header">&nbsp;</div>
          
 
-          Ошибка 404. Страница не найдена.
+          <div class = "text404">Ошибка 404. Страница не найдена.</div>
     ';
+    
     $output .= '
       </div>
     ';
     
-    return $prefix.$output.$postfix;
+    if($output){
+      $output = $this->getInnerContent($prefix.$output.$postfix);
+    }
+    return $output;
   }
-  
+   
   function getAdminPanel(){
     $output = '';
     if (isset($_SESSION["WA_USER"])){
