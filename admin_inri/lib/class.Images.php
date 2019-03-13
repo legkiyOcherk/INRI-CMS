@@ -955,10 +955,8 @@ HTML;
   </style>
   <div>
 
-  
 HTML;
 
-  
   
   $output .='
   </div>
@@ -969,7 +967,7 @@ HTML;
   $output .= '
   <br>
   <h4>Загрузить дополнительные изображения</h4> 
-  <div id="imageloadstatus" style="display:none"><img src= "/'.IA_URL.'/css/img/loader.gif" alt="Загружается...."/></div>
+  <div id="imageloadstatus" style="display:none"><img src= "'.IA_URL.'css/img/loader.gif" alt="Загружается...."/></div>
   <div id="imageloadbutton">
   <input type="file" name="photos[]" id="photoimg" multiple="true" />
   </div>

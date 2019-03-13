@@ -531,7 +531,7 @@ class Article {
   }
   
   static function get_arr_act_cat_items($sid, $arr){
-    $item = db::row('*', 'il_cat_articles', 'id = '.$sid);
+    $item = db::row('*', DB_PFX.'articles_cat', 'id = '.$sid);
     
     if($item['parent_id']){
       $arr[] = $item['parent_id'];
@@ -766,18 +766,12 @@ class Article {
       $path = "<a href=\"/\">Главная</a> ". $path;
     }elseif($row['id'] == 1){
       $path = "<a href=\"/\">Главная</a> ". $path;
-    }elseif($row['id'] == 4){
-      $path = "<a href=\"/\">Главная</a> ". $path;
-    }elseif($row['id'] == 20){
-      $path = "<a href=\"/\">Главная</a> ". $path;
-    }elseif($row['id'] == 52){
-      $path = "<a href=\"/\">Главная</a> ". $path;
     }else{
       
       if ($row['link']){
         $path = self::get_path_link(1, $table, $path );
       }else{
-        $href = Url::getStaticUrlForModuleAndModuleId('il_url', $table, $row['id']);
+        $href = Url::getStaticUrlForModuleAndModuleId( DB_PFX.'url', $table, $row['id'] );
         $path = self::get_path_link($row['parent_id'], $table, ' → <a href="/'.$href.'">'.$row['title'].'</a> '.$path );
       }
      
@@ -879,9 +873,7 @@ class Article {
           </div>      
         </div>
       ';
-      $output .= Article::getItems($site, $items[0]['id'], 'il_cat_articles', 'il_articles', $bread_crumbs);
-      
-      
+      $output .= Article::getItems($site, $items[0]['id'], $cat_table, $table, $bread_crumbs);
       
     }else{
       // ------------- SEO -------------
@@ -889,7 +881,7 @@ class Article {
       if($tc_items['seo_title']){
         $site->siteTitle = $tc_items['seo_title'];
       }else{
-        if($seo_title =  db::value('value', 'il_seo', "type = 'lib_cat_title'" )){
+        if($seo_title =  db::value('value', DB_PFX.'seo', "type = 'lib_cat_title'" )){
           $site->siteTitle = str_replace("*h1*", $tc_items['title'], $seo_title);
         }else{
           $site->siteTitle = $tc_items['title'];
@@ -947,7 +939,7 @@ class Article {
         $output .= '<div class="date col-12">';
         
         $output .= '</div>';
-        $href = "/".Url::getStaticUrlForModuleAndModuleId('il_url', $cat_table, $cat_item['id']);
+        $href = "/".Url::getStaticUrlForModuleAndModuleId(DB_PFX.'url', $cat_table, $cat_item['id']);
         $output .= '<div class="txt col-sm col-12">
                       <div class="txt_title"><a href="'.$href.'">'.$title.'</a></div>
         '.$longtxt1.'
@@ -987,10 +979,10 @@ class Article {
       
       $strPager = Article::getPager($site, $pagerPage, $cat_count, 20, $limit);
       $s = "
-        SELECT `$table`.*, `il_url`.`url` 
+        SELECT `$table`.*, `".DB_PFX."url`.`url` 
         FROM `$table`
-        LEFT JOIN `il_url`
-        ON (`il_url`.`module` = '$table') AND (`il_url`.`module_id` = `$table`.`id`)
+        LEFT JOIN `".DB_PFX."url`
+        ON (`".DB_PFX."url`.`module` = '$table') AND (`".DB_PFX."url`.`module_id` = `$table`.`id`)
         WHERE $s_where
         AND `$table`.`hide`  = 0 
         $s_filter
@@ -1022,7 +1014,7 @@ class Article {
         }
         
         $output .= '</div>';
-        #$href = "/".Url::getStaticUrlForModuleAndModuleId('il_url', $table, $r['id']);
+        #$href = "/".Url::getStaticUrlForModuleAndModuleId(DB_PFX.'url', $table, $r['id']);
         $href = "/".$r['url'];
         $output .= '<div class="txt col-sm col-12">
                       <div class="txt_title"><a href="'.$href.'">'.$title.'</a></div>
@@ -1060,7 +1052,7 @@ class Article {
     if($item['seo_title']){
       $site->siteTitle = $item['seo_title'];
     }else{
-      if($seo_title =  db::value('value', 'il_seo', "type = 'lib_text_title'" )){
+      if($seo_title =  db::value('value', DB_PFX.'seo', "type = 'lib_text_title'" )){
         $site->siteTitle = str_replace("*h1*", $item['title'], $seo_title);
       }else{
         $site->siteTitle = $item['title'];
@@ -1113,12 +1105,7 @@ class Article {
       $addImages = '';
     }
     $longtxt2 = $item['longtxt2'];
-    /*$longtxt2 = preg_replace("#(</?\w+)(?:\s(?:[^<>/]|/[^<>])*)?(/?>)#ui", '$1$2', $longtxt2);*/
-    $longtxt2 = preg_replace('/<font[^>]*>(.*)<\/font>/Ui', '\\1', $longtxt2);
-    $longtxt2 = preg_replace('/&#39;/', "", $longtxt2);
-    $longtxt2 = preg_replace('/font-family.+?;/', "", $longtxt2);
-    $longtxt2 = preg_replace('/line-height.+?;/', "", $longtxt2);
-    $longtxt2 = preg_replace('/font-size: 10pt/', "", $longtxt2);
+    
     $output .= '<div>'.$longtxt2.'</div>';
     
     $output .= '
@@ -1377,7 +1364,7 @@ class Article {
 
 class News {
   
-  static function getNews(&$site, $id, $table){
+  static function getNews(&$site, $id, $table){ 
     $output = '';
 
     $output .= '
@@ -1387,7 +1374,7 @@ class News {
     
     if(!$site->module_id){
       $site->siteTitle = "Новости";
-      $seo_news_title =  db::value('value', 'il_seo', "type = 'news_title'");
+      $seo_news_title =  db::value('value', DB_PFX.'seo', "type = 'news_title'");
       if($seo_news_title) $site->siteDescription = str_replace("*h1*", $site->siteTitle, $seo_news_title);
       
       $site->bread = '
@@ -1407,23 +1394,13 @@ class News {
     }
     else
     {
-      /*$s = "
-        SELECT `$table`.* ,  
-               `il_news_categories`.`id`    AS `news_categories_id`,
-               `il_news_categories`.`title` AS `news_categories_title`
-        FROM `$table`
-        
-        LEFT JOIN `il_news_categories`
-        ON (`$table`.`category_id` = `il_news_categories`.`id`)
-        
-        WHERE `$table`.`id` = {$site->module_id}";*/
       $s = "
         SELECT `$table`.*
         FROM `$table`
         
         WHERE `$table`.`id` = {$site->module_id}";
       
-      if (!isset($_SESSION["WA_USER"])){ // Если не авторизован в админке. Проверка.
+      if (!isset($_SESSION["WA_USER"])){           # Если не авторизован в админке. Проверка.
         $s .= "
         AND `$table`.`hide` = 0";
       } #pri($s); 
@@ -1441,7 +1418,7 @@ class News {
       if($r['seo_title']){
         $site->siteTitle = $r['seo_title'];
       }else{
-        if($seo_title =  db::value('value', 'il_seo', "type = 'news_title'" )){
+        if($seo_title =  db::value('value', DB_PFX.'seo', "type = 'news_title'" )){
           $site->siteTitle = str_replace("*h1*", $r['title'], $seo_title);
         }else{
           $site->siteTitle = $r['title'];
@@ -1477,10 +1454,6 @@ class News {
         $detail_news_date = '<time class="detail-news-date" style = "display:none;">'.$detail_news_d.'</time>';
       }
       
-      /*$output .= '
-        <div class="news_date_box">
-          <a class="grey" href="/news/?regn='.$category_id.'">'.$news_categories_title.' '.$date_str.' г.</a> 
-        </div>';*/
       $output .= '
         <div class="news_date_box">
           '.$date_str.' г.
@@ -1488,21 +1461,9 @@ class News {
       $output .= $detail_news_date.'
         <div class = "detail-news-text">';
       #if($longtxt1) $output .= $longtxt1."<br>";
-      /*$longtxt2 = preg_replace("#(</?\w+)(?:\s(?:[^<>/]|/[^<>])*)?(/?>)#ui", '$1$2', $longtxt2);*/
-      $longtxt2 = preg_replace('/<font[^>]*>(.*)<\/font>/Ui', '\\1', $longtxt2);
-      $longtxt2 = preg_replace('/&#39;/', "", $longtxt2);
-      $longtxt2 = preg_replace('/font-family.+?;/', "", $longtxt2);
-      $longtxt2 = preg_replace('/line-height.+?;/', "", $longtxt2);
-      $longtxt2 = preg_replace('/font-size: 10pt/', "", $longtxt2);
-      
       $output .= $longtxt2;
       $output .= '
-        </div>';
-      /*$output .= '
-        <p style="padding-top:5px;">
-          <a class="grey" href="/news/?regn='.$category_id.'">('.$news_categories_title.')</a> 
-        </p>';*/
-      $output .= '
+        </div>
       </div>
       <br><br>
       ';
@@ -1518,59 +1479,22 @@ class News {
     // Проверка присутствуют ли картинки закрепленные за новостью
     
     (isset ($r['id'])) ? $m_id = $r['id'] : $m_id = 0;
-    $s = "
-      SELECT *
-      FROM `il_all_images`
-      WHERE `module` = '$table'
-      AND `module_id` = $m_id
-      ORDER BY `module_ord`
-    "; #pri($s);
     
-    if($q = $site->pdo->query($s)){
-      if($q->rowCount()){
-        $output .= '
-          <div class = "row gallery_box">
-        ';
-        while($ri = $q->fetch()){
-          $output .= '
-            <div class = "col-12 col-sm-6 col-md-4 col-lg-3 gallery_box_items">
-              <div class = "gallery_img_box">
-                <a href="/images/all_images/orig/'.$ri['img'].'"  rel="prettyPhoto[gallery1]">
-                  <img src="/images/all_images/slide/'.$ri['img'].'" title="'.$ri['title'].'" alt="'.$ri['title'].'">
-                </a>
-              </div>';
-          /*
-              <div class = "gallery_box_title">
-                '.$ri['title'].'
-              </div>
-          */
-          $output .= '
-            </div>
-          ';
-        }
-        $output .= '
-          </div>
-          
-          <script src="/prettyPhoto-3.1.6/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
-          <link rel="stylesheet" href="/prettyPhoto-3.1.6/css/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8">
-          <script type="text/javascript" charset="utf-8">
-          $(document).ready(function() {
-            $("a[rel^=\'pretty\']").prettyPhoto({slideshow: 4000});
-          });
-    	    </script>
-        ';
-      }
-    }
-        
-
+    // Проверка присутствуют ли картинки закрепленные за новостью
+    $addImages =  Article::getAddImages($site, $table, $m_id);
+    
+    // Проверка присутствуют ли документы закрепленные за новостью
+    $addFiles  = Article::getAddFiles($site, $table, $m_id);
+    
     $output .= '
-      
         <br><br>
         </div>
       </div>
     ';
     
-
+    if($addImages) $output .= $addImages;
+    
+    if($addFiles) $output .= $addFiles;
     
     return $output;
   }
@@ -1615,37 +1539,23 @@ class News {
       $sRegMinDate = $datetime->format('Y-m-d');
       if($showFilterRow)
         $s_where .=" 
-          AND `il_news`.`date` >= '$sRegMinDate'";
+          AND `$table`.`date` >= '$sRegMinDate'";
     }
     if($regMaxDate){
       $datetime = DateTime::createFromFormat('d.m.Y', $regMaxDate);
       $sRegMaxDate = $datetime->format('Y-m-d');
       if($showFilterRow)
         $s_where .=" 
-          AND `il_news`.`date` <= '$sRegMaxDate'";
+          AND `$table`.`date` <= '$sRegMaxDate'";
     }
     if($itemRegn){
       $s_where .=" 
-      AND `il_news`.`category_id` = '$itemRegn'";
+      AND `$table`.`category_id` = '$itemRegn'";
     }
-    
-    $reg_prok_items = array();
-    $s = "
-      SELECT * 
-      FROM `il_news_categories` 
-      WHERE 1 
-      ORDER BY `col`, `order`
-    ";
-    
-    /*if($q = $site->pdo->query($s))
-      if($q->rowCount())
-        while($r = $q->fetch()){
-          $reg_prok_items[$r['id']] = $r;
-        }*/
     
     $s = "
       SELECT COUNT( * ) AS count
-      FROM `il_news`
+      FROM `$table`
       WHERE $s_where
       AND hide = 0 
     "; #pri($s);
@@ -1658,17 +1568,18 @@ class News {
     if(isset($_GET['page']) && $_GET['page'] ){ $pagerPage = intval($_GET['page']);}
     
     $s_filter = $limit = $s_cat_sorting = '';
-    $s_cat_sorting = " ORDER BY `il_news`.`date` DESC  ";
+    $s_cat_sorting = " ORDER BY `$table`.`date` DESC  ";
     
     $strPager = Article::getPager($site, $pagerPage, $c_count, 20, $limit);
     
+    $url_table = DB_PFX.'url';
     $s = "
-      SELECT `il_news`.*, `il_url`.`url` 
-      FROM `il_news`
-      LEFT JOIN `il_url`
-      ON (`il_url`.`module` = 'il_news') AND (`il_url`.`module_id` = `il_news`.`id`)
+      SELECT `$table`.*, `$url_table`.`url` 
+      FROM `$table`
+      LEFT JOIN `$url_table`
+      ON (`$url_table`.`module` = '$table') AND (`$url_table`.`module_id` = `$table`.`id`)
       WHERE $s_where
-      AND `il_news`.`hide`  = 0 
+      AND `$table`.`hide`  = 0 
       $s_filter
       $s_cat_sorting
       $limit
@@ -1710,14 +1621,7 @@ class News {
                       <div class="txt_title detail-news-link">
                         <a href="/'.$url.'"> '.$title.' </a>
                       </div>
-                      '.$longtxt1;
-        /*if( isset($reg_prok_items[$category_id ]['id']) ){
-          $output .= '
-                      <p style="padding-top:5px;">
-                            (<span class = "news-source"><a href = "/news/?regn='.$reg_prok_items[$category_id ]['id'].'">'.$reg_prok_items[$category_id]['title'].'</a></span>)
-                          </p>';
-        }*/
-        $output .= '
+                      '.$longtxt1.'
                       <a href="/'.$url.'">Читать дальше</a> 
                     </div>';
                     

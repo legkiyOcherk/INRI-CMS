@@ -910,7 +910,7 @@ HTML;
         if( strpos($mod_script, '.php')){
           $mod_t = str_replace('.php', '', $mod_script);
           
-          $mod_cat_table = $this->prefix.'cat_'.$mod_t;
+          $mod_cat_table = $this->prefix.$mod_t.'_cat';
           $mod_table = $this->prefix.$mod_t;
           
           if($mod_t == 'param'){

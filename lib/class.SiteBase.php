@@ -904,7 +904,7 @@ class SiteBase {
         $this->adminLink = "/news.php";
         if($this->module_id) $this->adminLink .= "?edits=".$this->module_id;
         
-        $cont = self::getNews();
+        $cont = News::getNews($this, $this->module_id, DB_PFX."news");
         $cont = $this->getContentPrefix(false).$cont.$this->getContentPostfix(false);
         break;
         
@@ -1639,17 +1639,17 @@ class SiteBase {
     
     switch($view){
       case 'content':
-        $this->siteContent = self::getContent();
+        $this->siteContent = $this->getContent();
       break; 
       
       case '404':
-        $this->siteContent = self::get404Content();
-      break; 
+        $this->siteContent = $this->get404Content();
+      break;  
     }
     
-    $this->siteHead = self::getHead();
-    $this->siteHeader = self::getHeader(); 
-    $this->siteFooter = self::getCmsFooter(); 
+    $this->siteHead   = $this->getHead();
+    $this->siteHeader = $this->getHeader(); 
+    $this->siteFooter = $this->getCmsFooter(); 
     
     $output = '';
     

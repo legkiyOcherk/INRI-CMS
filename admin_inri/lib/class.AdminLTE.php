@@ -438,11 +438,17 @@ class AdminLTEextends extends BaseAdmin{
   }
   
   function getLeftSidebarMenuItem($k, $v, $prefix = ''){
-    $output = '';
+    $output = $active = ''; 
     
+    $pos = strpos($k, $this->check );
+    if ($pos === false) {
+      $active = '';
+    } else {
+      $active = ' class="active" ';
+    }
     $output .= '
       '.$prefix.'
-      <li>
+      <li '.$active.'>
         <a href='.$k.'>';
     if(     isset($this->mainmenu_add_data[$v]['icon']) 
          && $this->mainmenu_add_data[$v]['icon'] ){
@@ -461,7 +467,7 @@ class AdminLTEextends extends BaseAdmin{
     $output = '';
     #pri( $this->mainmenu_add_data ); 
     #pri($this->mainmenu);
-    #pri($this->scripts );
+    #pri($this->check );
     $sub_header = '';
     foreach ($this->mainmenu as $k=>$v){
       

@@ -49,7 +49,7 @@ class SiteCorporate extends SiteBase{
     return $output;
   }
   
-    function getFooter(){
+  function getFooter(){
     $output = '';
         
     $output .= '
@@ -105,6 +105,82 @@ class SiteCorporate extends SiteBase{
     return  $output;
   }
   
+  function getContent(){
+    $output = '';
+    $flIsProduction = false;
+    $left_menu = false;
+    $cont = '';
+    #pri($this); 
+    switch($this->module){
+      
+      case DB_PFX.'articles_cat':
+        $this->adminLink = "/articles.php";
+        if($this->module_id){
+          $this->adminLink .= "?editc=".$this->module_id;
+          $_SESSION['articles']['c_id'] = $this->module_id;
+        }
+        (isset($this->left_menu) && $this->left_menu) ? $left_menu = true : $left_menu = false;
+        
+        $cont = Article::getCatItems($this, $this->module_id, DB_PFX.'articles_cat', DB_PFX.'articles');
+        $cont = $this->getContentPrefix($left_menu).$cont.$this->getContentPostfix($left_menu);
+        break;
+        
+      case DB_PFX.'articles':
+        $this->adminLink = "/articles.php";
+        if($this->module_id){
+          $this->adminLink .= "?edits=".$this->module_id;
+          $_SESSION['articles']['c_id'] = db::value("cat_id", DB_PFX."articles", "id = ".$this->module_id );
+        }        
+        (isset($this->left_menu) && $this->left_menu) ? $left_menu = true : $left_menu = false;
+        
+        $cont = Article::getItems($this, $this->module_id, DB_PFX.'articles_cat', DB_PFX.'articles');
+        $cont = $this->getContentPrefix($left_menu).$cont.$this->getContentPostfix($left_menu);
+        break;
+       
+      case DB_PFX.'news':
+        $this->adminLink = "/news.php";
+        if($this->module_id) $this->adminLink .= "?edits=".$this->module_id;
+        
+        $cont = News::getNews($this, $this->module_id, DB_PFX."news");
+        $cont = $this->getContentPrefix(false).$cont.$this->getContentPostfix(false);
+        break;
+        
+      case 'search':
+        $cont = $this->search->showSearchItems($this);
+        $cont = $this->getContentPrefix().$cont.$this->getContentPostfix();
+        break;
+        
+      case 'backup_sql':
+        echo 'backup_sql';
+        $GLOBALS['DATE_UPDATE'] = date("Y-m-d H:i:s");
+        self::backup();
+        die();
+        break;
+      
+      case 'robots_txt':
+        echo 'robots.txt';
+        die(); 
+        break; 
+      
+      case '404':
+        header("HTTP/1.0 404 Not Found");
+        header("Location: /404.php"); 
+        break; 
+        
+      default:
+        $this->module = "index";
+        $this->module_id = 0;
+        $output .= self::getIndexContent();   
+    }
+    
+    if($cont){
+      $output = $this->getInnerContent($cont);
+    }
+    
+    
+    return $output;
+  }
+  
  
 }
 
@@ -113,6 +189,7 @@ class SiteOnlineshop extends SiteBase{
 } 
 
 switch(SITE_TYPE){
+  
   case 'CUTAWAY':
     class Site extends SiteСutaway{};
     break;

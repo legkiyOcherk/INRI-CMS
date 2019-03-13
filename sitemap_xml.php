@@ -49,6 +49,27 @@ print '<?xml version="1.0" encoding="UTF-8"?>'."\r\n";
 print '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\r\n";
 echo $prefix.$suffix;
 
-print get_table_link( DB_PFX.'smpl_article',  $prefix, $suffix);
+
+switch(SITE_TYPE){
+  
+  case 'CUTAWAY':
+    print get_table_link( DB_PFX.'smpl_article',  $prefix, $suffix);
+    break;
+  
+  case 'CORPORATE':
+    print get_table_link( DB_PFX.'articles_cat',  $prefix, $suffix);
+    print get_table_link( DB_PFX.'articles',  $prefix, $suffix);
+    print get_table_link( DB_PFX.'news',  $prefix, $suffix);
+    break;
+    
+  case 'ONLINESHOP':
+    
+    break;
+  
+  default:
+    die('Не задан тип сайта');
+    break;
+}
+
 
 print '</urlset>';

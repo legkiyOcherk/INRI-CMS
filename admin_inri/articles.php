@@ -38,7 +38,6 @@ function get_phpmorphy($descr_str) {
     return $orm_search;
 }
 
-
 class Article extends CatCarusel{
   
   function show_cat_table_rows($item, $i = 0){
@@ -136,7 +135,6 @@ class Article extends CatCarusel{
           <tr class="th nodrop nodrag">
           	<td style="width: 55px;">#</td>
       		  <td style="width: 50px;">Скрыть</td>
-            <td style="width: 50px;">На главной</td>
             <td style="width: 60px;">Картинка</td>
       		  <td>Название</td>
       		  <td style="width: 80px">Действие</td>
@@ -157,7 +155,6 @@ class Article extends CatCarusel{
           </td>
             
             <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>
-            <td class="img-act"><div title="На главной" onclick="star_check('.$id.', \'fl_show_mine\')" class="star_check '.$this->getStarValStyle($fl_show_mine).'" id="fl_show_mine_'.$id.'"></div></td>
             <td style="max-width: 60px;">';
             
     if($img){
@@ -360,8 +357,9 @@ class Article extends CatCarusel{
       //if( in_array($key, array("color"))) $is_color = true;
       
       $type = '';
-      if( in_array($key, array("color"))) $type = 'color';
-      if( in_array($key, array("date"))) $type = 'date';
+      $create_val = '';
+      if( in_array($key, array("color"))) {$type = 'color'; $create_val = '#FFFFFF';}
+      if( in_array($key, array("date"))) { $type = 'date'; $class_input = ' class="form-control" style = "max-width: 180px;" '; }
       if( in_array($key, array("title", "link", "seo_h1", "seo_title", "seo_keywords", "img_alt", "img_title" ))) $type = 'text';
       
       if($key == 'is_enlarge_photos'){
@@ -387,6 +385,12 @@ class Article extends CatCarusel{
       
       if($key == 'parent_id'){
         ($item) ? $item_cat_id = htmlspecialchars($item[$key]) : $item_cat_id = $_SESSION[$this->carusel_name]['c_id'];
+        if($item) {
+          $_SESSION[$this->carusel_name]['c_id'] = htmlspecialchars($item[$key]);
+          $this->bread = array();
+          $this->show_bread_crumbs($item_cat_id);
+          $this->admin->setForName('bread', $this->getForName('bread')); 
+        }
         if(!$item_cat_id) $item_cat_id = 0;
         
         $tmp  = '<select name="parent_id" class="form-control">';
@@ -459,13 +463,13 @@ class Article extends CatCarusel{
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getCatErrorForKey($key), 
-            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="#FFFFFF">'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.$create_val.'">'
           );
           
         }else{
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50></textarea>'
+            '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50>'.$create_val.'</textarea>'
           );
           
         }
@@ -522,12 +526,26 @@ class Article extends CatCarusel{
       if( in_array($key, array("longtxt1", "longtxt2", "longtxt2"))) $class_input = ' class="ckeditor" '; 
       
       $type = '';
-      if( in_array($key, array("color"))) $type = 'color';
-      if( in_array($key, array("date"))) $type = 'date';
+      $create_val = '';
+      if( in_array($key, array("color"))) {$type = 'color'; $create_val = '#FFFFFF';} 
+      if( in_array($key, array("date"))) { $type = 'date'; $class_input = ' class="form-control" style = "max-width: 180px;" '; }
+      if( in_array($key, array("title", "link", "seo_h1", "seo_title", "seo_keywords", "img_alt", "img_title" ))) $type = 'text';
       
       if($key == 'cat_id'){
         $tmp  = '<select name="cat_id" class="form-control">';
         ($item) ? $item_cat_id = htmlspecialchars($item[$key]) : $item_cat_id = $_SESSION[$this->carusel_name]['c_id'];
+        if($item) {
+          $_SESSION[$this->carusel_name]['c_id'] = htmlspecialchars($item[$key]);
+          $this->bread = array();
+          $this->show_bread_crumbs($item_cat_id);
+          if($_SESSION[$this->carusel_name]['c_id']){
+            $c_title = db::value('title', '`'.$this->cat_carusel_name.'`', "id = ".$_SESSION[$this->carusel_name]['c_id'] );
+            $title .='<a href="?c_id='.$_SESSION[$this->carusel_name]['c_id'].'"> '.$c_title.' </a> → ';
+          }
+          $title .=' редактирование записи';
+          
+          $this->title = $title;
+        }
         if(!$item_cat_id) $item_cat_id = 0;
         $tmp .= $this->get_category_option($item_cat_id);
         $tmp .= '</select>';
@@ -602,7 +620,7 @@ class Article extends CatCarusel{
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
           );
     
         }else{
@@ -617,13 +635,13 @@ class Article extends CatCarusel{
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="#FFFFFF">'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.$create_val.'">'
           );
     
         }else{
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50></textarea>'
+            '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50>'.$create_val.'</textarea>'
           );
     
         }
@@ -647,7 +665,20 @@ class Article extends CatCarusel{
   }
   
   function full_tree(){
-    $output = '<h1><a href = "'.IA_URL.$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
+    
+    if( isset($_SESSION[$this->carusel_name]['c_id']) && $_SESSION[$this->carusel_name]['c_id'] ){
+      $item_cat_id = $_SESSION[$this->carusel_name]['c_id'];
+      $this->bread = array();
+      $this->show_bread_crumbs($item_cat_id);
+      $this->admin->setForName('bread', $this->getForName('bread')); 
+    }
+    $this->title = 'Полный каталог'; 
+    $this->header = '<h1><a href = "'.IA_URL.$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
+    $output .=  '
+    <table class="table table-condensed">
+      <tr class="r0"><td><a href="?view_tree">Дерево всех категорий</a></td></tr>
+      <tr class="r1"><td><a href="?full_tree">Полный каталог</a></td></tr>
+    </table>';
     $output .= '
 		  <script>
 		  $(function(){
@@ -661,26 +692,39 @@ class Article extends CatCarusel{
 		  });
 		  </script>
 
-      <div class="container-fluid">
-        <div class="row-fluid">
-          <div class="span6">
-            <div class="row-fluid">
-              <div class="span12 ">
-    ';
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-7 col-lg-8">
+            <div class="row">
+              <div class="col-xs-12">';
 	  $output .= $this->show_entrie_catalog();
     $output .= '
               </div>
             </div>
           </div>
-          <div class="span6">
-            <div class="row-fluid">
-              <div class="span12">
-                <input type="text" class="text span12" name="article" id="article" placeholder="Поиск...">
-              </div>
+          <div class="col-sm-12 col-md-5 col-lg-4">
+            <div class="row">
+              
+                <div class="box box-primary box-solid">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">Поиск</h3>
+
+                    <div class="box-tools pull-right">
+                      <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>                    <!-- /.box-tools -->
+                  </div>                      <!-- /.box-header -->
+                  <div class="box-body">
+                    <div class="form-group">
+                      <input type="text" class="text form-control" name="article" id="article" placeholder="Запрос..."> 
+                    </div>
+                  </div>                      <!-- /.box-body -->
+                </div>
+              
+                
             </div>
             
-            <div class="row-fluid">
-              <div class="span12" id="exists"></div>
+            <div class="row">
+              <div class="" id="exists"></div>
             </div>
           </div>
         </div>
@@ -784,6 +828,7 @@ $carisel->setImg_ideal_height(650);
 
 
 if($output = $carisel->getContent($admin)){
+  #pri($carisel->admin);
   $admin->setContent($output);
   echo $admin->showAdmin('content');
 }

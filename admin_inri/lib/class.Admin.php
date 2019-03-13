@@ -200,8 +200,8 @@ class AdminCorporate extends AdminLTEextends{
     
     $this->mainmenu = array(
       "index.php"              => ADMIN_NAME,
-      "articles.php?c_id=root" => "Содержание сайта",     
       "mine_block.php"         => "Главная страница",
+      "articles.php?c_id=root" => "Содержание сайта",
       "news.php"               => "Новости",
       
       #---------------------------------------------------------
@@ -370,6 +370,7 @@ class AdminCorporate extends AdminLTEextends{
 			"index.php"         => array("iscontent","is_programmer","ismanag","iscatalog","isjournalist"),
       "search.php"        => array("iscontent","is_programmer","ismanag","iscatalog","isjournalist"),
       "articles.php"      => array("ismanag", "iscontent"),
+      "news.php"          => array("ismanag", "iscontent"),
       "mine_block.php"    => array("ismanag", "iscontent"),
       "carusel.php"       => array("ismanag", "iscontent"),
       "reservations.php"  => array("ismanag"),

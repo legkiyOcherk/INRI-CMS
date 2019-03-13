@@ -76,7 +76,6 @@ class News extends Carusel{
           <tr class="th nodrop nodrag">
           	<td style="width: 55px;">#</td>
       		  <td style="width: 50px;">Скрыть</td>
-            <td style="width: 50px;">На главной</td>
             <td style="width: 115px;">Дата</td>
             <td style="width: 60px;">Картинка</td>
       		  <td>Название</td>
@@ -97,9 +96,9 @@ class News extends Carusel{
               <input type="hidden" value="'.$id.'" name="itSort[]">
           </td>
             
-          <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>
+          <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>';
             
-          <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'fl_show_mine\')" class="star_check '.$this->getStarValStyle($fl_show_mine).'" id="fl_show_mine_'.$id.'"></div></td>';
+          #<td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'fl_show_mine\')" class="star_check '.$this->getStarValStyle($fl_show_mine).'" id="fl_show_mine_'.$id.'"></div></td>';
             
     $date_str = '';
     if($date){
@@ -273,12 +272,13 @@ class News extends Carusel{
       
       $class_input = ' class="form-control" '; $is_color = false;
       if( in_array($key, array("longtxt1", "longtxt2", "longtxt3", "longtxt4"))) $class_input = ' class="ckeditor" '; 
-      //if( in_array($key, array("color"))) $is_color = true;
       
       $type = '';
-      if( in_array($key, array("color"))) $type = 'color';
-      if( in_array($key, array("date"))) $type = 'date';
+      $create_val = '';
+      if( in_array($key, array("color"))) { $type = 'color'; $create_val = '#FFFFFF'; } 
+      if( in_array($key, array("date"))) { $type = 'date'; $class_input = ' class="form-control" style = "max-width: 180px;" '; }
       if( in_array($key, array("datetime"))) $type = 'datetime';
+      if( in_array($key, array("title", "link", "seo_h1", "seo_title", "seo_keywords", "img_alt", "img_title" ))) $type = 'text';
       
       // Вспомогательные поля для храниения поискового индекса
       if(($key == 'orm_search_name') || ($key == 'orm_search')) continue;
@@ -317,7 +317,7 @@ class News extends Carusel{
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.htmlspecialchars($item[$key]).'" >'
           );
         }else{
           $output .= $this->show_form_row( 
@@ -330,12 +330,12 @@ class News extends Carusel{
         if($type){
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<input type="'.$type.'" name="'.$key.'"  value="">'
+            '<input '.$class_input.' type="'.$type.'" name="'.$key.'"  value="'.$create_val.'">'
           );
         }else{
           $output .= $this->show_form_row( 
             $val.$this->getErrorForKey($key), 
-            '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50></textarea>'
+            '<TEXTAREA '.$class_input.' name="'.$key.'" rows=2 cols=50>'.$create_val.'</textarea>'
           );
         }
       }
@@ -400,7 +400,7 @@ $date_arr = array(
     'date'             => 'Дата',
     'longtxt1'         => 'Краткий текст',
     'longtxt2'         => 'Полный текст (для отдельной страницы)',
-    'fl_show_mine'     => 'На главной',
+   #'fl_show_mine'     => 'На главной',
 
     'orm_search_name'  => 'поле для поискового индекса orm_search_name', // Вспомогательное поле для храниения поискового индекса
     'orm_search'       => 'поле для поискового индекса orm_search', // Вспомогательное поле для храниения поискового индекса    
