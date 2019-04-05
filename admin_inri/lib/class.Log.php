@@ -564,7 +564,7 @@ class Log extends BaseCarusel{
       'ip'        => $ip,
       'int_ip'    => $int_ip,
       'date'      => $date,
-      'dump_data' => $dump_data,
+      'dump_data' => addslashes($dump_data),
       'query'     => $query,
       'module'    => $module,
       'module_id' => $module_id
