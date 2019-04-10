@@ -1,8 +1,8 @@
 <?php
 require_once('lib/class.Admin.php');
 $admin = new Admin();
-require_once(NX_PATH.'iladmin/lib/class.Carusel.php');
-require_once(NX_PATH.'iladmin/lib/class.Image.php');
+require_once('lib/class.Carusel.php');
+require_once('lib/class.Image.php');
 
 
 
@@ -81,7 +81,7 @@ class SearchLog extends Carusel{
         
         $output .= '
             <td style="text-align: left;">
-              <a href="'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
+              <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
             </td>
         	  
       	';
@@ -95,7 +95,7 @@ class SearchLog extends Carusel{
         ';*/
         $output .= '
             <td style="" class="img-act">
-              <a  href="..'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" 
+              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
                 <i class="fa fa-pencil"></i>

@@ -1,29 +1,30 @@
 <?php
 require_once('lib/class.Admin.php');
 $admin = new Admin();
-require_once(NX_PATH.'iladmin/lib/class.Carusel.php');
-require_once(NX_PATH.'iladmin/lib/class.Image.php');
+require_once('lib/class.Carusel.php');
+require_once('lib/class.Image.php');
 
 class Brand extends Carusel{
   
 }
 
 $date_arr = array(
-    'title' => 'Название',
-    'link' => 'Ссылка',
-    'longtxt1' => 'Краткий текст',
-    'longtxt2' => 'Полный текст (для отдельной страницы)',
-    'seo_title' => 'SEO Title',
+    'title'           => 'Название',
+    'link'            => 'Ссылка',
+    'longtxt1'        => 'Краткий текст',
+    'longtxt2'        => 'Полный текст (для отдельной страницы)',
+    'seo_h1'          => 'SEO H1',
+    'seo_title'       => 'SEO Title',
     'seo_description' => 'SEO Description',
-    'seo_keywords' => 'SEO Keywords',
-    'img_alt' => 'Alt изображение',
-    'img_title' => 'Title изображение',
+    'seo_keywords'    => 'SEO Keywords',
+    'img_alt'         => 'Alt изображение',
+    'img_title'       => 'Title изображение',
   );
 
 $pager = array(
   'perPage' => 50,
-  'page' => 1,
-  'url' => '',
+  'page'    => 1,
+  'url'     => '',
   'items_per_page' => array( 50, 100, 500, 1000, 5000)
 );
 

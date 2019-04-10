@@ -1814,6 +1814,158 @@ HTML;
     return $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name );
   }
   
+  function setup_module_availability_onlineshop( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+      
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `img`, `hide`, `ord`) VALUES 
+        (1, 'в наличии', '', 0, 0),
+        (2, 'в наличии на складе', '', 0, 1),
+        (3, 'временно отсутствует', '', 0, 2),
+        (4, 'под заказ (3 дня)', '', 0, 4),
+        (5, 'под заказ (7-14 дней)', '', 0, 5),
+        (6, 'под заказ', '', 0, 3),
+        (7, 'узнавайте у менеджеров', '', 0, 6) "; 
+    
+    return $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+  }
+  
+  function setup_module_country_onlineshop( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `longtxt1` text,
+        `img_alt` varchar(255) DEFAULT NULL,
+        `img_title` varchar(255) DEFAULT NULL,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+      
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `img`, `longtxt1`, `img_alt`, `img_title`, `hide`, `ord`) VALUES 
+        (1, 'Россия', '', '', '', '', 0, 0) "; 
+    
+    $output .= $this->create_img_dir( $name );
+    $output .= $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CUTAWAY );
+    
+    return $output;
+  }
+  
+  function setup_module_brand_onlineshop( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `link` varchar(255) DEFAULT NULL,
+        `longtxt1` text,
+        `longtxt2` text,
+        `seo_h1` varchar(255) DEFAULT NULL,
+        `seo_title` varchar(255) DEFAULT NULL,
+        `seo_description` varchar(255) DEFAULT NULL,
+        `seo_keywords` varchar(255) DEFAULT NULL,
+        `img_alt` varchar(255) DEFAULT NULL,
+        `img_title` varchar(255) DEFAULT NULL,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+      
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `img`, `link`, `longtxt1`, `longtxt2`, `seo_h1`, `seo_title`, `seo_description`, `seo_keywords`, `img_alt`, `img_title`, `hide`, `ord`) VALUES 
+        (1, 'Apple', '', '', '', '', '', '', '', '', '', '', 0, 0) ";  
+    
+    $output .= $this->create_img_dir( $name );
+    $output .= $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_CUTAWAY );
+    
+    return $output;
+  }
+  
+  function setup_module_units_onlineshop( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `reduction` varchar(255) DEFAULT NULL,
+        `longtxt1` text,
+        `img_alt` varchar(255) DEFAULT NULL,
+        `img_title` varchar(255) DEFAULT NULL,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+      
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `img`, `reduction`, `longtxt1`, `img_alt`, `img_title`, `hide`, `ord`) VALUES 
+        (1, 'Штуки', '', 'шт.', '', '', '', 0, 0) ";  
+    
+    $output .= $this->create_img_dir( $name );
+    $output .= $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+    #$output .= $this->copy_img_module( $name, SOURCE_SITE_CUTAWAY );
+    
+    return $output;
+  }
+  
+  function setup_module_search_log_onlineshop( $title, $name ){
+    
+    $table = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `datetime` varchar(10) DEFAULT NULL,
+        `ip` varchar(255) DEFAULT NULL,
+        `longtxt1` text,
+        `longtxt2` text,
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+      
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `title`, `img`, `datetime`, `ip`, `longtxt1`, `longtxt2`, `hide`, `ord`) VALUES 
+        (1, 'Z0UC0009M', '', '2018-08-14', '176.215.11.77', NULL, NULL, 0, 0) ";  
+    
+    #$output .= $this->create_img_dir( $name );
+    $output .= $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+    #$output .= $this->copy_img_module( $name, SOURCE_SITE_CUTAWAY );
+    
+    return $output;
+  }
+  
   
   
   function setup_database_module_required(){
@@ -1942,6 +2094,20 @@ HTML;
     $this->add_content( $this->wrap_block(  # ЧПУ
                                             $this->insert_def_module_url_onlineshop( 'Человеко-понятные адреса', 'url' )  ));
                                             
+    $this->add_content( $this->wrap_block(  # Варианты наличия
+                                            $this->setup_module_availability_onlineshop( 'Варианты наличия', 'availability' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Страны
+                                            $this->setup_module_country_onlineshop( 'Страны', 'country' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Бренд
+                                            $this->setup_module_brand_onlineshop( 'Бренд', 'brand' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Ед. измерения
+                                            $this->setup_module_units_onlineshop( 'Ед. измерения', 'units' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Логи поиска
+                                            $this->setup_module_search_log_onlineshop( 'Логи поиска', 'search_log' )  ));
   }
   
   
