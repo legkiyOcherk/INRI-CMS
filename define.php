@@ -16,7 +16,7 @@ if (!defined("SITE_TYPE"))  define("SITE_TYPE",  "ONLINESHOP");
 if (!defined("ADMIN_FAVICON"))         define("ADMIN_FAVICON",          "http://in-ri.ru/css/img/favicon_white.ico");
 if (!defined("SOURCE_SITE_CUTAWAY"))   define("SOURCE_SITE_CUTAWAY",    "http://cutaway.ready.in-ri.ru");
 if (!defined("SOURCE_SITE_CORPORATE")) define("SOURCE_SITE_CORPORATE",  "http://corporate.ready.in-ri.ru");  
-if (!defined("SOURCE_SITE_CORPORATE")) define("SOURCE_SITE_ONLINESHOP", "http://corporate.ready.in-ri.ru");  
+if (!defined("SOURCE_SITE_ONLINESHOP")) define("SOURCE_SITE_ONLINESHOP", "http://onlineshop.ready.in-ri.ru");   
 
 
 define("CART_TYPE_DOOR", 1);

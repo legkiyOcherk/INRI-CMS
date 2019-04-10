@@ -8,7 +8,7 @@ $days=array(0=>"ВС","ПН","ВТ","СР","ЧТ","ПТ","СБ");
 
 if (!is_array($_SESSION["shown"])) $_SESSION["shown"]=array();
 
-$q1=$PDO->query("SELECT * FROM `order_status`");
+$q1=$PDO->query("SELECT * FROM `".DB_PFX."basket_order_status`");
 
 while ( $opt= $q1->fetch() ){
 	$opti[$opt['id']]=$opt['title'];
@@ -41,8 +41,8 @@ function show_orders_list(){
  	}
    
   $output .= '</div></div>';
-  $s = "SELECT * FROM `basket_orders`";
-  $q=$PDO->query("SELECT * FROM `basket_orders`");
+  $s = "SELECT * FROM `".DB_PFX."basket_orders`";
+  $q=$PDO->query("SELECT * FROM `".DB_PFX."basket_orders`");
   $count = $q->rowCount;
   $limit=15;
   if ($count>$limit){
@@ -55,7 +55,7 @@ function show_orders_list(){
   
   if ($_GET["status"]) $wh=" WHERE `status`=".intval($_GET["status"]);
   
-  $q=$PDO->query("SELECT * FROM `basket_orders` $wh ORDER BY `date_time` DESC $limiter") or die(mysql_error());
+  $q=$PDO->query("SELECT * FROM `".DB_PFX."basket_orders` $wh ORDER BY `date_time` DESC $limiter") or die(mysql_error());
   
   if ($count>$limit)
   {
@@ -99,7 +99,7 @@ function show_orders_list(){
   	$items_in_order=db::select("*","basket_items","basket_id=$row[basket_id]");
   	$row["items_in_order"]=$items_in_order;
   	$output .= show_row($row);
-  	if (!$row["shown"]) $PDO->query ("UPDATE `basket_orders` SET `shown`=1 WHERE `id`={$row["id"]}");
+  	if (!$row["shown"]) $PDO->query ("UPDATE `".DB_PFX."basket_orders` SET `shown`=1 WHERE `id`={$row["id"]}");
   }
   $output .= '
     </tbody>
@@ -346,7 +346,7 @@ if ($_POST["check"])
 	$last=intval($_POST["check"]);
 	// $last=mysql_result(mysql_query("SELECT MAX(`date_time`) FROM `basket_orders`"),0);
 	// echo $last;
-	$q = $PDO->query("SELECT * FROM `basket_orders` WHERE `shown`=0");
+	$q = $PDO->query("SELECT * FROM `".DB_PFX."basket_orders` WHERE `shown`=0");
 	if ( $q->rowCount() ) {
 		$i=0;
 		while ($row = $q->fetch()) 
@@ -366,7 +366,7 @@ if ($_POST["check"])
 if ($_POST["del"])
 {
 	$del=intval($_POST["del"]);
-	$q = $PDO->query("DELETE FROM `basket_orders` WHERE `id`=$del");
+	$q = $PDO->query("DELETE FROM `".DB_PFX."basket_orders` WHERE `id`=$del");
 	die("ok");
 	
 }
@@ -374,7 +374,7 @@ if ($_POST["valu"] && $_POST["upd"])
 {
 	$upd=intval($_POST["upd"]);
 	$status=intval($_POST["valu"]);
-	$q = $PDO->query("UPDATE `basket_orders` SET `status`=$status, `manager_id`=".$_SESSION["WA_USER"]["id"]." WHERE `id`=$upd");
+	$q = $PDO->query("UPDATE `".DB_PFX."basket_orders` SET `status`=$status, `manager_id`=".$_SESSION["WA_USER"]["id"]." WHERE `id`=$upd");
 	die("ok");
 	
 }
@@ -383,7 +383,7 @@ if ($_POST["addr"] && $_POST["addr_c"])
 {
 	$upd = intval($_POST["addr_c"]);
 	$addr = $_POST["addr"];
-	$q = $PDO->query("UPDATE `basket_orders` SET `address`='$addr', `manager_id`=".$_SESSION["WA_USER"]["id"]." WHERE `id`=$upd");
+	$q = $PDO->query("UPDATE `".DB_PFX."basket_orders` SET `address`='$addr', `manager_id`=".$_SESSION["WA_USER"]["id"]." WHERE `id`=$upd");
 	$addr = $addr;
 	die($addr);
 }
@@ -393,19 +393,19 @@ if ($_POST["save_id"])
 	if ($_POST["fio"])
 	{
 		$fio = $_POST["fio"];
-		$q = $PDO->query("UPDATE `basket_orders` SET `fio`='$fio', `manager_id`=".$_SESSION["WA_USER"]["id"]." WHERE `id`=$upd");
+		$q = $PDO->query("UPDATE `".DB_PFX."basket_orders` SET `fio`='$fio', `manager_id`=".$_SESSION["WA_USER"]["id"]." WHERE `id`=$upd");
 		$ret=$fio;
 	}	
 	if ($_POST["phone"])
 	{
 		$phone=$_POST["phone"];
-		$q = $PDO->query("UPDATE `basket_orders` SET `phone`='$phone', `manager_id`=".$_SESSION["WA_USER"]["id"]." WHERE `id`=$upd");
+		$q = $PDO->query("UPDATE `".DB_PFX."basket_orders` SET `phone`='$phone', `manager_id`=".$_SESSION["WA_USER"]["id"]." WHERE `id`=$upd");
 		$ret=$phone;
 	}	
 	if ($_POST["email"])
 	{
 		$email = $_POST["email"];
-		$q = $PDO->query("UPDATE `basket_orders` SET `email`='$email', `manager_id`=".$_SESSION["WA_USER"]["id"]." WHERE `id`=$upd");
+		$q = $PDO->query("UPDATE `".DB_PFX."basket_orders` SET `email`='$email', `manager_id`=".$_SESSION["WA_USER"]["id"]." WHERE `id`=$upd");
 		$ret=$email;
 	}
 	die($ret);
@@ -414,7 +414,7 @@ if ($_POST["comman"] && $_POST["comm_id"])
 {
 	$upd=intval($_POST["comm_id"]);
 	$addr=$_POST["comman"];
-	$q = $PDO->query("UPDATE `basket_orders` SET `comment_manager`='$addr', `manager_id`=".$_SESSION["WA_USER"]["id"]." WHERE `id`=$upd");
+	$q = $PDO->query("UPDATE `".DB_PFX."basket_orders` SET `comment_manager`='$addr', `manager_id`=".$_SESSION["WA_USER"]["id"]." WHERE `id`=$upd");
 	$addr=$addr;
 	die($addr);
 }
@@ -574,7 +574,7 @@ if (!$_GET["id"]){
   $output .= show_orders_list();
   
 }else {
-	$q = $PDO->query("SELECT * FROM `basket_orders` WHERE `id`=".intval($_GET["id"]));
+	$q = $PDO->query("SELECT * FROM `".DB_PFX."basket_orders` WHERE `id`=".intval($_GET["id"]));
 	$row = $q->fetch();
 	$output .= "<h3>".date ("d.m.Y H:i:s",$row["date_time"])."</h3>";
 	$output .= "<div>".$row["message"]."</div>";

@@ -357,18 +357,18 @@ class Basket {
     FROM   
             basket_items AS bi 
     LEFT JOIN 
-            il_goods AS i 
+            ".DB_PFX."goods AS i 
     ON 
             (bi.item_id = i.id) 
     LEFT JOIN
-            il_units AS mi
+            ".DB_PFX."units AS mi
     ON
             (i.units_id = mi.id)
     LEFT JOIN 
             basket AS b 
     ON      (b.id = bi.basket_id) 
     LEFT JOIN il_url AS u
-    ON (u.module = 'il_goods') AND (u.module_id = i.id)
+    ON (u.module = '".DB_PFX."goods') AND (u.module_id = i.id)
     WHERE 
             bi.basket_id = $this->basket_id 
     AND 
@@ -976,18 +976,18 @@ class Basket {
     FROM   
             basket_items AS bi 
     LEFT JOIN 
-            il_goods AS i 
+            ".DB_PFX."goods AS i 
     ON 
             (bi.item_id = i.id) 
     LEFT JOIN
-            il_units AS mi
+            ".DB_PFX."units AS mi
     ON
             (i.units_id = mi.id)
     LEFT JOIN 
             basket AS b 
     ON      (b.id = bi.basket_id) 
     LEFT JOIN il_url AS u
-    ON (u.module = 'il_goods') AND (u.module_id = i.id)
+    ON (u.module = '".DB_PFX."goods') AND (u.module_id = i.id)
     WHERE 
             bi.basket_id = $this->basket_id 
     AND 

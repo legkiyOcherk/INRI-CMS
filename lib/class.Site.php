@@ -292,6 +292,31 @@ class SiteOnlineshop extends SiteBase{
     #pri($this); 
     switch($this->module){
       
+      case DB_PFX.'goods_cat':
+        $this->adminLink = "/goods.php";
+        if($this->module_id){
+          $this->adminLink .= "?editc=".$this->module_id;
+          $_SESSION['goods']['c_id'] = db::value("cat_id", DB_PFX.'goods', "id = ".$this->module_id );
+        }
+        
+        $this->cat_arr = db::select('id, parent_id, title, hide', DB_PFX.'goods_cat');
+        $cont = Goods::show_cat_items($this, $this->module_id, DB_PFX.'goods_cat', DB_PFX.'il_goods');
+        $cont = $this->getContentPrefix($left_menu).$cont.$this->getContentPostfix($left_menu);
+        break;
+        
+      case DB_PFX.'goods':
+        $this->adminLink = "/goods.php";
+        if($this->module_id){
+          $this->adminLink .= "?edits=".$this->module_id;
+          $_SESSION['goods']['c_id'] = db::value("cat_id", DB_PFX.'goods', "id = ".$this->module_id );
+        }
+        
+        $this->cat_arr = db::select("id, parent_id, title, hide", DB_PFX.'goods_cat');
+        $item = db::row('*', DB_PFX.'goods', "id = ".$this->module_id);
+        $cont = Goods::show_item_full($this, $item);
+        $cont = $this->getContentPrefix($left_menu).$cont.$this->getContentPostfix($left_menu);
+        break;
+      
       case DB_PFX.'articles_cat':
         $this->adminLink = "/articles.php";
         if($this->module_id){

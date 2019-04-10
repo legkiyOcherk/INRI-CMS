@@ -21,9 +21,9 @@ class Goods {
 	}
   
   static function get_path_link($cid, $str = '', $separator = "/", $sid = null) {
-		$row = db::row('title, parent_id', 'il_cat_goods', "id = $cid");
+		$row = db::row('title, parent_id', DB_PFX.'goods_cat', "id = $cid");
 		$title = $row['title'];
-		$url = $href = Url::getStaticUrlForModuleAndModuleId('il_url', 'il_cat_goods', $cid);
+		$url = $href = Url::getStaticUrlForModuleAndModuleId(DB_PFX.'url', DB_PFX.'goods_cat', $cid);
 		$parent_id = intval($row['parent_id']);
 		if ($cid==$sid) $str = "<span>$title</span> ";
 		else $str = "<a href=\"/$url\">$title</a> ".$str;
@@ -35,7 +35,7 @@ class Goods {
 	}
    
   static function get_arr_act_cat_items($sid, $arr){
-    $item = db::row('*', 'il_cat_goods', 'id = '.$sid);
+    $item = db::row('*',  DB_PFX.'goods_cat', 'id = '.$sid);
     
     if($item['parent_id']){
       $arr[] = $item['parent_id'];
@@ -982,17 +982,17 @@ class Goods {
     $output = '';
     
     $s = "
-      SELECT  `il_cat_goods` . * , 
-              `il_url`.`url` 
-      FROM  `il_cat_goods` 
+      SELECT  `".DB_PFX."goods_cat` . * , 
+              `".DB_PFX."url`.`url` 
+      FROM  `".DB_PFX."goods_cat` 
       
-      LEFT JOIN  `il_url` ON (  `il_url`.`module` =  'il_cat_goods' ) 
+      LEFT JOIN  `".DB_PFX."url` ON (  `".DB_PFX."url`.`module` =  '".DB_PFX."goods_cat' ) 
       AND (
-      `il_url`.`module_id` =  `il_cat_goods`.`id`
+      `".DB_PFX."url`.`module_id` =  `".DB_PFX."goods_cat`.`id`
       )
-      WHERE `il_cat_goods`.`parent_id` =  $sid 
-      AND `il_cat_goods`.`hide` = 0
-      ORDER BY  `il_cat_goods`.`ord`
+      WHERE `".DB_PFX."goods_cat`.`parent_id` =  $sid 
+      AND `".DB_PFX."goods_cat`.`hide` = 0
+      ORDER BY  `".DB_PFX."goods_cat`.`ord`
     "; #pri($s);
     
     if($q = $site->pdo->query($s)){
@@ -1666,7 +1666,12 @@ class Goods {
   
   static function show_cat_items(&$site, $cid, $cat_table, $table){
     
-    $cat_item = db::select("*", "il_cat_goods", "id = ".$cid, null, null, 1, 0 );
+    $goods_tbl = DB_PFX.'goods';
+    $goods_cat_tbl = DB_PFX.'goods_cat';
+    $all_images_tbl = DB_PFX.'all_images';
+    $all_files_tbl = DB_PFX.'all_files';
+    
+    $cat_item = db::select("*", $goods_cat_tbl, "id = ".$cid, null, null, 1, 0 );
     $cat_full = array();
     $cat_full = $cat_item;
     #pri($cat_item);
@@ -1686,7 +1691,7 @@ class Goods {
     #echo "str_sub_cat_id = $str_sub_cat_id";
     $s_where = ' `il_goods`.`cat_id` IN ( '.$str_sub_cat_id.' ) ';
     */
-    $s_where = ' `il_goods`.`cat_id` = '.$cid.' ';
+    $s_where = ' `'.$goods_tbl.'`.`cat_id` = '.$cid.' ';
     
     // ------------- SEO -------------
     {
@@ -1694,7 +1699,7 @@ class Goods {
       if($cat_item['seo_title']){
         $site->siteTitle = $cat_item['seo_title'];
       }else{
-        if($seo_title =  db::value('value', 'il_seo', "type = 'goods_cat_title'" )){
+        if($seo_title =  db::value('value', DB_PFX.'seo', "type = 'goods_cat_title'" )){
           $site->siteTitle = str_replace("*h1*", $cat_item['title'], $seo_title);
         }else{
           $site->siteTitle = $cat_item['title'];
@@ -1716,7 +1721,7 @@ class Goods {
       if($img_alt){
         $seo_img_alt_str = $img_alt;
       }else{
-        if($seo_img_alt_str =  db::value('value', 'il_seo', "type = 'img_alt'" )){
+        if($seo_img_alt_str =  db::value('value', DB_PFX.'seo', "type = 'img_alt'" )){
           #$img_alt_txt= str_replace("*h1*", $title.' '.$article, $seo_img_alt);
         }else{
           $seo_img_alt_str = $title;
@@ -1737,7 +1742,7 @@ class Goods {
         $seo_img_title_str = $img_title;
         #$img_title_txt = $img_title;
       }else{
-        if($seo_img_title_str =  db::value('value', 'il_seo', "type = 'img_title'" )){
+        if($seo_img_title_str =  db::value('value', DB_PFX.'seo', "type = 'img_title'" )){
           #$img_title_txt= str_replace("*h1*", $title.' '.$article, $seo_img_title);
         }else{
           $seo_img_title_str = $title;
@@ -1926,7 +1931,7 @@ class Goods {
        
     $s = "
     SELECT COUNT( * ) AS count
-    FROM `il_goods`
+    FROM `$goods_tbl`
     WHERE $s_where
     AND hide = 0 
     ";
@@ -1957,12 +1962,12 @@ class Goods {
     
     
     $s = "
-    SELECT `il_goods`.*, `il_url`.`url` 
-    FROM `il_goods`
-    LEFT JOIN `il_url`
-    ON (`il_url`.`module` = 'il_goods') AND (`il_url`.`module_id` = `il_goods`.`id`)
+    SELECT `$goods_tbl`.*, `".DB_PFX."url`.`url` 
+    FROM `$goods_tbl`
+    LEFT JOIN `".DB_PFX."url`
+    ON (`".DB_PFX."url`.`module` = '$goods_tbl') AND (`".DB_PFX."url`.`module_id` = `$goods_tbl`.`id`)
     WHERE $s_where
-    AND `il_goods`.`hide`  = 0 
+    AND `$goods_tbl`.`hide`  = 0 
     $s_filter
     $s_cat_sorting
     $limit
@@ -2000,14 +2005,14 @@ class Goods {
       
       $filter_item = '';
       
-      $seo_img_alt_str_wed =  db::value('value', 'il_seo', "type = 'img_alt'");
-      $seo_img_title_str_wed =  db::value('value', 'il_seo', "type = 'img_title'" );
+      $seo_img_alt_str_wed =  db::value('value', DB_PFX.'seo', "type = 'img_alt'");
+      $seo_img_title_str_wed =  db::value('value', DB_PFX.'seo', "type = 'img_title'" );
       
       $output .= '
         <div class="cat_box">
           <div class="catalog_items card-deck">';
       
-      $availability_arr = db::select('*', "il_availability", "hide = 0");
+      $availability_arr = db::select('*', DB_PFX."availability", "hide = 0");
       $site->goods_availability = array();
       foreach($availability_arr as $k=>$v){
         $site->goods_availability[$v['id']] = $v['title'];
@@ -2023,7 +2028,7 @@ class Goods {
           if($img_alt){
             $seo_img_alt_str = $img_alt;
           }else{
-            if($seo_img_alt_str_wed =  db::value('value', 'il_seo', "type = 'img_alt'" )){
+            if($seo_img_alt_str_wed =  db::value('value', DB_PFX.'seo', "type = 'img_alt'" )){
               $seo_img_alt_str = $seo_img_alt_str_wed;
             }else{
               $seo_img_alt_str = $title.' '.$article;
@@ -2110,9 +2115,14 @@ class Goods {
 		extract($item);
     
     $output = '';
+    $goods_tbl = DB_PFX.'goods';
+    $goods_cat_tbl = DB_PFX.'goods_cat';
+    $all_images_tbl = DB_PFX.'all_images';
+    $all_files_tbl = DB_PFX.'all_files';
+      
     $item_full = array();
     $item_full = $item;
-    $item_full['url'] = Url::getStaticUrlForModuleAndModuleId("il_url", "il_goods", $id);
+    $item_full['url'] = Url::getStaticUrlForModuleAndModuleId(DB_PFX."url", DB_PFX."goods", $id);
     /*Добавление id товара в массив просмотренных товаров*/{
     
     if(!isset($_SESSION['item_history'])){
@@ -2134,17 +2144,18 @@ class Goods {
 
     }/* End Добавление id товара в массив просмотренных товаров*/
     
-    $q = $site->pdo->query("SELECT * FROM `basket_price` WHERE `item_id` = $id ORDER BY `from`") or die(mysql_error());
+    /*
+    $q = $site->pdo->query("SELECT * FROM `".DB_PFX."basket_price` WHERE `item_id` = $id ORDER BY `from`") or die(mysql_error()); 
     while ($rows = $q->fetch()) {
       $prices[] = $rows;
-    }
+    }*/
     
     // ------------- SEO -------------
     {
       if($item['seo_title']){
         $site->siteTitle = $item['seo_title'];
       }else{
-        if($seo_title =  db::value('value', 'il_seo', "type = 'goods_title'" )){
+        if($seo_title =  db::value('value', DB_PFX.'seo', "type = 'goods_title'" )){
           $site->siteTitle = str_replace("*h1*", $item['title'], $seo_title);
         }else{
           $site->siteTitle = $item['title'];
@@ -2159,7 +2170,7 @@ class Goods {
       if($img_alt){
         $seo_img_alt_str = $img_alt;
       }else{
-        if($seo_img_alt_str =  db::value('value', 'il_seo', "type = 'img_alt'" )){
+        if($seo_img_alt_str =  db::value('value', DB_PFX.'seo', "type = 'img_alt'" )){
         }else{
           $seo_img_alt_str = $title.' '.$article;
         }
@@ -2177,7 +2188,7 @@ class Goods {
       if($img_title){
         $seo_img_title_str = $img_title;
       }else{
-        if($seo_img_title_str =  db::value('value', 'il_seo', "type = 'img_title'" )){
+        if($seo_img_title_str =  db::value('value', DB_PFX.'seo', "type = 'img_title'" )){
         }else{
           $seo_img_title_str = $title.' '.$article;
         }
@@ -2229,13 +2240,14 @@ class Goods {
             </li>
       ';
       
+      
       $s  = "
         SELECT * 
-        FROM `il_all_images`
-        WHERE `module` = 'il_goods'
+        FROM `$all_images_tbl`
+        WHERE `module` = '$goods_tbl'
         AND `module_id` = $id
         AND `hide` = 0
-        ORDER BY  `il_all_images`.`module_ord` 
+        ORDER BY  `$all_images_tbl`.`module_ord` 
       "; 
       
       if($q = $site->pdo->query($s)){
@@ -2354,7 +2366,7 @@ class Goods {
     </script>
     ';
       
-    }elseif( $cat_item['cat_image'] = db::value("img", "il_cat_goods", "id = ".$cat_id) ){
+    }elseif( $cat_item['cat_image'] = db::value("img", $goods_cat_tbl, "id = ".$cat_id) ){
           /*$item_full['image'] = '
             <img src = "'.Images::static_get_img_link("images/goods/cat/orig", $cat_item['cat_image'],  'images/goods/cat/variations/130x130',  130, null, 0xFFFFFF, 95).'" title = "'.$img_title_txt[0].'" alt = "'.$img_alt_txt[0].'">
           '; */
@@ -2371,8 +2383,8 @@ class Goods {
     $i = 0;
     $s_files  = "
     SELECT * 
-    FROM `il_all_files`
-    WHERE `module` = 'il_goods'
+    FROM `$all_files_tbl`
+    WHERE `module` = '$goods_tbl'
     AND `module_id` = $id
     AND `hide` = 0
     "; #pri($s_files)";
@@ -2407,7 +2419,7 @@ class Goods {
     
     
     if(!isset($site->units) || !$site->units){
-      $unit_items =  db::select("*", "il_units" );
+      $unit_items =  db::select("*", DB_PFX."units" );
       
       foreach($unit_items as $unit_item){
         $site->units[ $unit_item['id'] ] = $unit_item['reduction'];
@@ -3430,7 +3442,7 @@ class Goods {
     $output = '';
     
     if(!isset($site->units) || !$site->units){
-      $unit_items =  db::select("*", "il_units" );
+      $unit_items =  db::select("*", DB_PFX."units" );
       
       foreach($unit_items as $unit_item){
         $site->units[ $unit_item['id'] ] = $unit_item['reduction'];

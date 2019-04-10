@@ -592,6 +592,7 @@ class CatCarusel extends BaseCarusel{
         
     /*$where = "`parent_id` IS NULL";
     if($c_id ) $where = "`parent_id` =  $c_id";*/
+    if(!$c_id) $c_id = '0';
     $where = "`parent_id` =  $c_id";
     $s_order = "`ord` ASC";
     $s = "
@@ -599,7 +600,7 @@ class CatCarusel extends BaseCarusel{
       FROM `".$this->prefix.$this->carusel_name.'_cat'."`
       WHERE $where
       ORDER BY $s_order
-    ";
+    "; #pri($s);
     $output .= '
       <form 
         method="post" 

@@ -1,9 +1,9 @@
 <?php
 require_once('lib/class.Admin.php');
 $admin = new Admin();
-require_once(NX_PATH.'iladmin/lib/class.CatCarusel.php');
-require_once(NX_PATH.'iladmin/lib/class.Image.php');
-require_once(NX_PATH.'vendors/phpmorphy/phpmorphy_init.php'); // Морфология
+require_once('lib/class.CatCarusel.php');
+require_once('lib/class.Image.php');
+require_once('../vendors/phpmorphy/phpmorphy_init.php'); // Морфология
 
 
 function get_phpmorphy($descr_str) {
@@ -171,7 +171,7 @@ class Goods extends CatCarusel{
                   </td>
               	  
                   <td style="text-align: left;">
-                    <a href="'.IA_URL.'$this->carusel_name.'.php?c_id='.$id.'" title="редактировать">'.$title.'</a>
+                    <a href="'.IA_URL.$this->carusel_name.'.php?c_id='.$id.'" title="редактировать">'.$title.'</a>
                   </td>
               	  
             	';
@@ -179,7 +179,7 @@ class Goods extends CatCarusel{
               $output .= '
               	  <td style="" class="img-act">
                     
-                    <a  href="..'.IA_URL.'$this->carusel_name.'.php?editc='.$id.'" 
+                    <a  href="..'.IA_URL.$this->carusel_name.'.php?editc='.$id.'" 
                         class = "btn btn-info btn-sm"
                         title = "Редактировать">
                         <i class="fa fa-pencil"></i>
@@ -205,7 +205,7 @@ class Goods extends CatCarusel{
               
               if(!$val_is_cildren && !$val_is_items){
                 $output .= '
-                    <a href="..'.IA_URL.'$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}"
+                    <a href="..'.IA_URL.$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}"
                           class="btn btn-danger btn-sm" 
                           title="удалить" 
                           onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
@@ -302,7 +302,7 @@ class Goods extends CatCarusel{
       
       // Выбор Варианты наличия
       if($key == 'availability_id'){
-        $tmp = $this->show_select('il_availability', 'title', $item, $key, false );
+        $tmp = $this->show_select(DB_PFX.'availability', 'title', $item, $key, false );
         $tmp .= ' <a href="'.IA_URL.'availability.php" target="_blank"> Вариант наличия </a>';
         $output .= $this->show_form_row( $val, $tmp);
         continue;  
@@ -310,7 +310,7 @@ class Goods extends CatCarusel{
            
       // Выбор Страна
       if($key == 'country_id'){
-        $tmp = $this->show_select('il_country', 'title', $item, $key );
+        $tmp = $this->show_select(DB_PFX.'country', 'title', $item, $key );
         $tmp .= ' <a href="'.IA_URL.'country.php" target="_blank"> Добавить Страну </a>';
         $output .= $this->show_form_row( $val, $tmp);
         continue;  
@@ -318,7 +318,7 @@ class Goods extends CatCarusel{
       
       // Выбор Бренд
       if($key == 'brand_id'){
-        $tmp = $this->show_select('il_brand', 'title', $item, $key );
+        $tmp = $this->show_select(DB_PFX.'brand', 'title', $item, $key );
         $tmp .= ' <a href="'.IA_URL.'brand.php" target="_blank"> Добавить Бренд </a>';
         $output .= $this->show_form_row( $val, $tmp);
         continue;  
@@ -326,7 +326,7 @@ class Goods extends CatCarusel{
       
       // Выбор Едениц измерения
       if($key == 'units_id'){
-        $tmp = $this->show_select('il_units', 'title', $item, $key, false );
+        $tmp = $this->show_select(DB_PFX.'units', 'title', $item, $key, false );
         $tmp .= ' <a href="'.IA_URL.'units.php" target="_blank"> Добавить Еденицы </a>';
         $output .= $this->show_form_row( $val, $tmp);
         continue;  
@@ -664,7 +664,7 @@ class Goods extends CatCarusel{
     extract($item);
     
     if(!isset($this->units) || !$this->units){
-      $unit_items =  db::select("*", "il_units" );
+      $unit_items =  db::select("*", DB_PFX."units" );
       
       foreach($unit_items as $unit_item){
         $this->units[ $unit_item['id'] ] = $unit_item['reduction'];
@@ -695,14 +695,14 @@ class Goods extends CatCarusel{
             </td>
         	  
             <td style="text-align: left;">
-              <a href="'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
+              <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
             </td>
             
             <td>'.$portion.' '.$this->units[$units_id].'</td>
             <td><input class="form-control price_input" type="text" name="price" value="'.$price.'"></td>
             
             <td style="" class="img-act">
-              <a  href="..'.IA_URL.'$this->carusel_name.'.php?edits='.$id.'" 
+              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
                 <i class="fa fa-pencil"></i>
@@ -727,7 +727,7 @@ class Goods extends CatCarusel{
     
     $s = "
       SELECT `id`, `title`, `hide`, `img`
-      FROM `".$this->prefix."cat_".$this->carusel_name."`
+      FROM `".$this->cat_carusel_name."`
       WHERE `parent_id` = $parent
       ORDER BY `ord`
     ";
@@ -770,8 +770,7 @@ class Goods extends CatCarusel{
       $listing = $q->fetchAll();
       
 			$output .= '<ul style = "list-style:none; padding-left: 15px;">';
-			foreach ($listing as $posi)
-			{
+			foreach ($listing as $posi){ 
 				$output .= '
           <li style = "display:block">
             <span class = "label" >
@@ -805,7 +804,7 @@ class Goods extends CatCarusel{
   
   
   function full_tree(){
-    $output = '<h1><a href = "'.IA_URL.'$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
+    $output = '<h1><a href = "'.IA_URL.$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
     $output .= '
       <style>
       .star_check {

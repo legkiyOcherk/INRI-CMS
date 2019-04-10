@@ -1684,10 +1684,10 @@ HTML;
     $this->create_cat_img_dir( $name );
     
     $output .= $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
-    $output .= $this->copy_img_module( $name, SOURCE_SITE_CORPORATE );
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_ONLINESHOP );
     
     $output .= $this->setup_database_table($title_cat, $table_cat, $sql_cat, $sql_cat_insert, $script_name  );
-    $output .= $this->copy_img_module_cat( $name, SOURCE_SITE_CORPORATE );
+    $output .= $this->copy_img_module_cat( $name, SOURCE_SITE_ONLINESHOP );
     
     return $output;
   }
@@ -1712,10 +1712,30 @@ HTML;
 (69, '1531733498_9.jpg', 'inri_articles_cat', 7, '1533298966_9.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 10, 0),
 (70, '1531733498_10.jpg', 'inri_articles_cat', 7, '1533298966_10.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 11, 0),
 (71, '1531733498_11.jpg', 'inri_articles_cat', 7, '1533298966_11.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 12, 0),
-(72, '1531733498_12.jpg', 'inri_articles_cat', 7, '1533298966_12.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 13, 0);
+(72, '1531733498_12.jpg', 'inri_articles_cat', 7, '1533298966_12.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 13, 0),
+(NULL, '', 'inri_goods', 1, '1554890879_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 5),
+(NULL, '', 'inri_goods', 1, '1554890881_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 4),
+(NULL, '', 'inri_goods', 1, '1554890882_2.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 3),
+(NULL, '', 'inri_goods', 1, '1554890883_3.png', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 2),
+(NULL, '', 'inri_goods', 1, '1554890883_4.png', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 1),
+(NULL, '', 'inri_goods', 1, '1554890883_5.png', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(NULL, '', 'inri_goods', 2, '1554894802_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 2),
+(NULL, '', 'inri_goods', 3, '1554895247_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 1),
+(NULL, '', 'inri_goods', 2, '1554894804_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 1),
+(NULL, '', 'inri_goods', 2, '1554894804_2.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(NULL, '', 'inri_goods', 3, '1554895247_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(NULL, '', 'inri_goods', 4, '1554896224_0.png', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 1),
+(NULL, '', 'inri_goods', 4, '1554896224_1.png', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(NULL, '', 'inri_goods', 5, '1554896647_0.png', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 1),
+(NULL, '', 'inri_goods', 5, '1554896647_1.png', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0),
+(NULL, '', 'inri_goods', 5, '1554896837_0.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 6),
+(NULL, '', 'inri_goods', 5, '1554896837_1.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 5),
+(NULL, '', 'inri_goods', 5, '1554896837_2.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 4),
+(NULL, '', 'inri_goods', 5, '1554896837_3.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 3),
+(NULL, '', 'inri_goods', 5, '1554896837_4.jpg', NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 2);
 HTML;
     $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
-    $output .= $this->copy_img_module( $name, SOURCE_SITE_CORPORATE );
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_ONLINESHOP );
     
     return $output;
   }
@@ -1747,12 +1767,14 @@ HTML;
 (22, '1988.pdf', 'inri_articles_cat', 8, '', '1533299057_16.pdf', NULL, NULL, NULL, 0, 0, 0),
 (23, '1989.pdf', 'inri_articles_cat', 8, '', '1533299057_17.pdf', NULL, NULL, NULL, 0, 0, 0),
 (24, '1990.pdf', 'inri_articles_cat', 8, '', '1533299057_18.pdf', NULL, NULL, NULL, 0, 0, 0),
-(25, '1991.pdf', 'inri_articles_cat', 8, '', '1533299057_19.pdf', NULL, NULL, NULL, 0, 0, 0);
+(25, '1991.pdf', 'inri_articles_cat', 8, '', '1533299057_19.pdf', NULL, NULL, NULL, 0, 0, 0),
+(26, 'Руководство пользователя Ninja ZX-10RR', 'inri_goods', 3, '', '1554895482_0.pdf', NULL, NULL, NULL, 0, 0, 0),
+(27, 'Руководство пользователя Z900RS', 'inri_goods', 4, '', '1554896241_0.pdf', NULL, NULL, NULL, 0, 0, 0);
 HTML;
     
     $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
-    $output .= $this->copy_img_module( $name, SOURCE_SITE_CORPORATE );
-    $output .= $this->copy_file_module( $name, SOURCE_SITE_CORPORATE );
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_ONLINESHOP );
+    $output .= $this->copy_file_module( $name, SOURCE_SITE_ONLINESHOP );
     
     return $output;
   }
@@ -1808,7 +1830,34 @@ HTML;
       (30, 'Новости', 'novosti', 'inri_articles_cat', 9, 0, 28),
       (31, 'Петросян отреагировал на сообщения о разделе имущества со Степаненко', 'petrosyan-otreagiroval-na-soobscheniya-o', 'inri_news', 1, 0, 29),
       (32, 'Ученые назвали причину исчезновения кораблей в Бермудском треугольнике', 'uchenye-nazvali-prichinu-ischeznoveniya', 'inri_news', 2, 0, 30),
-      (33, 'Марафон «Европа-Азия» соберёт более шести тысяч участников', 'marafon-evropaaziya-soberyot-bolee', 'inri_news', 3, 0, 31);
+      (33, 'Марафон «Европа-Азия» соберёт более шести тысяч участников', 'marafon-evropaaziya-soberyot-bolee', 'inri_news', 3, 0, 31),
+      
+      (NULL, 'Каталог товаров', 'katalog-tovarov', 'inri_goods_cat', 1, 0, 0),
+      (NULL, 'Мотоциклы', 'motocikly', 'inri_goods_cat', 3, 0, 0),
+      (NULL, 'Каталог товаров', 'katalog-tovarov-91466', 'inri_articles_cat', 10, 0, 0),
+      (NULL, 'Корзина товаров', 'basket', 'basket', 0, 0, 0),
+      (NULL, 'xlsorder', 'xlsorder', 'xlsorder', 0, 0, 0),
+      (NULL, 'Поиск по сайту', 'poisk-po-saytu', 'inri_mine_block', 9, 0, 0),
+      (NULL, 'Поиск', 'search', 'search', 0, 0, 0),
+      (NULL, 'Политика организации по обработке персональных данных', 'politikoy-organizacii-po-obrabotke-personalnyh', 'il_articles', 4, 0, 0),
+      (NULL, 'Согласие посетителя сайта на обработку персональных данных', 'soglasie-posetitelya-sayta', 'il_articles', 5, 0, 0),
+      (NULL, 'Дорожные', 'dorozhnye', 'inri_goods_cat', 5, 0, 0),
+      (NULL, 'Супер спорт', 'sport', 'inri_goods_cat', 4, 0, 0),
+      (NULL, 'Товары на главной', 'glavnoy', 'inri_mine_block', 10, 0, 0),
+      (NULL, 'Спортивно-туристические', 'sportivnoturisticheskie', 'inri_goods_cat', 6, 0, 0),
+      (NULL, 'Круизеры', 'kruizery', 'inri_goods_cat', 7, 0, 0),
+      (NULL, 'Универсальные', 'universalnye', 'inri_goods_cat', 8, 0, 0),
+      (NULL, 'Кросс / эндуро', 'enduro', 'inri_goods_cat', 9, 0, 0),
+      (NULL, 'Квадроциклы', 'kvadrocikly', 'inri_goods_cat', 10, 0, 0),
+      (NULL, 'Гидроциклы', 'gidrocikly', 'inri_goods_cat', 11, 0, 0),
+      (NULL, 'Экипировка', 'ekipirovka', 'inri_goods_cat', 12, 0, 0),
+      (NULL, 'Аксессуары', 'aksessuary', 'inri_goods_cat', 13, 0, 0),
+      (NULL, 'Запчасти', 'zapchasti', 'inri_goods_cat', 14, 0, 0),
+      (NULL, 'Kawasaki Ninja ZX-10R SE Черный 2018', 'kawasaki-ninja-zx10r-se-chernyy-2018', 'inri_goods', 1, 0, 0),
+      (NULL, 'Kawasaki Ninja H2R Серый 2019', 'kawasaki-ninja-h2r-seryy-2019', 'inri_goods', 2, 0, 0),
+      (NULL, 'Kawasaki Ninja ZX-10RR Зелёный 2019', 'kawasaki-ninja-zx10rr-zelyonyy-2019', 'inri_goods', 3, 0, 0),
+      (NULL, 'Kawasaki Z900RS Коричневый 2019', 'kawasaki-z900rs-korichnevyy-2019', 'inri_goods', 4, 0, 0),
+      (NULL, 'Kawasaki Z1000 R Edition Черный 2019', 'kawasaki-z1000-r-edition-chernyy-2019', 'inri_goods', 5, 0, 0);
 HTML;
         
     return $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name );
@@ -1966,6 +2015,205 @@ HTML;
     return $output;
   }
   
+  function setup_module_goods_onlineshop( $title, $name ){
+    
+    $table       = DB_PFX.$name;
+    $script_name = $name.'.php';
+    
+    $title_cat   = $title.' категории';
+    $table_cat   = DB_PFX.$name.'_cat';
+    
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$table` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `cat_id` int(11) DEFAULT '0',
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `article` varchar(255) NOT NULL,
+        `article_provider` varchar(255) NOT NULL,
+        `old_price` int(11) DEFAULT NULL,
+        `price` int(11) DEFAULT NULL,
+        `amount` int(11) DEFAULT NULL,
+        `availability_id` int(11) DEFAULT '1',
+        `country_id` int(11) DEFAULT NULL,
+        `brand_id` int(11) DEFAULT NULL,
+        `units_id` int(11) DEFAULT '1',
+        `longtxt1` text,
+        `longtxt2` text,
+        `longtxt3` text,
+        `is_hit` tinyint(1) DEFAULT NULL,
+        `is_new` tinyint(1) DEFAULT NULL,
+        `is_sale` tinyint(1) DEFAULT NULL,
+        `seo_h1` varchar(255) DEFAULT NULL,
+        `seo_title` varchar(255) DEFAULT NULL,
+        `seo_description` varchar(255) DEFAULT NULL,
+        `seo_keywords` varchar(255) DEFAULT NULL,
+        `img_alt` varchar(255) DEFAULT NULL,
+        `img_title` varchar(255) DEFAULT NULL,
+        `orm_search_name` varchar(255) DEFAULT NULL,
+        `orm_search` text,
+        `fl_show_mine` tinyint(1) NOT NULL DEFAULT '0',
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; "; 
+    $sql_insert = "
+      INSERT INTO `$table` (`id`, `cat_id`, `title`, `img`, `article`, `article_provider`, `old_price`, `price`, `amount`, `availability_id`, `country_id`, `brand_id`, `units_id`, `longtxt1`, `longtxt2`, `longtxt3`, `is_hit`, `is_new`, `is_sale`, `seo_h1`, `seo_title`, `seo_description`, `seo_keywords`, `img_alt`, `img_title`, `orm_search_name`, `orm_search`, `fl_show_mine`, `hide`, `ord`) VALUES  ";
+    {
+    $sql_insert .=<<<HTML
+(1, 4, 'Kawasaki Ninja ZX-10R SE Черный 2018', '1554890844.png', '', '', 0, 1694000, 1, 1, 0, 0, 1, '<p><strong>Стань ближе</strong></p>\r\n\r\n<p>В дополнение к оригинальному Ninja ZX-10R и трек-ориентированному Ninja ZX-10RR, Кавасаки с гордостью<br />\r\nпредставляет новый высококачественный мотоцикл в линейку супер-спортов литрового класса на 2018 год.<br />\r\nNinja ZX-10R SE предлагает новую высокотехнологичную электронную подвеску Kawasaki.<br />\r\nКак в городе, так и на трассе превосходное демпфирование подвески,<br />\r\nпредлагает райдеру новый уровень комфорта езды, который почти заставляет вас забыть,<br />\r\nчто вы едете на мотоцикле с гоночной подвеской. Тогда как<br />\r\nотличная реакция на демпфирование, обеспечивает непревзайденное ощущение посадки.<br />\r\nЭто обеспечивает уверенность гонщику и<br />\r\nспособствует легкости езды, предлагаемой Ninja ZX-10R SE.</p>\r\n', '<table class="table table-striped table-hover table-sm">\r\n	<tbody>\r\n		<tr>\r\n			<th colspan="2">Двигатель</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип двигателя</td>\r\n			<td>Рядный</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Количество цилиндров</td>\r\n			<td>4</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Объем двигателя <i class="fas fa-question-circle" data-original-title="\r\n            Рабочий объем двигателя мотоцикла, измеряемый в куб. см.\r\n			В зависимости от модели, объем цилиндров двигателя мотоцикла и, как следствие, его мощность могут существенно различаться.\r\n			От объема двигателя зависит также расход топлива. Не рекомендуется приобретать мотоцикл с двигателем слишком малого объема, т. к. его мощности и рабочего ресурса может оказаться недостаточно. В этом случае велика вероятность преждевременного выхода мотора из строя." data-placement="bottom" data-toggle="tooltip"><b>&nbsp;</b></i></td>\r\n			<td>998</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Лошадиные силы</td>\r\n			<td>200</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Количество тактов <i class="fas fa-question-circle" data-original-title="\r\n            Двигатели бывают двухтактными и четырехтактными. \r\n			Двухтактный двигатель имеет простую и недорогую конструкцию, однако для его эксплуатации необходимы специальные масло и топливо. Допустимо также использование обычного 92-ого или 95-ого бензина, смешанного с маслом. Однако износ деталей при этом может возрасти, т. к. угадать нужные пропорции при разведении топлива маслом достаточно сложно. Из-за некачественного топлива двигатель работает неустойчиво, повышается его износ и может скапливаться нагар.\r\n            Четырехтактный двигатель имеет более сложную конструкцию, и, следовательно, его производство обходится дороже. К его достоинствам можно отнести экономичность, менее ощутимые, чем у двухтактного двигателя, шум и вибрацию, более чистый выхлоп, а также отсутствие необходимости постоянного контроля уровня масла." data-placement="bottom" data-toggle="tooltip"><b>&nbsp;</b></i></td>\r\n			<td>4</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Максимальная мощность <i class="fas fa-question-circle" data-original-title="\r\n            Мощность двигателя мотоцикла, измеряемая в лошадиных силах и кВТ.\r\n            В зависимости от модели, объем цилиндров двигателя мотоцикла и, как следствие, его мощность могут существенно различаться.\r\n			От мощности двигателя зависит скорость мотоцикла.\r\n			Рекомендуется приобретать модель с запасом мощности, т. к. это обеспечит запас механической прочности и надежности." data-placement="bottom" data-toggle="tooltip"><b>&nbsp;</b></i></td>\r\n			<td>147,1 кВт {200 л.с.} / 13.000 об/мин</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Максимальный крутящий момент</td>\r\n			<td>113,5 Нм {11,6кгс&bull;м} / 11.500 об/мин</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Система запуска</td>\r\n			<td>Электростартер</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип охлаждения <i class="fas fa-question-circle" data-original-title="\r\n           Существует два типа охлаждения двигателя мотоцикла: воздушное и жидкостное.\r\n			При воздушном типе охлаждения тепло отводится от двигателя посредством воздушного обдува.\r\n			Мотоциклы с воздушным охлаждением имеют на стенках двигателя характерные радиаторные ребра. Воздушное охлаждение может быть естественным или принудительным. Разница заключается в том, что при принудительном воздушном охлаждении на мотоцикл устанавливается вентилятор, который обдувает двигатель в случае, когда естественного обдува недостаточно, например в пробке. Однако это существенно повышает уровень шума мотоцикла. При естественном охлаждении мотоцикл легко может перегреться при простое. В таких ситуациях приходится глушить мотор и ждать, пока он остынет.\r\n			Жидкостное охлаждение имеет более сложную конструкцию: цилиндры омываются жидкостью, прокачиваемой насосом по контуру системы охлаждения, затем горячая жидкость попадает в радиатор, где охлаждается при помощи вентилятора. Такая конструкция значительно надежнее и стабильнее охлаждает двигатель, однако имеет существенно более высокую стоимость." data-placement="bottom" data-toggle="tooltip"><b>&nbsp;</b></i></td>\r\n			<td>Жидкостное</td>\r\n		</tr>\r\n		<tr>\r\n			<th colspan="2">Трансмиссия</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Трансмиссия</td>\r\n			<td>6</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Сцепление</td>\r\n			<td>Мокрое многодисковое, ручное</td>\r\n		</tr>\r\n		<tr>\r\n			<th colspan="2">Общие</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Код техники</td>\r\n			<td>ZX1002C</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Модельный год</td>\r\n			<td>2018</td>\r\n		</tr>\r\n		<tr>\r\n			<td>ABS</td>\r\n			<td>ABS + KTRC</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Объем бака</td>\r\n			<td>17</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Длина</td>\r\n			<td>2085</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Ширина</td>\r\n			<td>740</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Высота</td>\r\n			<td>1145</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Снаряженная масса</td>\r\n			<td>208</td>\r\n		</tr>\r\n	</tbody>\r\n</table>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<div class="youtube-embed-wrapper" style="position:relative;padding-bottom:56.25%;padding-top:30px;height:0;overflow:hidden;"><iframe allowfullscreen="" frameborder="0" height="360" src="//www.youtube.com/embed/MSsNPj5tTE0" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" width="640"></iframe></div>\r\n\r\n<p>&nbsp;</p>\r\n', '', 0, 0, 0, '', '', '', '', '', '', 'KAWASAKI NINJA ZX-10R SE ЧЕРНЫЙ 2018', 'ДВИГАТЕЛЬ ТИП ДВИГАТЕЛЬ РЯДНЫЙ КОЛИЧЕСТВО ЦИЛИНДР 4 ОБЪЕСТЬ ДВИГАТЕЛЬ NBSP 998 ЛОШАДИНЫЙ СИЛА 200 КОЛИЧЕСТВО ТАКТОВЫЙ NBSP 4 МАКСИМАЛЬНЫЙ МОЩНОСТЬ NBSP 147 1 КВТ 200 Л С 13 000 ОБ МИНА МАКСИМАЛЬНЫЙ КРУТИТЬ МОМЕНТ 113 5 НМ 11 6КГС BULL М 11 500 ОБ МИНА СИСТЕМА ЗАПУСК ЭЛЕКТРОСТАРТЕР ТИП ОХЛАЖДЕНИЕ NBSP ЖИДКОСТНЫЙ ТРАНСМИССИЯ ТРАНСМИССИЯ 6 СЦЕПЛЕНИЕ МОКРЫЙ МНОГОДИСКОВЫЙ РУЧНОЙ ОБЩИЙ КОД ТЕХНИК ZX1002C МОДЕЛЬНЫЙ ГОД 2018 ABS ABS KTRC ОБЪЕСТЬ БАК 17 ДЛИНА 2085 ШИРИНА 740 ВЫСОТА 1145 СНАРЯДИТЬ МАССА 208 NBSP NBSP', 0, 0, 0),
+
+(3, 4, 'Kawasaki Ninja ZX-10RR Зелёный 2019', '1554895272.jpg', '', '', 0, 2083000, 0, 1, 0, 0, 1, '<p><strong>СТАНЬ БЛИЖЕ</strong></p>\r\n\r\n<p>Это - единственный достойный соперник. Оборудованный легковесными литыми дисками MARCHESINI и<br />\r\nтормозами Brembo M50, новый Ninja ZX-10RR не берёт пленных. Стань ближе и испытай<br />\r\nмодифицированные головку блока цилиндров и картера, а также новый квикшифтер. В<br />\r\n2019 году по всему миру будет продано только 500 мотоциклов, оснащенных<br />\r\nтитановыми шатунами, благодаря которым пиковая мощность увеличена до<br />\r\n204 л.с. Трек призывает к победам - и новый Ninja ZX-10RR готов<br />\r\nответить на зов!</p>\r\n\r\n<p>Для данной модели так же доступна комплектация Performance.&nbsp;</p>\r\n\r\n<p>&quot;Performance&quot; включает в себя:&nbsp;<br />\r\nКарбоновые глушитель Akrapovic</p>\r\n\r\n<p>Наличие и цены уточняйте у наших менеджеров!</p>\r\n', '<table class="table table-striped table-hover table-sm">\r\n	<tbody>\r\n		<tr>\r\n			<th colspan="2">Двигатель</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип двигателя</td>\r\n			<td>Рядный</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Количество цилиндров</td>\r\n			<td>4</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Объем двигателя</td>\r\n			<td>998</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Лошадиные силы</td>\r\n			<td>204</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Количество тактов</td>\r\n			<td>4</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Максимальная мощность</td>\r\n			<td>150 кВт {204 л.с.} / 13.500 об/мин</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Максимальный крутящий момент</td>\r\n			<td>115,7 Нм {11,7 кгс&bull;м} / 11.200 об/мин</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Система запуска</td>\r\n			<td>Электростартер</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип охлаждения</td>\r\n			<td>Жидкостное</td>\r\n		</tr>\r\n		<tr>\r\n			<th colspan="2">Трансмиссия</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Трансмиссия</td>\r\n			<td>6</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Сцепление</td>\r\n			<td>Мокрое многодисковое, ручное</td>\r\n		</tr>\r\n		<tr>\r\n			<th colspan="2">Общие</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Код техники</td>\r\n			<td>ZX1002G</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Модельный год</td>\r\n			<td>2019</td>\r\n		</tr>\r\n		<tr>\r\n			<td>ABS</td>\r\n			<td>ABS + KTRC</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип рамы</td>\r\n			<td>Диагональная Twin spar, литой алюминий</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Объем бака</td>\r\n			<td>17</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Длина</td>\r\n			<td>2085</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Ширина</td>\r\n			<td>740</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Высота</td>\r\n			<td>1145</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Снаряженная масса</td>\r\n			<td>206</td>\r\n		</tr>\r\n	</tbody>\r\n</table>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<div class="youtube-embed-wrapper" style="position:relative;padding-bottom:56.25%;padding-top:30px;height:0;overflow:hidden;"><iframe allowfullscreen="" frameborder="0" height="360" src="//www.youtube.com/embed/qNC5J3hIUM8" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" width="640"></iframe></div>\r\n\r\n<p>&nbsp;</p>\r\n', '', 0, 0, 0, '', '', '', '', '', '', 'KAWASAKI NINJA ZX-10RR ЗЕЛЁНЫЙ 2019', 'ДВИГАТЕЛЬ ТИП ДВИГАТЕЛЬ РЯДНЫЙ КОЛИЧЕСТВО ЦИЛИНДР 4 ОБЪЕСТЬ ДВИГАТЕЛЬ 998 ЛОШАДИНЫЙ СИЛА 204 КОЛИЧЕСТВО ТАКТОВЫЙ 4 МАКСИМАЛЬНЫЙ МОЩНОСТЬ 150 КВТ 204 Л С 13 500 ОБ МИНА МАКСИМАЛЬНЫЙ КРУТИТЬ МОМЕНТ 115 7 НМ 11 7 КГС BULL М 11 200 ОБ МИНА СИСТЕМА ЗАПУСК ЭЛЕКТРОСТАРТЕР ТИП ОХЛАЖДЕНИЕ ЖИДКОСТНЫЙ ТРАНСМИССИЯ ТРАНСМИССИЯ 6 СЦЕПЛЕНИЕ МОКРЫЙ МНОГОДИСКОВЫЙ РУЧНОЙ ОБЩИЙ КОД ТЕХНИК ZX1002G МОДЕЛЬНЫЙ ГОД 2019 ABS ABS KTRC ТИП РАМ ДИАГОНАЛЬНЫЙ TWIN SPAR ЛИТА АЛЮМИНИЙ ОБЪЕСТЬ БАК 17 ДЛИНА 2085 ШИРИНА 740 ВЫСОТА 1145 СНАРЯДИТЬ МАССА 206 NBSP NBSP', 0, 0, 0),
+
+(2, 4, 'Kawasaki Ninja H2R Серый 2019', '1554894806.jpg', '', '', 0, 4416000, 0, 1, 0, 0, 1, '<p><strong>ТЕХНОЛОГИИ ОПЕРЕЖАЮЩИЕ ВРЕМЯ</strong></p>\r\n\r\n<p>Немногие мотоциклы могут прорваться за пределы технических рамок современности, и лишь единицы<br />\r\nимеют право на звание легенды. Созданный при содействии всех подразделений концерна&nbsp;<br />\r\nKawasaki Heavy Industries, Ninja H2R требует уважения и избирателен к владельцам -<br />\r\nобуздать его мощь под силу только избранным. Среди достоинств мотоцикла:<br />\r\nзадняя подвеска Ohlins, двусторонний квикшифтер, аэродинамические<br />\r\nобтекатели, система контроля прохождения поворотов и индикатор<br />\r\nугла наклона. Ninja H2R - займи свое место в истории.<br />\r\nТолько для эксплуатации на треках.</p>\r\n\r\n<p>&nbsp;</p>\r\n', '<table class="table table-striped table-hover table-sm">\r\n	<tbody>\r\n		<tr>\r\n			<th colspan="2">Двигатель</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип двигателя</td>\r\n			<td>Рядный</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Количество цилиндров</td>\r\n			<td>4</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Объем двигателя</td>\r\n			<td>998</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Лошадиные силы</td>\r\n			<td>310</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Количество тактов</td>\r\n			<td>4</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Максимальная мощность</td>\r\n			<td>228 кВт {310 л.с.} / 14.000 об/мин</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Максимальный крутящий момент</td>\r\n			<td>165 Нм {16,8кгс&bull;м} / 12.500 об/мин</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Система запуска</td>\r\n			<td>Электро</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип охлаждения</td>\r\n			<td>Жидкостное</td>\r\n		</tr>\r\n		<tr>\r\n			<th colspan="2">Трансмиссия</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Трансмиссия</td>\r\n			<td>6</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Сцепление</td>\r\n			<td>Мокрое многодисковое, ручное</td>\r\n		</tr>\r\n		<tr>\r\n			<th colspan="2">Общие</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Код техники</td>\r\n			<td>ZX1000Y</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Модельный год</td>\r\n			<td>2019</td>\r\n		</tr>\r\n		<tr>\r\n			<td>ABS</td>\r\n			<td>ABS + KTRC</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип рамы</td>\r\n			<td>Типа Trellis, высокопрочная сталь с площадкой крепления маятника</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Объем бака</td>\r\n			<td>17</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Длина</td>\r\n			<td>2070</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Ширина</td>\r\n			<td>850</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Высота</td>\r\n			<td>1160</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Снаряженная масса</td>\r\n			<td>216</td>\r\n		</tr>\r\n	</tbody>\r\n</table>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<div class="youtube-embed-wrapper" style="position:relative;padding-bottom:56.25%;padding-top:30px;height:0;overflow:hidden;"><iframe allowfullscreen="" frameborder="0" height="360" src="//www.youtube.com/embed/nxX6R8oV5Ko" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" width="640"></iframe></div>\r\n\r\n<p>&nbsp;</p>\r\n', '', 0, 0, 0, '', '', '', '', '', '', 'KAWASAKI NINJA H2R СЕРЫЙ 2019', 'ДВИГАТЕЛЬ ТИП ДВИГАТЕЛЬ РЯДНЫЙ КОЛИЧЕСТВО ЦИЛИНДР 4 ОБЪЕСТЬ ДВИГАТЕЛЬ 998 ЛОШАДИНЫЙ СИЛА 310 КОЛИЧЕСТВО ТАКТОВЫЙ 4 МАКСИМАЛЬНЫЙ МОЩНОСТЬ 228 КВТ 310 Л С 14 000 ОБ МИНА МАКСИМАЛЬНЫЙ КРУТИТЬ МОМЕНТ 165 НМ 16 8КГС BULL М 12 500 ОБ МИНА СИСТЕМА ЗАПУСК ЭЛЕКТРО ТИП ОХЛАЖДЕНИЕ ЖИДКОСТНЫЙ ТРАНСМИССИЯ ТРАНСМИССИЯ 6 СЦЕПЛЕНИЕ МОКРЫЙ МНОГОДИСКОВЫЙ РУЧНОЙ ОБЩИЙ КОД ТЕХНИК ZX1000Y МОДЕЛЬНЫЙ ГОД 2019 ABS ABS KTRC ТИП РАМ ТИП TRELLIS ВЫСОКОПРОЧНЫЙ СТАЛЬ С ПЛОЩАДКА КРЕПЛЕНИЕ МАЯТНИК ОБЪЕСТЬ БАК 17 ДЛИНА 2070 ШИРИНА 850 ВЫСОТА 1160 СНАРЯДИТЬ МАССА 216 NBSP NBSP', 0, 0, 0),
+
+(4, 5, 'Kawasaki Z900RS Коричневый 2019', '1554896232.png', '', '', 0, 952000, 0, 1, 0, 0, 1, '<p><strong>Истинный Дух</strong></p>\r\n\r\n<p>Здесь нет места для суррогатов и подделок. Только у Kawasaki есть поистине великое наследие, чтобы предоставить ценности прошлого гонщикам настоящего, сохранив истинный облик классического мотоцикла. Дух легенды 1970-х годов, Z1, нашел свое современное воплощение в Z900RS.</p>\r\n\r\n<p>Для данной&nbsp;модели так же доступна&nbsp;комплектация&nbsp;Performance.</p>\r\n\r\n<p>&quot;Performance&quot; включает в себя:<br />\r\nНакладка на топливный бак&nbsp;<br />\r\nСлайдеры двигателя&nbsp;<br />\r\nКарбоновый глушитель Akrapovic</p>\r\n\r\n<p>Наличие и цены уточняйте у наших менеджеров!</p>\r\n', '<table class="table table-striped table-hover table-sm">\r\n	<tbody>\r\n		<tr>\r\n			<th colspan="2">Двигатель</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип двигателя</td>\r\n			<td>Рядный</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Количество цилиндров</td>\r\n			<td>4</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Объем двигателя</td>\r\n			<td>948</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Лошадиные силы</td>\r\n			<td>111</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Количество тактов</td>\r\n			<td>4</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Максимальная мощность</td>\r\n			<td>82 кВт {111 л.с.} / 8.500 об/мин</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Максимальный крутящий момент</td>\r\n			<td>98,5 Нм {10 кгс&bull;м} / 6.500 об/мин</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Система запуска</td>\r\n			<td>Электростартер</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип охлаждения</td>\r\n			<td>Жидкостное</td>\r\n		</tr>\r\n		<tr>\r\n			<th colspan="2">Трансмиссия</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Трансмиссия</td>\r\n			<td>6</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Сцепление</td>\r\n			<td>Мокрое многодисковое, ручное</td>\r\n		</tr>\r\n		<tr>\r\n			<th colspan="2">Общие</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Код техники</td>\r\n			<td>ZR900CB</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Модельный год</td>\r\n			<td>2019</td>\r\n		</tr>\r\n		<tr>\r\n			<td>ABS</td>\r\n			<td>ABS + KTRC</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип рамы</td>\r\n			<td>&quot;Птичья клетка&quot; (Trellis), высокопрочная сталь</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Объем бака</td>\r\n			<td>17</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Длина</td>\r\n			<td>2100</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Ширина</td>\r\n			<td>865</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Высота</td>\r\n			<td>1150</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Снаряженная масса</td>\r\n			<td>215</td>\r\n		</tr>\r\n	</tbody>\r\n</table>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<div class="youtube-embed-wrapper" style="position:relative;padding-bottom:56.25%;padding-top:30px;height:0;overflow:hidden;"><iframe allowfullscreen="" frameborder="0" height="360" src="//www.youtube.com/embed/T5E-OuwLYys" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" width="640"></iframe></div>\r\n\r\n<p>&nbsp;</p>\r\n', '', 0, 0, 0, '', '', '', '', '', '', 'KAWASAKI Z900RS КОРИЧНЕВЫЙ 2019', 'ДВИГАТЕЛЬ ТИП ДВИГАТЕЛЬ РЯДНЫЙ КОЛИЧЕСТВО ЦИЛИНДР 4 ОБЪЕСТЬ ДВИГАТЕЛЬ 948 ЛОШАДИНЫЙ СИЛА 111 КОЛИЧЕСТВО ТАКТОВЫЙ 4 МАКСИМАЛЬНЫЙ МОЩНОСТЬ 82 КВТ 111 Л С 8 500 ОБ МИНА МАКСИМАЛЬНЫЙ КРУТИТЬ МОМЕНТ 98 5 НМ 10 КГС BULL М 6 500 ОБ МИНА СИСТЕМА ЗАПУСК ЭЛЕКТРОСТАРТЕР ТИП ОХЛАЖДЕНИЕ ЖИДКОСТНЫЙ ТРАНСМИССИЯ ТРАНСМИССИЯ 6 СЦЕПЛЕНИЕ МОКРЫЙ МНОГОДИСКОВЫЙ РУЧНОЙ ОБЩИЙ КОД ТЕХНИК ZR900CB МОДЕЛЬНЫЙ ГОД 2019 ABS ABS KTRC ТИП РАМ QUOT ПТИЧИЙ КЛЕТКА QUOT TRELLIS ВЫСОКОПРОЧНЫЙ СТАЛЬ ОБЪЕСТЬ БАК 17 ДЛИНА 2100 ШИРИНА 865 ВЫСОТА 1150 СНАРЯДИТЬ МАССА 215 NBSP NBSP', 0, 0, 0),
+
+(5, 5, 'Kawasaki Z1000 R Edition Черный 2019', '1554896651.jpg', '', '', 0, 1118000, 0, 1, 0, 0, 1, '<p><strong>REFINED RAW</strong></p>\r\n\r\n<p>Наследник невероятного Sugomi, в 2017 году серию пополнил Z1000 R Edition. Полностью соответствующий стандартам Euro4, Z1000 R Edition имеет яркую цветовую схему с зелеными элементами, а так же тормоза Brembo M50 и задний амортизатор &Ouml;hlins . Покоривший сердца еще до премьеры, Z1000 R Edition придется по душе поклонникам класса &quot;Naked&quot; и любителям прециозной, но агрессивной езды.<br />\r\nТак же данная модель широко известна под названиями: зедка, ZR1000J.&nbsp;</p>\r\n\r\n<p>Для данной модели так же доступна комплектация Performance.&quot;Performance&quot; включает в себя:<br />\r\nКарбоновый тепловой экран глушителя&nbsp;<br />\r\nКарбоновый глушитель&nbsp;Akrapovic</p>\r\n\r\n<p>Наличие и цены уточняйте у наших менеджеров!</p>\r\n', '<table class="table table-striped table-hover table-sm">\r\n	<tbody>\r\n		<tr>\r\n			<th colspan="2">Двигатель</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип двигателя</td>\r\n			<td>Рядный</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Количество цилиндров</td>\r\n			<td>4</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Объем двигателя</td>\r\n			<td>1043</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Лошадиные силы</td>\r\n			<td>142</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Количество тактов</td>\r\n			<td>4</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Максимальная мощность</td>\r\n			<td>104,5 кВт {142 л.с.} / 10.000 об/мин</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Максимальный крутящий момент</td>\r\n			<td>111 Нм {11,3кгс&bull;м} / 7.300 об/мин</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Система запуска</td>\r\n			<td>Электростартер</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип охлаждения</td>\r\n			<td>Жидкостное</td>\r\n		</tr>\r\n		<tr>\r\n			<th colspan="2">Трансмиссия</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Трансмиссия</td>\r\n			<td>6</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Сцепление</td>\r\n			<td>Мокрое многодисковое, ручное</td>\r\n		</tr>\r\n		<tr>\r\n			<th colspan="2">Общие</th>\r\n		</tr>\r\n		<tr>\r\n			<td>Код техники</td>\r\n			<td>ZR1000J</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Модельный год</td>\r\n			<td>2019</td>\r\n		</tr>\r\n		<tr>\r\n			<td>ABS</td>\r\n			<td>Да</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Тип рамы</td>\r\n			<td>Дуплексная, алюминий</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Объем бака</td>\r\n			<td>17</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Длина</td>\r\n			<td>2045</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Ширина</td>\r\n			<td>790</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Высота</td>\r\n			<td>1055</td>\r\n		</tr>\r\n		<tr>\r\n			<td>Снаряженная масса</td>\r\n			<td>221</td>\r\n		</tr>\r\n	</tbody>\r\n</table>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<div class="youtube-embed-wrapper" style="position:relative;padding-bottom:56.25%;padding-top:30px;height:0;overflow:hidden;"><iframe allowfullscreen="" frameborder="0" height="360" src="//www.youtube.com/embed/1jNiQn40eRQ" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" width="640"></iframe></div>\r\n\r\n<p>&nbsp;</p>\r\n', '', 0, 0, 0, '', '', '', '', '', '', 'KAWASAKI Z1000 R EDITION ЧЕРНЫЙ 2019', 'ДВИГАТЕЛЬ ТИП ДВИГАТЕЛЬ РЯДНЫЙ КОЛИЧЕСТВО ЦИЛИНДР 4 ОБЪЕСТЬ ДВИГАТЕЛЬ 1043 ЛОШАДИНЫЙ СИЛА 142 КОЛИЧЕСТВО ТАКТОВЫЙ 4 МАКСИМАЛЬНЫЙ МОЩНОСТЬ 104 5 КВТ 142 Л С 10 000 ОБ МИНА МАКСИМАЛЬНЫЙ КРУТИТЬ МОМЕНТ 111 НМ 11 3КГС BULL М 7 300 ОБ МИНА СИСТЕМА ЗАПУСК ЭЛЕКТРОСТАРТЕР ТИП ОХЛАЖДЕНИЕ ЖИДКОСТНЫЙ ТРАНСМИССИЯ ТРАНСМИССИЯ 6 СЦЕПЛЕНИЕ МОКРЫЙ МНОГОДИСКОВЫЙ РУЧНОЙ ОБЩИЙ КОД ТЕХНИК ZR1000J МОДЕЛЬНЫЙ ГОД 2019 ABS ДА ТИП РАМ ДУПЛЕКСНЫЙ АЛЮМИНИЙ ОБЪЕСТЬ БАК 17 ДЛИНА 2045 ШИРИНА 790 ВЫСОТА 1055 СНАРЯДИТЬ МАССА 221 NBSP NBSP', 0, 0, 0);
+HTML;
+    }
+    
+    $sql_cat = "
+      CREATE TABLE IF NOT EXISTS `$table_cat` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `parent_id` int(11) DEFAULT '0',
+        `title` varchar(255) NOT NULL,
+        `img` varchar(255) NOT NULL,
+        `country_id` int(11) DEFAULT NULL,
+        `longtxt1` text,
+        `longtxt2` text,
+        `longtxt3` text,
+        `seo_h1` varchar(255) DEFAULT NULL,
+        `seo_title` varchar(255) DEFAULT NULL,
+        `seo_description` varchar(255) DEFAULT NULL,
+        `seo_keywords` varchar(255) DEFAULT NULL,
+        `img_alt` varchar(255) DEFAULT NULL,
+        `img_title` varchar(255) DEFAULT NULL,
+        `orm_search_name` varchar(255) DEFAULT NULL,
+        `orm_search` text,
+        `fl_show_mine` tinyint(1) NOT NULL DEFAULT '0',
+        `hide` tinyint(1) NOT NULL DEFAULT '0',
+        `ord` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0; ";
+    $sql_cat_insert = "
+      INSERT INTO `$table_cat` (`id`, `parent_id`, `title`, `img`, `country_id`, `longtxt1`, `longtxt2`, `longtxt3`, `seo_h1`, `seo_title`, `seo_description`, `seo_keywords`, `img_alt`, `img_title`, `orm_search_name`, `orm_search`, `fl_show_mine`, `hide`, `ord`) VALUES   ";
+    {
+    $sql_cat_insert .=<<<HTML
+(1, 0, 'Каталог товаров', '', NULL, '', '', '', '', '', '', '', '', '', 'КАТАЛОГ ТОВАР', '', 0, 0, 0),
+(3, 1, 'Мотоциклы', '1554891570.jpg', NULL, '', '', '', '', '', '', '', '', '', 'МОТОЦИКЛ', '', 0, 0, 0),
+(4, 3, 'Супер спорт', '1554891586.jpg', NULL, '', '', '', '', '', '', '', '', '', 'СУПЕР СПОРТ', '', 0, 0, 0),
+(5, 3, 'Дорожные', '1554891755.png', NULL, '', '', '', '', '', '', '', '', '', 'ДОРОЖНЫЙ', '', 0, 0, 0),
+(6, 3, 'Спортивно-туристические', '1554891845.jpg', NULL, '', '', '', '', '', '', '', '', '', 'СПОРТИВНО-ТУРИСТИЧЕСКИЙ', '', 0, 0, 0),
+(7, 3, 'Круизеры', '1554891895.jpg', NULL, '', '', '', '', '', '', '', '', '', 'КРУИЗЕР', '', 0, 0, 0),
+(8, 3, 'Универсальные', '1554892005.jpg', NULL, '', '', '', '', '', '', '', '', '', 'УНИВЕРСАЛЬНЫЙ', '', 0, 0, 0),
+(9, 1, 'Кросс / эндуро', '1554892219.jpg', NULL, '', '', '', '', '', '', '', '', '', 'КРОСС ЭНДУРО', '', 0, 0, 0),
+(10, 1, 'Квадроциклы', '1554892350.jpg', NULL, '', '', '', '', '', '', '', '', '', 'КВАДРОЦИКЛ', '', 0, 0, 0),
+(11, 1, 'Гидроциклы', '1554892468.jpg', NULL, '', '', '', '', '', '', '', '', '', 'ГИДРОЦИКЛ', '', 0, 0, 0),
+(12, 1, 'Экипировка', '1554893002.png', NULL, '', '', '', '', '', '', '', '', '', 'ЭКИПИРОВКА', '', 0, 0, 0),
+(13, 1, 'Аксессуары', '1554892770.jpg', NULL, '', '', '', '', '', '', '', '', '', 'АКСЕССУАР', '', 0, 0, 0),
+(14, 1, 'Запчасти', '1554892924.png', NULL, '', '', '', '', '', '', '', '', '', 'ЗАПЧАСТЬ', '', 0, 0, 0);
+HTML;
+    }
+    $output = '';
+    
+    $this->create_cat_img_dir( $name );
+    
+    $output .= $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name  );
+    $output .= $this->copy_img_module( $name, SOURCE_SITE_ONLINESHOP );
+    
+    $output .= $this->setup_database_table($title_cat, $table_cat, $sql_cat, $sql_cat_insert, $script_name  );
+    $output .= $this->copy_img_module_cat( $name, SOURCE_SITE_ONLINESHOP );
+    
+    return $output;
+  }
+  
+  function setup_module_basket_onlineshop( $title, $name ){
+    $output = '';
+    $script_name = 'orders.php';
+    
+    $table  = DB_PFX.'basket';
+    $sql = '
+      CREATE TABLE IF NOT EXISTS `'.$table.'` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `user_id` int(11) NOT NULL,
+        `state` int(11) NOT NULL DEFAULT "1",
+        `last_time` int(11) NOT NULL,
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+    ';
+    $output .= $this->setup_database_table($title, $table, $sql, $script_name  );
+    
+    $table  = DB_PFX.'basket_items';
+    $sql = '
+      CREATE TABLE IF NOT EXISTS `'.$table.'` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `basket_id` int(11) NOT NULL,
+        `item_id` int(11) NOT NULL,
+        `amount` int(11) NOT NULL,
+        `siteprice` int(11) NOT NULL,
+        `sitename` varchar(255) NOT NULL,
+        `sitecatname` varchar(255) NOT NULL,
+        `size` int(11) NOT NULL,
+        PRIMARY KEY (`id`),
+        KEY `basket_id` (`basket_id`),
+        KEY `item_id` (`item_id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1';    
+    $output .= $this->setup_database_table($title, $table, $sql, $script_name  );
+    
+    $table  = DB_PFX.'basket_orders';
+    $sql = '
+      CREATE TABLE IF NOT EXISTS `'.$table.'` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `basket_id` int(11) NOT NULL,
+        `date_time` int(11) NOT NULL,
+        `message` text NOT NULL,
+        `status` int(11) NOT NULL DEFAULT "1",
+        `phone` varchar(128) NOT NULL,
+        `address` text NOT NULL,
+        `fio` varchar(256) NOT NULL,
+        `comment_cust` text NOT NULL,
+        `comment_manager` text NOT NULL,
+        `name` varchar(256) NOT NULL,
+        `dost` int(11) NOT NULL,
+        `date_dost` varchar(255) NOT NULL,
+        `email` varchar(255) NOT NULL,
+        `sum` int(11) NOT NULL,
+        `manager_id` int(11) NOT NULL DEFAULT "0",
+        `personal_accaunt_id` int(11) NOT NULL,
+        `tovar` varchar(255) NOT NULL,
+        `shown` tinyint(4) NOT NULL DEFAULT "0",
+        `ip` varchar(32) NOT NULL,
+        PRIMARY KEY (`id`),
+        KEY `date_time` (`date_time`)
+      ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;';
+    $output .= $this->setup_database_table($title, $table, $sql, $script_name  );
+    
+    $table  = DB_PFX.'basket_order_status';
+    $sql = '
+      CREATE TABLE IF NOT EXISTS `'.$table.'` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `title` varchar(128) NOT NULL,
+        PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ';
+    $sql_insert = '
+      INSERT INTO `'.$table.'` (`id`, `title`) VALUES';
+    $sql_insert .= <<<HTML
+        (1, 'новый'),
+        (2, 'Не дозвонились'),
+        (3, 'Сам приедет'),
+        (4, 'Сам приедет, заказ собран'),
+        (5, 'Нужно собрать заказ'),
+        (6, 'Заказ собран ждет курьера'),
+        (7, 'У курьера на доставке'),
+        (8, 'Курьер доставил'),
+        (9, 'Завершен'),
+        (10, 'Отменен');
+HTML;
+    $output .= $this->setup_database_table($title, $table, $sql, $sql_insert, $script_name   );
+    
+    return $output;
+  }
   
   
   function setup_database_module_required(){
@@ -2108,6 +2356,12 @@ HTML;
                                             
     $this->add_content( $this->wrap_block(  # Логи поиска
                                             $this->setup_module_search_log_onlineshop( 'Логи поиска', 'search_log' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Каталог товаров
+                                            $this->setup_module_goods_onlineshop( 'Каталог товаров', 'goods' )  ));
+                                            
+    $this->add_content( $this->wrap_block(  # Корзина товаров
+                                            $this->setup_module_basket_onlineshop( 'Корзина товаров', 'basket' )  ));
   }
   
   
