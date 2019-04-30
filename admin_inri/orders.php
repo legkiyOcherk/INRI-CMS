@@ -96,7 +96,7 @@ function show_orders_list(){
   
   while ( $row = $q->fetch() )
   {
-  	$items_in_order=db::select("*","basket_items","basket_id=$row[basket_id]");
+  	$items_in_order=db::select("*", DB_PFX."basket_items", "basket_id=$row[basket_id]");
   	$row["items_in_order"]=$items_in_order;
   	$output .= show_row($row);
   	if (!$row["shown"]) $PDO->query ("UPDATE `".DB_PFX."basket_orders` SET `shown`=1 WHERE `id`={$row["id"]}");
@@ -266,14 +266,14 @@ $output .= "<td style='vertical-align:top'>";
 		else $manager="<span class='label label-important'>[нет]</span>";*/
 		$output .= "<td>"; 
     
-		$q1 = $PDO->query("SELECT * FROM basket_items WHERE `basket_id`={$row["basket_id"]} ");
+		$q1 = $PDO->query("SELECT * FROM ".DB_PFX."basket_items WHERE `basket_id`={$row["basket_id"]} ");
     
 		if ($row["id"]>0)
 		{
 		if ($row["tovar"]) $output .= "<b>{$row["tovar"]}</b> - быстрый заказ";
 		$output .= "<table class='goods table-condensed'>";
     
-    $unit_items =  db::select("*", "il_units" );
+    $unit_items =  db::select("*", DB_PFX."units" );
     foreach($unit_items as $unit_item){
       $units[ $unit_item['id'] ] = $unit_item['title'];
     }
@@ -285,9 +285,9 @@ $output .= "<td style='vertical-align:top'>";
 
       $link = "/cat/$linkk/$url";*/
       /*$g_id = db::value("goods_id", "il_articul", "id = ".$it[item_id]);*/
-      $link = db::value("url", 'il_url', "module = 'il_goods' AND module_id=".$it["item_id"]);
-      $goods_item = db::row("*", "il_goods", "id = ".$it["item_id"]);
-      $cats_item = db::row("*", "il_cat_goods", "id = ".$goods_item['cat_id']);
+      $link = db::value("url", DB_PFX.'url', "module = '".DB_PFX."goods' AND module_id=".$it["item_id"]);
+      $goods_item = db::row("*", "".DB_PFX."goods", "id = ".$it["item_id"]);
+      $cats_item = db::row("*", "".DB_PFX."goods_cat", "id = ".$goods_item['cat_id']);
 			$output .= "<tr><td>";
 			$output .= "<span class='label'>".$it["sitecatname"]."</span>";
 			$output .= "</td><td>";

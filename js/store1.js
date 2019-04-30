@@ -180,7 +180,7 @@ function send_order() {
 	var dost = $('input[name=dost]:checked').val();
   var consent = $('#checkbox_politic').prop("checked");
   console.log(" checkbox_politic = " + consent);
-	if ((!fio.length) || (!phone.length) || (!length) || (!consent)) {
+	if ((!fio.length) || (!phone.length) || (!email.length) || (!consent)) {
 		alert ('Заполните обязательные поля');
 	} else {
 		var org = $('#org').val()

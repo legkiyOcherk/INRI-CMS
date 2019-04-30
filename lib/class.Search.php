@@ -33,13 +33,13 @@ class Search{
     $output = '';
     
     $output .= '
-      <div class="search_query_container">
+      <div class="search_query_container" style = "position: relative;">
         <div class="row show_search_box">
           <div class = "col-12 col-md">
-            <input type="text" class="search_query form-control" name="q" placeholder="поиск по каталогу" value="';
+            <input type="text" class="search_query form-control" name="q" id = "q_search" placeholder="поиск по каталогу" value="';
     if(isset($_SESSION['search_q'])){
       if($_SESSION['search_q']){
-        $output .= $_SESSION['search_q'];
+        #$output .= $_SESSION['search_q'];
       }
     }
     $output .= '" />
@@ -47,6 +47,9 @@ class Search{
           <div class = "col-12 col-md-auto">
             <button class="search_btn btn btn-info"><i class="fas fa-search"></i>&nbsp; Поиск</button>
           </div>
+        </div>
+        <div class="row">
+          <div id="searchPad"></div>
         </div>
       </div>
     ';
@@ -88,99 +91,23 @@ class Search{
          });
       });
     });
+    
+    
+	 $(function(){
+			$("#q_search").keyup(function(){
+			var q=$(this).val();
+			$.post("/ajax.php", {ajax_search:q}).done(function( data ) 
+				{
+					
+					if (data) {$("#searchPad").fadeIn(500).html(data);}
+					$("#q_search").focusout(function() {$("#searchPad").fadeOut(500);});
+				});
+		 });
+		 });
     </script>
-    ';
-    
-    $output_1 = '
-    <script type="text/javascript">
-      //Страница поиска
-    $(document).ready(function() {  
-    
-      $(".search_query").keypress(function(e){
-    	  if(e.keyCode==13){
-    	    if($(".search_query").val()){
-            var search_query = encodeURI($(this).parent(".show_search_box").children(".search_query").val());
-            $.ajax({
-               type: "POST",
-               url: "/ajax.php",
-               data: "search_query="+search_query,
-               success: function(msg){
-                if(msg == "ok"){
-                  window.location = "/search";
-                }
-               }
-            });
-          }
-    	  }
-    	});
-      
-      $(".search_btn", this).click(function(){
-        var search_query = encodeURI($(this).parent(".show_search_box").children(".search_query").val());
-        $.ajax({
-           type: "POST",
-           url: "/ajax.php",
-           data: "search_query="+search_query,
-           success: function(msg){
-            if(msg == "ok"){
-              window.location = "/search";
-            }
-           }
-         });
-      });
-      
-      
-      // Плавающее поле
-      
-      var scrol_top = $(window).scrollTop();
-      var top_menu_height = $(".top-line-box-container").height();
-      var this_offset_top = parseInt($(".search_query_container").offset().top);
-      var this_width = parseInt($(".search_query_container").width()) - 30;
-      
-      if(scrol_top >= this_offset_top){
-        $(".show_search_box").css("position", "fixed");
-        $(".show_search_box").css("top", top_menu_height+"px");
-        $(".show_search_box").width(this_width);
-      }else{
-        $(".show_search_box").css("position", "initial");
-      }
-        
-      $(window).scroll(function () {
-        /*var window_height = $(window).height();*/
-        var scrol_top = $(window).scrollTop();
-        var top_menu_height = $(".top-line-box-container").height();
-        var this_offset_top = parseInt($(".search_query_container").offset().top);
-        var this_width = parseInt($(".search_query_container").width()) - 30;
-        
-        if(scrol_top >= this_offset_top){
-          $(".show_search_box").css("position", "fixed");
-          /*$(".show_search_box").css("top", top_menu_height+"px");*/
-          $(".show_search_box").css("top", "0px");
-          $(".show_search_box").width(this_width);
-        }else{
-          $(".show_search_box").css("position", "initial");
-        }
-        //console.log(" scrol_top = "+scrol_top+" this_offset_top = "+this_offset_top);
-      });
-      
-      $( window ).resize(function() {
-        var scrol_top = $(window).scrollTop();
-        var top_menu_height = $(".top-line-box-container").height();
-        var this_offset_top = parseInt($(".search_query_container").offset().top);
-        var this_width = parseInt($(".search_query_container").width()) - 30;
-        
-        if(scrol_top >= this_offset_top){
-          $(".show_search_box").css("position", "fixed");
-          /*$(".show_search_box").css("top", top_menu_height+"px");*/
-          /*$(".show_search_box").css("top", "0px");*/
-          $(".show_search_box").width(this_width);
-        }else{
-          $(".show_search_box").css("position", "initial");
-        }
-      });
-    });
-    //End Страница поиска
-      </script>
-    ';
+    <style>
+    #searchPad{display:none;background:#eee;width:930px;position:absolute;z-index:2000;margin-top: 0px;padding:5px; left:0;border-radius:0 0 5px 5px;-webkit-box-shadow:0 25px 42px -18px #000;box-shadow:0 25px 42px -18px #000}
+    </style>';
     
     return $output;
   }
@@ -564,28 +491,6 @@ class Search{
           $output .= $strPager;
           //$output .= Catalogue::show_rub_pager($filter_count, $filter_pager_page, $filter_pager_per_page);
         }
-        
-        
-        
-        //Поиск по компаниям
-        /*$s = "
-        SELECT `il_company`.*, `il_url`.`url` 
-        FROM  `il_company` 
-        LEFT JOIN `il_url`
-        ON (`il_url`.`module` = 'il_company') AND (`il_url`.`module_id` = `il_company`.`id`)
-        WHERE  ( ($orm_search_name_news) OR ($orm_search_news) )
-        AND `il_company`.`hide` = 0
-        ORDER BY `il_company`.`id` DESC
-        "; #pri($s);
-                  
-        if($q = $this->pdo->query($s)){
-          if($q->rowCount()){
-              $output .= '<h3>Компании</h3>';
-              $output .= '<div class="">';
-              $output .= $this->showListSearchCompany($q);
-              $output .= '<br><br></div>';
-          }
-        }*/
         
         //Поиск по новостям
         $s = "

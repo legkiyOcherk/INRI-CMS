@@ -871,19 +871,42 @@ class Goods {
     return $output;
   }
   
-  static function show_mine_goods(&$site, $parent_id ){
+  static function show_mine_goods_cat(&$site ){
     $output = '';
     
     
-    
+    $tbl_goods_cat = DB_PFX.'goods_cat';
+    $tbl_url = DB_PFX.'url';
     $s = "
-      SELECT `il_cat_goods`.*,  `il_url`.`url` 
-      FROM `il_cat_goods`
-      LEFT JOIN `il_url`
-      ON (`il_url`.`module` = 'il_cat_goods') AND (`il_url`.`module_id` = `il_cat_goods`.`id`)
-      WHERE `il_cat_goods`.`parent_id` = $parent_id
-      AND `il_cat_goods`.`hide` = 0
-      ORDER BY `il_cat_goods`.`ord`
+      SELECT `$tbl_goods_cat`.*,  `$tbl_url`.`url` 
+      FROM `$tbl_goods_cat`
+      LEFT JOIN `$tbl_url`
+      ON (`$tbl_url`.`module` = '$tbl_goods_cat') AND (`$tbl_url`.`module_id` = `$tbl_goods_cat`.`id`)
+      WHERE `$tbl_goods_cat`.`fl_show_mine` = 1
+      AND `$tbl_goods_cat`.`hide` = 0
+      ORDER BY `$tbl_goods_cat`.`ord`
+    "; #pri($s);
+    
+    $output .= self::show_sub_cats($site, null, $s);
+    
+    return $output;
+  }
+  
+  
+  static function show_mine_goods(&$site, $parent_id ){
+    $output = '';
+    
+    $tbl_goods_cat = DB_PFX.'goods_cat';
+    $tbl_goods = DB_PFX.'goods';
+    $tbl_url = DB_PFX.'url';
+    $s = "
+      SELECT `$tbl_goods_cat`.*,  `$tbl_url`.`url` 
+      FROM `$tbl_goods_cat`
+      LEFT JOIN `$tbl_url`
+      ON (`$tbl_url`.`module` = '$tbl_goods_cat') AND (`$tbl_url`.`module_id` = `$tbl_goods_cat`.`id`)
+      WHERE `$tbl_goods_cat`.`parent_id` = $parent_id
+      AND `$tbl_goods_cat`.`hide` = 0
+      ORDER BY `$tbl_goods_cat`.`ord`
     "; #pri($s);
     
     
@@ -892,13 +915,13 @@ class Goods {
         
       	while ($r = $q->fetch()){
           $s_g  = "
-            SELECT `il_goods`.*, `il_url`.`url` 
-            FROM `il_goods`
-            LEFT JOIN `il_url`
-            ON (`il_url`.`module` = 'il_goods') AND (`il_url`.`module_id` = `il_goods`.`id`)
-            WHERE `il_goods`.`cat_id` = {$r['id']}
-            AND `il_goods`.`fl_show_mine`  = 1 
-            AND `il_goods`.`hide`  = 0 
+            SELECT `$tbl_goods`.*, `$tbl_url`.`url` 
+            FROM `$tbl_goods`
+            LEFT JOIN `$tbl_url`
+            ON (`$tbl_url`.`module` = '$tbl_goods') AND (`$tbl_url`.`module_id` = `$tbl_goods`.`id`)
+            WHERE `$tbl_goods`.`cat_id` = {$r['id']}
+            AND `$tbl_goods`.`fl_show_mine`  = 1 
+            AND `$tbl_goods`.`hide`  = 0 
             ORDER BY `ord`
           "; #pri( $s_g );
           
@@ -977,23 +1000,25 @@ class Goods {
     
   }
  
-  static function show_sub_cats(&$site, $sid){
+  static function show_sub_cats(&$site, $sid, $s = null){
     
     $output = '';
     
-    $s = "
-      SELECT  `".DB_PFX."goods_cat` . * , 
-              `".DB_PFX."url`.`url` 
-      FROM  `".DB_PFX."goods_cat` 
-      
-      LEFT JOIN  `".DB_PFX."url` ON (  `".DB_PFX."url`.`module` =  '".DB_PFX."goods_cat' ) 
-      AND (
-      `".DB_PFX."url`.`module_id` =  `".DB_PFX."goods_cat`.`id`
-      )
-      WHERE `".DB_PFX."goods_cat`.`parent_id` =  $sid 
-      AND `".DB_PFX."goods_cat`.`hide` = 0
-      ORDER BY  `".DB_PFX."goods_cat`.`ord`
-    "; #pri($s);
+    if(!$s){
+      $s = "
+        SELECT  `".DB_PFX."goods_cat` . * , 
+                `".DB_PFX."url`.`url` 
+        FROM  `".DB_PFX."goods_cat` 
+        
+        LEFT JOIN  `".DB_PFX."url` ON (  `".DB_PFX."url`.`module` =  '".DB_PFX."goods_cat' ) 
+        AND (
+        `".DB_PFX."url`.`module_id` =  `".DB_PFX."goods_cat`.`id`
+        )
+        WHERE `".DB_PFX."goods_cat`.`parent_id` =  $sid 
+        AND `".DB_PFX."goods_cat`.`hide` = 0
+        ORDER BY  `".DB_PFX."goods_cat`.`ord`
+      "; #pri($s);
+    }
     
     if($q = $site->pdo->query($s)){
       if( $q->rowCount()){
@@ -1002,41 +1027,7 @@ class Goods {
             <div class="catalog_dir card-deck">
         '; 
         while($r = $q->fetch()){
-          ($r['img']) ? $image = '/images/goods/cat/slide/'.$r['img'] : $image = '/css/img/nofoto.gif' ;
-          $output .= '
-            <div class="card">
-              <a href="/'.$r['url'].'">
-                <div class="card_img_box">  
-                  <img class="" src = "'.$image.'" alt = "Изображение - '.$r['title'].'"   title = "'.$r['title'].'">
-                  <div class="card_img_shadow"></div>
-                </div>
-              </a> 
-              <div class="card-body">
-              </div>
-              <div class="card-footer">
-                <p class="card-title"><a href="/'.$r['url'].'">'.$r['title'].'</a></p> 
-              </div>
-            </div>
-            ';
-            
-            /*
-            <div class = "cat_item_box col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class = "cat_item_title">
-                <a href = "/'.$r['url'].'">'.$r['title'].'</a>
-              </div>
-              <div class = "cat_item_img_box">
-          ';
-          if($r['img']){
-            $output .= '
-              <a href = "/'.$r['url'].'">
-                <img src = "/images/goods/cat/slide/'.$r['img'].'" alt = "Изображение - '.$r['title'].'"   title = "'.$r['title'].'" >
-              </a>
-            ';
-          }
-          $output .= '
-              </div>
-            </div>';*/
-          
+          $output .= self::show_goods_cat_card($r);
         }
         $output .= '
             </div>
@@ -1047,6 +1038,28 @@ class Goods {
     
     return $output;
     
+  }
+  
+  static function show_goods_cat_card($goods_cat_arr){
+    $output = '';
+    $r = $goods_cat_arr;
+    ($r['img']) ? $image = '/images/goods/cat/slide/'.$r['img'] : $image = '/css/img/nofoto.gif' ;
+    $output .= '
+      <div class="card">
+        <a href="/'.$r['url'].'">
+          <div class="card_img_box">  
+            <img class="" src = "'.$image.'" alt = "Изображение - '.$r['title'].'"   title = "'.$r['title'].'">
+            <div class="card_img_shadow"></div>
+          </div>
+        </a> 
+        <div class="card-body">
+        </div>
+        <div class="card-footer">
+          <p class="card-title"><a href="/'.$r['url'].'">'.$r['title'].'</a></p> 
+        </div>
+      </div>';
+      
+    return $output;
   }
   
   static function show_сat_of_factories(&$site){

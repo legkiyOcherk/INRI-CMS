@@ -186,6 +186,109 @@ class SiteCorporate extends SiteBase{
 
 class SiteOnlineshop extends SiteBase{
   
+  var $search;
+  
+  function __construct($module = '404') {
+    parent::__construct($module);
+    
+    $this->_BASKET = new Basket();
+    $this->search = new Search();
+    
+    
+    
+    $this->js_scripts .= '<script type="text/javascript" src="/js/store1.js"></script>';
+    $this->js_scripts .= '
+    <link rel="stylesheet" href="/vendors/iCheck/skins/all.css">
+    <script src="/vendors/iCheck/icheck.min.js"></script>
+    <script>
+    $(document).ready(function(){
+      $(".сonsent_checkbox").iCheck({
+        checkboxClass: "icheckbox_square-blue",
+        radioClass: "iradio_square-blue"
+      });
+      $(".dost_radio").iCheck({
+        checkboxClass: "icheckbox_square-blue",
+        radioClass: "iradio_square-blue"
+      });
+    });
+    </script>';
+  }
+  
+  function getMineHeader(){
+    $output = '';
+    
+    $output .= '
+          <!-- header -->
+          <div class = "header_box">
+            <div class = "header">
+            
+              <div class="row align-items-center">
+              
+                <div class="col-12 col-sm-4 col-lg-auto">
+                  <div class="logo_box">
+                    <a href="/"><img class="logo" src="'.$this->logo_path.'" alt="'.$this->site_slogan.'" title="'.$this->site_slogan.'"></a>
+                  </div>
+                </div>
+                
+                <div class="col-12 col-sm-4 col-lg">
+                  <div class="header_phone_box">
+                    <div class="header_phone">
+                      '.$this->phone_header.'
+                    </div>
+                    <div class="header_adress">
+                      '.$this->adress_header.'
+                    </div>
+                    <div class="header_work">
+                      '.$this->working_hour.'
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-12 col-sm-4 col-lg-auto">
+                  <div class="header_callback_box">
+                    <div class="header_callback">
+                      <button class="btn flmenu1" data-id="0" data-target="#myModal" data-title="Заказать обратный звонок" data-toggle="modal">Заказать обратный звонок</button>
+                    </div>
+                    <div class="header_soc">
+                      '.$this->soc_net.'
+                    </div>
+                  </div>
+                </div>';
+      
+    $basked_data = $this->_BASKET->get_basket_data();
+    $style = '';
+    #( $this->_BASKET->getCount() ) ? $style = "" : $style = "display: none;" ;
+    $output .= '
+                <div class="col-12 col-sm-4 col-lg-auto">
+                
+                  <!-- basked -->
+                  <div class="basked_box" style = "'.$style.'">
+                    <a href="/basket">
+                      <div class="basked_icon">
+                        <i class="fas fa-cart-arrow-down" aria-hidden="true"></i>
+                      </div>
+                      <div class="basked">
+                        '.$basked_data['basket_head'].'
+                      </div>
+                    </a>
+                  </div>
+                  <!-- End basked -->
+                  
+                </div>
+    ';
+    
+    $output .= '
+              </div>
+              
+            </div>
+          </div>
+          <!-- End header -->';
+          
+    $output = $this->addEditAdminLink($output, IA_URL.'config.php');
+    
+    return $output;
+  }
+  
   function getMineTopMenu(){
     $output = '';
     
@@ -225,6 +328,51 @@ class SiteOnlineshop extends SiteBase{
     
     $output = $this->addEditAdminLink($output, '/wedadmin/article.php');
     
+    return $output;
+  }
+  
+  function getMineCatGoods($text = null){
+    $output = '';
+    
+    $output .= '
+      <div class="block_box mine_goods_cat">
+        <div class="block">
+          '.$text.'
+          '.Goods::show_mine_goods_cat($this).'
+       </div>
+      </div>';
+      
+      $output = $this->addEditAdminLink($output, IA_URL.'goods.php?c_id=root');
+      
+    return $output; 
+  }
+  
+  function getSearchBox(){
+    $output = '';
+    
+    $output .= '
+    <div class="block_box mine_search_line">
+      <div class="block">';
+    $output .= $this->search->showSearchLine($this);
+    $output .= '
+      </div>
+    </div>';
+    $output = $this->addEditAdminLink($output, IA_URL.'mine_block.php');
+    return $output;
+  }
+  
+  function getMineGoods(){
+    $output = '';
+    
+    $output .= '
+    <div class="block_box">
+      <div class="block">';
+    $output .= Goods::show_mine_goods($this, 1);
+    $output .= '
+      </div>
+    </div>';
+    
+    $output = $this->addEditAdminLink($output, IA_URL.'mine_block.php');
     return $output;
   }
   
@@ -353,6 +501,33 @@ class SiteOnlineshop extends SiteBase{
         $cont = $this->search->showSearchItems($this);
         $cont = $this->getContentPrefix().$cont.$this->getContentPostfix();
         break;
+      
+      case 'basket':
+        $this->adminLink = "/orders.php";
+        $this->siteTitle = "Корзина - ".$_SERVER['HTTP_HOST'];
+        $cont = '';
+        $cont .= '<div  style="margin-top: 10px;" id = "basket_ajx_box">';
+        $this->bread = '
+            <div class="bread_crumbs_box ">
+              <div class="bread_crumbs border_top_button_line">
+                <a href="/">Главная</a> → <span>Корзина</span>
+              </div>      
+            </div>
+        ';
+        #pri($_SESSION);
+        #$cont .= $this->bread;
+        
+        $cont .= '<h1>Корзина</h1>';
+        $cont .= '<div id = "basket_ajx">';
+    	  $cont .= $this->_BASKET->show_basket();
+        $cont .= '</div>';
+        $cont .= '<br/><br/>';
+        $cont .= $this->_BASKET->show_pre_order();
+        $cont .= '</div>';
+        
+        $cont = $this->getContentPrefix(false).$cont.$this->getContentPostfix(false);
+
+        break;
         
       case 'backup_sql':
         echo 'backup_sql';
@@ -384,6 +559,53 @@ class SiteOnlineshop extends SiteBase{
     
     return $output;
   }
+  
+  function getBlockSwitchSelector($s, $cont = ''){
+    $output = '';
+    
+    if($q = $this->pdo->query($s))
+      if($q->rowCount())
+        while($r = $q->fetch()){
+          $output .= '
+    <a name="'.$r['url'].'"></a>';
+          
+          switch ($r['link']) {
+            case  'block_mine_header':
+                  $output .= $this->getMineHeader(); break;
+            case  'block_mine_top_menu':
+                  $output .= $this->getMineTopMenu(); break;
+            case  'block_mine_slider':
+                  $output .= $this->getMineSlider(); break;
+            case  'block_mine_news':
+                  $output .= $this->getMineNews(); break;
+            case  'block_search':
+                  $output .= $this->getSearchBox(); break;
+            case  'block_mine_cat_goods':
+                  $output .= $this->getMineCatGoods($r['longtxt2']); break;
+            case  'block_mine_goods':
+                  $output .= $this->getMineGoods(); break;
+            case  'block_ferrum_form':
+                  $output .= $this->getMineFerrumForm(); break;
+            case  'block_mine_footer':
+                  $output .= $this->getFooter(); break;
+                  
+            case  'block_inner_content': // Контент на внутренних страницах
+                  $output .= $this->addEditAdminLink($cont, '/'.ADM_DIR.$this->adminLink); 
+                  break;
+                  
+            default:
+                  if($r['longtxt2']){
+                    $output .= $this->addEditAdminLink($r['longtxt2'], IA_URL.'mine_block.php?edits='.$r['id']);
+                  }
+                  break; 
+          }
+          
+        }
+    
+    return $output;
+  }
+  
+  
   
 } 
 

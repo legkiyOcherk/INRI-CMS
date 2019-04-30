@@ -111,6 +111,9 @@ class SiteBase {
       $this->user_style = '';
     }
     
+    if(!$this->whatsap_phone = db::value("val", DB_PFX."config", "name = 'whatsap_phone'") ){
+      $this->whatsap_phone = '';
+    }
     // Просмотренные страницы
     (!isset ($_SESSION['visited_pages'])) ? $_SESSION['visited_pages'] = '' : $this->visited_pages = $_SESSION['visited_pages'];
     #pri($this->visited_pages); #unset($_SESSION['visited_pages']);
@@ -445,8 +448,8 @@ class SiteBase {
     <script src="/vendors/maskedinput/jquery.maskedinput.min.js"></script>
     <script type="text/javascript">
     $(function() {
-       $("#phone").mask("+7 (999) 999-99-99");
-       $("#UserPhone").mask("+7 (999) 999-99-99");
+       $("#phone").mask("+9 (999) 999-99-99");
+       $("#UserPhone").mask("+9 (999) 999-99-99");
     });
     </script>
     
@@ -1390,6 +1393,10 @@ class SiteBase {
                 <span class="input-group-addon input-group-text">Текст</span>
               </div> 
               <textarea class="form-control glyphicon-ok" rows="5" id = "UserText"></textarea>
+            </div>
+            <br>
+            <div class="input-group сonsent" style="padding-left: 0px; text-align: center;">
+              <input class="req сonsent_checkbox" type="checkbox" id="UserConsent"  required checked="checked" style="margin-bottom: 5px;"> &nbsp;<span class="input-group-addon " style = "margin-left: 35px; margin-top: -23px; display: inline-block;">Я согласен с <a href="/politikoy-organizacii-po-obrabotke-personalnyh" rel="nofollow" target="_blank">политикой организации по обработке персональных данных</a> и даю свое <a href="/soglasie-posetitelya-sayta" rel="nofollow" target="_blank">согласие</a> на их обработку</span>
             </div>
           </div>
           <div class="modal-footer">

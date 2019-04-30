@@ -11,7 +11,12 @@ class Basket {
   private $user;
   private $eur;
   private $usd;
-
+  
+  private $tbl_goods;
+  private $tbl_goods_cat;
+  private $tbl_url;
+  private $logo_path;
+  
 	private $debug = false;
 
 	function __construct($create = false, $update = true) {
@@ -20,9 +25,16 @@ class Basket {
     //($db_ye = db::value( 'val', 'config', 'name = "ye"')) ? $this->ye = $db_ye : $this->ye = 10;
     $this->eur = db::value( 'val', DB_PFX.'currency', 'name = "eur"');
     $this->usd = db::value( 'val', DB_PFX.'currency', 'name = "usd"');
-        
+    
+    $this->tbl_goods = DB_PFX.'goods';
+    $this->tbl_goods_cat = DB_PFX.'goods_cat';
+    $this->tbl_url = DB_PFX.'url';
+    if(!$this->logo_path     = db::value("value", DB_PFX."design", "type = 'user_logo'")){
+      $this->logo_path       = '/css/img/logo2.png';
+    }
+    
 		if ($this->basket_id) {
-			$this->count = db::value("SUM(amount)", 'basket_items', "basket_id = $this->basket_id");
+			$this->count = db::value("SUM(amount)", DB_PFX.'basket_items', "basket_id = $this->basket_id");
 		}
     
     /*if(isset($_SESSION['personal_user_id']))
@@ -35,11 +47,11 @@ class Basket {
 		$last_time = time();
 		if (isset($_COOKIE['basket_id'])) {
 			$this->basket_id = $_COOKIE['basket_id'];
-			$isset = db::value('id', 'basket', "id = $this->basket_id");
+			$isset = db::value('id', DB_PFX.'basket', "id = $this->basket_id");
 			if (!$isset and $create) {
 				$this->basket_id = $this->create_basket($last_time);
 			}
-			db::update('basket', compact('last_time'), "id = $this->basket_id");
+			db::update(DB_PFX.'basket', compact('last_time'), "id = $this->basket_id");
 		} elseif ($create) {
 			$this->basket_id = $this->create_basket($last_time);
 		}
@@ -130,19 +142,12 @@ class Basket {
 		}
     $id = intval($_POST['id']);
 		$amount = ($_POST['amount']) ? intval($_POST['amount']) : 1;
-		$item = db::row('*', 'il_goods', "id = $id", null);
+		$item = db::row('*', $this->tbl_goods, "id = $id", null);
     //$item = db::row('*', 'il_articul', "id = $id", null);
 		if (!$item) {
 			if ($this->debug) echo '!item';
 			return;
 		}
-    /*$price = 0;
-    
-    if($item["price"]){
-      $price = $item["price"];
-    }else{
-      $price = $item["price_ye"] * $this->ye;
-    }*/
     
     $art_price = 0;
   
@@ -159,12 +164,12 @@ class Basket {
     
     //$sitecatname=db::value('title', 'il_cat_goods', "id = ".$item["cat_id"]);
     
-    $amount_exist = db::value('amount', 'basket_items', "item_id = $id AND basket_id = $this->basket_id");
+    $amount_exist = db::value('amount', DB_PFX.'basket_items', "item_id = $id AND basket_id = $this->basket_id");
     if ($amount_exist) {
   		$amount = $amount + $amount_exist;
-  		$res = db::update('basket_items', compact('amount'), "item_id = $id AND basket_id = $this->basket_id");
+  		$res = db::update(DB_PFX.'basket_items', compact('amount'), "item_id = $id AND basket_id = $this->basket_id");
   	} else {
-  		$res = db::insert('basket_items', array('amount'=>$amount, 'item_id'=>$id, 'basket_id'=>$this->basket_id, 'siteprice'=>$art_price, 'sitename'=>$item["title"]/*, 'sitecatname'=>$sitecatname*/));
+  		$res = db::insert(DB_PFX.'basket_items', array('amount'=>$amount, 'item_id'=>$id, 'basket_id'=>$this->basket_id, 'siteprice'=>$art_price, 'sitename'=>$item["title"]/*, 'sitecatname'=>$sitecatname*/));
   	}
     
     
@@ -195,65 +200,34 @@ class Basket {
             i.price,
             u.url
     FROM   
-            basket_items AS bi 
+            `".DB_PFX."basket_items` AS bi 
     LEFT JOIN 
-            basket AS b 
+            `".DB_PFX."basket` AS b 
     ON      (b.id = bi.basket_id) 
     LEFT JOIN 
-            il_goods AS i 
+            `".$this->tbl_goods."` AS i 
     ON 
             (bi.item_id = i.id)
-    LEFT JOIN il_url AS u
-    ON (u.module = 'il_goods') AND (u.module_id = i.id)
+    LEFT JOIN `".$this->tbl_url."` AS u
+    ON (u.module = '".$this->tbl_goods."') AND (u.module_id = i.id)
     WHERE 
             bi.basket_id = $this->basket_id 
     AND 
             b.state = 1    
-    ";
-        /*
-    "
-    SELECT  i.id, 
-            bi.amount, 
-            i.price,
-            i.price_ye
-    FROM basket_items AS bi 
-    LEFT JOIN 
-            il_goods AS i 
-    ON 
-            (bi.item_id = i.id) 
-    LEFT JOIN 
-            basket AS b 
-    ON 
-            (b.id = bi.basket_id) 
-    WHERE 
-            bi.basket_id = {$this->basket_id} 
-    AND 
-            b.state = 1
-    "*/
-    #pri($s);
-    #pri($this);
+    "; #pri($s); 
+    
 		$basket_list = db::arr( $s );
     
 		if ($basket_list and count($basket_list)) {
 			foreach ($basket_list as $item) {
 				$amount = $item['amount'];
         $id = $item['id'];
-        
-				/*if($item["price"] > 0){
-          $price = $item["price"];
-        }else{
-          $price = $item["price_ye"] * $this->ye;
-        }*/
         $art_price = 0;
         $art_portion = 1;
         
         if($item['price']){
           $art_price = $item['price'];
-        }/*elseif($item['price_eur'] > 0){
-      	  $art_price = round($item['price_eur'] * $this->eur, 2); 
-        }elseif($item['price_dol'] > 0){
-      	  $art_price = round($item['price_dol'] * $this->usd, 2);
-        }*/
+        }
         
 				$basket_price = $basket_price + ( $amount/$art_portion * $art_price);
 				$basket_count = $basket_count + $amount;
@@ -265,14 +239,6 @@ class Basket {
     $str = '';
 		if ($this->basket_id and $this->count) {
 			$string_coung = string_tools::get_int_text('', 'а', 'ов', $this->count);
-      /*$str = '<a class="card_link" href="/basket"> <span class="glyphicon glyphicon-shopping-cart"></span> Корзиа: '.$this->count.' товар'.$string_coung.' на сумму '.$this->price.' <span class="glyphicon glyphicon glyphicon-rub"></span></a>';*/
-      
-      /*$str .= '
-        <a class="card_link" href = "/basket">
-          товаров './*$this->count*//*count($basket_list).'<br/>
-          на сумму '.$this->price.' <i class="fa fa-rub" aria-hidden="true"></i>
-        </a>
-      ';*/
       $str .= '
         <div class="basked_count">'.$this->count.' товар'.$string_coung.'</div>
         <div class="basked_price_box"> <span class="basked_price"> '.$this->price.' </span> <i class="fa fa-rub" aria-hidden="true"></i></div>
@@ -311,37 +277,6 @@ class Basket {
 		$basket_count = 0;
 		$i = 0;
     
-    /*$basket_list_s = "
-    SELECT  
-            i.id AS item_id, 
-            i.article,
-            i.title, 
-            bi.id, 
-            bi.amount, 
-            i.img as img, 
-            i.availability_id as nal, 
-            i.cat_id as cat_id,
-            i.price,
-            i.price,
-            i.price_ye,
-            u.url
-    FROM   
-            basket_items AS bi 
-    LEFT JOIN 
-            il_goods AS i 
-    ON 
-            (bi.item_id = i.id) 
-    LEFT JOIN 
-            basket AS b 
-    ON      (b.id = bi.basket_id) 
-    LEFT JOIN il_url AS u
-    ON (u.module = 'il_goods') AND (u.module_id = i.id)
-    WHERE 
-            bi.basket_id = $this->basket_id 
-    AND 
-            b.state = 1
-    ";*/
-    
     $basket_list_s = "
     SELECT  
             i.id AS item_id, 
@@ -355,9 +290,9 @@ class Basket {
             mi.title AS units,
             u.url
     FROM   
-            basket_items AS bi 
+            ".DB_PFX."basket_items AS bi 
     LEFT JOIN 
-            ".DB_PFX."goods AS i 
+            `".$this->tbl_goods."` AS i 
     ON 
             (bi.item_id = i.id) 
     LEFT JOIN
@@ -365,10 +300,10 @@ class Basket {
     ON
             (i.units_id = mi.id)
     LEFT JOIN 
-            basket AS b 
+            ".DB_PFX."basket AS b 
     ON      (b.id = bi.basket_id) 
-    LEFT JOIN il_url AS u
-    ON (u.module = '".DB_PFX."goods') AND (u.module_id = i.id)
+    LEFT JOIN `".$this->tbl_url."` AS u
+    ON (u.module = '".$this->tbl_goods."') AND (u.module_id = i.id)
     WHERE 
             bi.basket_id = $this->basket_id 
     AND 
@@ -423,14 +358,14 @@ class Basket {
       }
       
       // Название коллекции
-      $cats_item = db::row("title, parent_id", "il_cat_goods", "id = ".$cat_id );
+      $cats_item = db::row("title, parent_id", $this->tbl_goods_cat, "id = ".$cat_id );
       
       /*echo "<pre>";
       print_r($cats_item);
       echo "</pre>";*/
       
       // Название фабрики
-      $fab_item = db::row("title", "il_cat_goods", "id = ".$cats_item['parent_id'] );
+      $fab_item = db::row("title", $this->tbl_goods_cat, "id = ".$cats_item['parent_id'] );
 		
       $output .= '
         <div id="row_'.$id.'" class="basket_line basket_item row align-items-center">
@@ -490,29 +425,7 @@ class Basket {
               <div class="col-xs-12 col-sm-3 basket_price">
                 '.number_format($art_price * $amount, 0, ',', ' ').' <i class="fa fa-rub" aria-hidden="true"></i>
               </div>';
-                
-      /*$output .= '
-                </div>
-              <div class="col-xs-12 col-sm-5">
-                <div class="input-prepend input-append amount_btn_box" style="margin-bottom:0; box-shadow: none;">
-                  <input  id="amount_'.$id.'"
-                          class = "store_buy_input bye_count" 
-                          data-id = "'.$item['id'].'" 
-                          data-min = "'.$item['min_count'].'" 
-                          data-price = "'.$item['price'].'"
-                          data-portion = "'.$item['portion'].'" 
-                          type="number" 
-                          value = "'.$amount.'"  
-                          onblur="change_amount('.$id.', 0, 1)" />
-                  '.$units.' 
-                </div>
-              </div>';*/
-      /*$output .= '
-              <div class="col-xs-12 col-sm-3 basket_price">
-                
-                  <span class="buy_price cost" id = "price_id_'.$item['id'].'" data-id = "'.$item['id'].'" >'.number_format( $amount/$item['portion'] * $art_price, 0, ',', ' ').' </span> <span class="buy_price"><i class="fa fa-rub" aria-hidden="true"></i></span>
-                
-              </div>';*/
+      
       $output .= '
               <div class = "col-xs-12 col-sm-1 delete_basked_box" align = "right">
                 <button class="btn ajx btn_backed_remove" onclick="delete_basket_item('.$id.')">
@@ -521,109 +434,9 @@ class Basket {
               </div>
             </div>
           </div>
-      ';
-      /*$output .= '
-          <div class = "xs-hidden col-sm-3"></div>
-          <div class = "col-xs-5 col-sm-7 delete_basked_box" align = "right">
-            <div class = "row">
-            <button class="btn ajx btn_backed_remove" onclick="delete_basket_item('.$id.')">
-              <i class="fa fa-times" aria-hidden="true" style = "color: red;"></i> 
-            </button>  
-            </div>
-          </div>
-      ';*/
-      $output .= '
+      
         </div>
       ';
-      
-      /*$output .= '
-      <div id="row_'.$id.'" class="row basket_item">
-';
-			$output .= '
-        <div class = "col-sm-3 col-xs-12 backet_goods_img_box b_td">
-';
-			if ($img) { 
-        $output .= '
-            <img src = "'.Images::static_get_img_link("images/goods/orig", $img,  'images/goods/variations/230x230',  230, null, 0xFFFFFF, 100).'"  title = "'.$title.' " />
-';
- 		 }
-			$output .= '
-        </div>
-';
-          
-
-      
-      $output .= '
-
-        <div class = "col-sm-3 col-xs-12 b_td">
-          <a href="/'.$url.'">'.$title.'<br/>'.$article.'</a>
-';
-      $output .= '          
-        </div>
-';
-      /*if(isset ($this->user))
-          if(isset ($this->user['coefficient']))
-            if($this->user['coefficient']){
-              $coeff = $this->user['coefficient'];
-              $price = $price*$coeff;
-            }
-      *//*
-        if($item["price"]){
-          $price = $item["price"];
-        }else{
-          $price = $item["price_ye"] * $this->ye;
-        }
-			$output .= '
-        <div class = "col-sm-2 col-xs-12 b_td">
-          <span class="good_article">'.number_format($price, 0, ',', ' ').' <span class="glyphicon glyphicon glyphicon-rub"></span>
-        </div>
-';
-      $output .= '
-        <div class = "col-sm-2 col-xs-12 b_td">
-    			<div class="input-prepend input-append" style="margin-bottom:0">
-    		    <div class="btn-group">
-              <button onclick="change_amount('.$id.', 1, 1)" class="btn-primary"> 
-                &nbsp;<img src="/css/img/minus.png">&nbsp;
-              </button>
-            </div>
-  		      <input type="text" class="store_amount"  id="amount_'.$id.'" value="'.$amount.'" onblur="change_amount('.$id.', 0, 1)" />
-  		      <div class="btn-group">
-              <button onclick="change_amount('.$id.', 2, 1)" class="btn-primary"> 
-                &nbsp;<img src="/css/img/plus.png">&nbsp; 
-              </button>
-            </div>
-          </div>
-        </div>
-';
-			$output .= '
-        <div class = "col-sm-2 col-xs-12 b_td">
-          <span class="good_price">'.number_format($price * $amount, 0, ',', ' ').' руб</span>
-        </div>
-';
-			$output .= '
-      </div>
-';
-			$output .= '
-      <div class=" row basket_bottom">
-';
-			$output .=  '
-        <div class = "col-sm-12"  style = "vertical-align: bottom;">
-          <button class="btn ajx btn_backed_remove" onclick="delete_basket_item('.$id.')">
-            <img src="/css/img/close.png"> Убрать из корзины 
-          </button>
-        </div>
-';
-      $output .=  '
-      </div>
-      <div class = "row">
-        <div class = "col-sm-12">
-          <div class = "backet_line">
-            <div class="dotted_line2"></div>
-          </div>
-        </div>
-      </div>
-';
-    */
       
       $basket_price = $basket_price + ($amount * $art_price);
 			$basket_count = $basket_count + $amount;
@@ -670,12 +483,12 @@ class Basket {
 	 */
 	function change_amount($id, $amount) {
 		if ((!$id) or ($amount < 0) or !$this->basket_id) return;
-		$exist = db::value('1', 'basket_items', "id = $id AND basket_id = $this->basket_id");
+		$exist = db::value('1', DB_PFX.'basket_items', "id = $id AND basket_id = $this->basket_id");
 		if (!$exist) return;
     /*echo "$amount = $amount";
     echo print_r(compact('amount'));
     die();*/
-		$res = db::update('basket_items', compact('amount'), "id = $id AND basket_id = $this->basket_id");
+		$res = db::update( DB_PFX.'basket_items', compact('amount'), "id = $id AND basket_id = $this->basket_id" );
 		return ($res) ? $amount : 'mistake';
 	}
 
@@ -683,7 +496,7 @@ class Basket {
 	function create_basket($last_time) {
 		$state = 1;
 		$user_id = intval($this->user_id);
-		return db::insert('basket', compact('last_time', 'state', 'user_id'));
+		return db::insert(DB_PFX.'basket', compact('last_time', 'state', 'user_id'));
 	}
 
 
@@ -691,7 +504,7 @@ class Basket {
 		if (!$this->basket_id) return;
 		if ((!isset($_POST['id'])) or (!intval($_POST['id']))) return;
 		$id = intval($_POST['id']);
-		$res = db::delete('basket_items', "basket_id = {$this->basket_id} AND id = $id", 1);
+		$res = db::delete(DB_PFX.'basket_items', "basket_id = {$this->basket_id} AND id = $id", 1);
 		if ($res) {
 			return $this->get_basket();
 		}
@@ -704,11 +517,11 @@ class Basket {
 	 */
 	function clear_old_basket() {
 		$time = time() - $this->time_life_cookie;
-		$baskets = db::select('id', 'basket', "last_time < $time", 'id');
+		$baskets = db::select('id', DB_PFX.'basket', "last_time < $time", 'id');
 		foreach ($baskets as $basket) {
 			$id = $basket['id'];
-			db::delete('basket', "id = $id");
-			db::delete('basket_items', "basket_id = $id");
+			db::delete(DB_PFX.'basket', "id = $id");
+			db::delete(DB_PFX.'basket_items', "basket_id = $id");
 		}
 		return count($baskets);
 	}
@@ -717,11 +530,11 @@ class Basket {
 	function clear_basket() {
     #echo "clear_basket!";
 		$upd = array('state'=>0);
-		$user_id_empty = db::value('1', 'basket', "id = {$this->basket_id} AND user_id = 0");
+		$user_id_empty = db::value('1', DB_PFX.'basket', "id = {$this->basket_id} AND user_id = 0");
 		if ($this->user_id AND $user_id_empty) {
 			$upd['user_id'] = $this->user_id;
 		}
-		db::update('basket', $upd, "id = {$this->basket_id}");
+		db::update( DB_PFX.'basket', $upd, "id = {$this->basket_id}" );
 		setcookie("basket_id", $this->basket_id, time() - $this->time_life_cookie);
 	}
 
@@ -785,9 +598,16 @@ class Basket {
           
           <div class="form-group row">
             <label for="address" class="col-sm-3 control-label">Доставка:&nbsp;<span style = "color: red;">*</span></label>
-            <div class="col-sm-9">
-              <input type="radio" name="dost" id="dost1" value="1" class = "dost_radio"> <label for="dost1"><strong>Самовывоз:</strong> '.db::value("val", "config", "name = 'adress'").'</label><br>
-			        <input type="radio" name="dost" id="dost2" value="2" class = "dost_radio" checked="checked"> <label for="dost2"><strong>Доставка по Москве</strong> с 8:00 до 24:00</label><br>
+            <div class="col-sm-9 radio_basked_box">
+              <div class="row">
+                <div class="col-auto"><input type="radio" name="dost" id="dost1" value="1" class = "dost_radio"></div>
+                <div class="col"><label for="dost1"><strong>Самовывоз:</strong> '.db::value("val", DB_PFX."config", "name = 'adress'").'</label></div>
+              </div>
+               
+              <div class="row">
+                <div class="col-auto"><input type="radio" name="dost" id="dost2" value="2" class = "dost_radio" checked="checked"></div>
+                <div class="col"><label for="dost2"><strong>Доставка </strong> с 8:00 до 24:00</label></div>
+              </div>
 			
             </div>
           </div>
@@ -801,8 +621,15 @@ class Basket {
           
            <div class="form-group row">
             <label for="comment" class="col-sm-3 col-form-label ">Согласие:&nbsp;<span style = "color: red;">*</span></label>
-            <div class="col-sm-9">
-              <input class="req сonsent_checkbox" type="checkbox" id="checkbox_politic" required style="margin-bottom: 5px;"> &nbsp;<span class="input-group-addon " style = "margin-left: 35px; margin-top: -23px; display: inline-block;">Я согласен с <a href="/politikoy-organizacii-po-obrabotke-personalnyh" rel="nofollow" target="_blank">политикой организации по обработке персональных данных</a> и даю свое <a href="/soglasie-posetitelya-sayta" rel="nofollow" target="_blank">согласие</a> на их обработку</span>
+            <div class="col-sm-9 radio_basked_box">
+              <div class="row">
+                <div class="col-auto">
+                  <input class="req сonsent_checkbox" type="checkbox" id="checkbox_politic" checked="checked" required>
+                </div>
+                <div class="col">
+                  <span class="input-group-addon" >Я согласен с <a href="/politikoy-organizacii-po-obrabotke-personalnyh" rel="nofollow" target="_blank">политикой организации по обработке персональных данных</a> и даю свое <a href="/soglasie-posetitelya-sayta" rel="nofollow" target="_blank">согласие</a> на их обработку</span>
+                </div>
+              </div>
             </div>
           </div>
           
@@ -821,59 +648,6 @@ class Basket {
         
       </form>
     '; 
-    
-    /*<button class="catalog_download_btn order_submit" value="oформить заказ" onclick="yaCounter46984797.reachGoal(\'checkout_cart_сlick\');  send_order()">
-    <div class="order_submit_b">
-            <button type="submit"  class="order_submit" value="oформить заказ" onclick="send_order()">oформить заказ</button>
-        </div>
-    
-    $output = '
-            <!--<div class="form-group row">
-          <label for="inputPassword3" class="col-sm-3 col-form-label">Защитный код:&nbsp;*</label>
-          <div class="col-sm-9"> 
-            <img src = "css/img/tmp/code.jpg">
-            <input type="text" class="code" id="inputPassword3" placeholder="">
-          </div>
-        </div>-->
-      <form id = "basket_form" class="form-horizontal" role="form">
-        <div class="form-group">
-          <label for="phone" class="col-sm-3 control-label">Телефон <span class="z">*</span></label>
-          <div class="col-sm-9">
-            <input type="text" class="text form-control" name="phone" id="phone" required value="" placeholder="+7 (___) ___-____" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="address" class="col-sm-3 control-label">Адрес доставки</label>
-          <div class="col-sm-9">
-            <input type="text" name="address" class="form-control" id="address" value=""  />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="fio" class="col-sm-3 control-label">Имя <span class="z">*</span></label>
-          <div class="col-sm-9">
-            <input type="text" class="text form-control" name="fio" id="fio" placeholder = "Имя Фамилия Отчество" required value="'.$fio.'" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="email" class="col-sm-3 control-label">E-mail</label>
-          <div class="col-sm-9">
-            <input type = "email" placeholder = "your@email.com" class="text form-control" name="email" id="email" value="'.$email.'" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="comment" class="col-sm-3 control-label">Комментарий</label>
-          <div class="col-sm-9">
-            <textarea name="comment" class="text form-control" id="comment"></textarea>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="order_submit btn btn-default btn_backed_remove" id="order_submit" class="" value="Оформить заказ" onclick="send_order()" >Оформить заказ</button>
-          </div>
-        </div>
-      </form>
-    ';*/
-    
     $output .= '  
     </div>
     <br /><br /><br />
@@ -924,42 +698,20 @@ class Basket {
 				$vyvoz .= " Самовывоз";
 				break;
 				case 2:
-				$vyvoz .= " Доставка по Москве";
+				$vyvoz .= " Доставка";
 				break;
 				break;
 			}
         
-			$user_not_logined = db::value('id', 'basket_user', "email = '$email'");
+			$user_not_logined = db::value('id', DB_PFX.'basket_user', "email = '$email'"); 
 		}
 
 		$charset_to = 'UTF-8';
 		$charset_from = 'UTF-8';
-
-		
-
-		
+    
 		$basket_price = 0;
 		$basket_count = 0;
-		/*$sql = "
-    SELECT  c.id, 
-            c.article, 
-            c.cat_id, 
-            c.title, 
-            c.price, 
-            c.price_ye, 
-            bi.amount,
-            u.url
-    FROM 
-            basket_items AS bi 
-    LEFT JOIN 
-            il_goods AS c 
-    ON 
-            (bi.item_id = c.id) 
-    LEFT JOIN il_url AS u
-    ON (u.module = 'il_goods') AND (u.module_id = c.id)
-    WHERE 
-            bi.basket_id = $this->basket_id
-    ";*/
+    
     $sql = "
     SELECT  
             i.id AS item_id, 
@@ -974,9 +726,9 @@ class Basket {
             mi.title AS units,
             u.url
     FROM   
-            basket_items AS bi 
+            ".DB_PFX."basket_items AS bi 
     LEFT JOIN 
-            ".DB_PFX."goods AS i 
+            `".$this->tbl_goods."` AS i 
     ON 
             (bi.item_id = i.id) 
     LEFT JOIN
@@ -984,10 +736,10 @@ class Basket {
     ON
             (i.units_id = mi.id)
     LEFT JOIN 
-            basket AS b 
+            ".DB_PFX."basket AS b 
     ON      (b.id = bi.basket_id) 
-    LEFT JOIN il_url AS u
-    ON (u.module = '".DB_PFX."goods') AND (u.module_id = i.id)
+    LEFT JOIN `".$this->tbl_url."` AS u
+    ON (u.module = '".$this->tbl_goods."') AND (u.module_id = i.id)
     WHERE 
             bi.basket_id = $this->basket_id 
     AND 
@@ -1006,12 +758,12 @@ class Basket {
       <table class="company_data">
         <tr>
           <td>
-'.db::value("value", "il_seo", 'type = "mine_title"' ).'<br>
+'.db::value("value", DB_PFX."seo", 'type = "mine_title"' ).'<br>
 <a href = "http://'.$_SERVER['HTTP_HOST'].'">'.$_SERVER['HTTP_HOST'].'</a>
           </td>          
           <td align = "right">
             <a href = "http://'.$_SERVER['HTTP_HOST'].'">
-              <img src = "http://'.$_SERVER['HTTP_HOST'].'/css/img/logo2_min.png">
+              <img src = "http://'.$_SERVER['HTTP_HOST'].$this->logo_path.'">
             </a>
           </td>
           
@@ -1052,12 +804,6 @@ class Basket {
     
 		foreach ($basket_list as $item) {
 			extract($item);
-      
-      /*if($item["price"] > 0){
-        $price = $item["price"];
-      }else{
-        $price = $item["price_ye"] * $this->ye;
-      }*/  
       $price = 0;
   
       if($item['price']){
@@ -1068,7 +814,7 @@ class Basket {
     	  $price = round($item['price_dol'] * $this->usd, 2);
       }    
       // Название коллекции
-      $cats_item = db::row("title", "il_cat_goods", "id = ".$cat_id );
+      $cats_item = db::row("title", $this->tbl_goods_cat, "id = ".$cat_id );
       
       $order_c .= '
       <tr>
@@ -1091,25 +837,11 @@ class Basket {
           <a href="http://'.$_SERVER['SERVER_NAME'].'/'.$url.'">'.$cats_item['title'].' '.$title.'</a>
       ';
       $order_c .= '<br><span class = "item_id">id: '.$id.'</span>';
-
-      /*if($texture){
-        $order_c .= ' <br>Фактура: '.$texture.'';
-      }
-      if($country){
-        $order_c.= ' <br>Страна: '.$country.'';
-      }*/
       $order_c .= '
         </td>
         <td>
           '.$price.' руб ';
       #    '/ '.$units.'       ';
-      /*if($price_eur > 0){
-    	  $order_c .= '
-          <br>'.number_format($item['price_eur'] , 0, ',', ' ').' eur '; 
-      }elseif($item['price_dol'] > 0){
-    	  $order_c .= '
-          <br>'.number_format($item['price_dol'], 0, ',', ' ').' usd '; 
-      }*/
       $order_c .= '
         </td>
         <td>'.$amount.'</td>
@@ -1137,9 +869,7 @@ class Basket {
       ';
       $answer_table .= '<br><span class = "item_id">id: '.$id.'</span>';
 
-      /*if($texture){
-        $answer_table .= ' <br>Фактура: '.$texture.'';
-      }
+      /*
       if($country){
         $answer_table .= ' <br>Страна: '.$country.'';
       }*/
@@ -1148,13 +878,6 @@ class Basket {
       		<td align="center" >
             '.$price.' руб ';
       #/ '.$units.'      ';
-      /*if($price_eur > 0){
-    	  $answer_table .= '
-          <br>'.number_format($price_eur , 0, ',', ' ').' eur '; 
-      }elseif($price_dol > 0){
-    	  $answer_table .= '
-          <br>'.number_format($price_dol, 0, ',', ' ').'  usd '; 
-      }*/
       $answer_table .= '
           </td>
           <td align="center" >'.$amount.'</td>
@@ -1175,7 +898,7 @@ class Basket {
 		$order_c .= "
     <br />
     <strong>Общее количество товаров: $basket_count; на сумму: $basket_price руб."."
-    <br><h5><a href='http://".$_SERVER['SERVER_NAME']."/iladmin/orders.php'>админка</a></h5>";
+    <br><h5><a href='http://".$_SERVER['SERVER_NAME'].IA_URL."orders.php'>админка</a></h5>";
 
 		$site_name = $_SERVER['HTTP_HOST'];
 
@@ -1197,7 +920,7 @@ class Basket {
 		$tosend=$message;
 		#$message=mysql_real_escape_string($message);
     $message = addslashes($message);
-		$order_id=db::insert('basket_orders', compact('basket_id','phone','address', 'org', 'city', 'email','fio','comment_cust', 'sum','date_dost', 'message', 'date_time','ip', 'personal_accaunt_id'), 0);
+		$order_id=db::insert(DB_PFX.'basket_orders', compact('basket_id','phone','address', 'org', 'city', 'email','fio','comment_cust', 'sum','date_dost', 'message', 'date_time','ip', 'personal_accaunt_id'), 0);
     #pri($order_id);
     
 		// ---------------------------------------------------------------------
@@ -1207,7 +930,7 @@ class Basket {
 		if (($this->user_id or $user_not_logined) and !$contacts_id and !$contacts_saved) {
 			$contact_exist = false;
 			if ($user_not_logined) {
-				$contact_exist = db::value('1', 'basket_user_contacts', "org = '$org' AND phone = '$phone' AND address = '$address'");
+				$contact_exist = db::value('1', DB_PFX.'basket_user_contacts', "org = '$org' AND phone = '$phone' AND address = '$address'");
 			}
 			if (!$contact_exist) {
 				$contacts_user = array();
@@ -1216,7 +939,7 @@ class Basket {
         $contacts_user['city'] = $city;
 				$contacts_user['address'] = $address;
 				$contacts_user['user_id'] = $user_id;
-				db::insert('basket_user_contacts', $contacts_user);
+				db::insert(DB_PFX.'basket_user_contacts', $contacts_user);
 			}
 		}
 		// ---------------------------------------------------------------------
@@ -1226,7 +949,7 @@ class Basket {
 		$mail = EMail::Factory();
 		if ($email) $mail->addHeader("From: $email");
 		$mail->addHeader("Content-Type: text/html");
-		$email_order = db::value('val', 'config', "name = 'email_order'");
+		$email_order = db::value('val', DB_PFX.'config', "name = 'email_order'");
     
     // Если несколько адресов перечисленно через запятую
     $exp_email_order = explode(',', $email_order);
@@ -1265,12 +988,12 @@ class Basket {
       <table class="company_data">
         <tr>
           <td>
-'.db::value("value", "il_seo", 'type = "mine_title"' ).'<br>
+'.db::value("value", DB_PFX."seo", 'type = "mine_title"' ).'<br>
 <a href = "http://'.$_SERVER['HTTP_HOST'].'">'.$_SERVER['HTTP_HOST'].'</a>
           </td>          
           <td align = "right">
             <a href = "http://'.$_SERVER['HTTP_HOST'].'">
-              <img src = "http://'.$_SERVER['HTTP_HOST'].'/css/img/logo2_min.png" >
+              <img src = "http://'.$_SERVER['HTTP_HOST'].$this->logo_path.'" >
             </a>
           </td>
           
@@ -1363,7 +1086,7 @@ class Basket {
 
 	function show_history() {
 		if ($this->user_id) {
-			$basket_list = db::select('id', 'basket', "user_id = {$this->user_id}");
+			$basket_list = db::select('id', DB_PFX.'basket', "user_id = {$this->user_id}");
 			foreach ($basket_list as $basket) {
 				$basket_id = $basket['id'];
 				$sql = "SELECT bi.item_id, i.title, bi.id, bi.amount FROM basket_items AS bi LEFT JOIN il_goods AS i ON (bi.item_id = i.id) WHERE bi.basket_id = {$basket_id}";
@@ -1420,7 +1143,7 @@ class Basket {
     $b_id = $_GET['id'];
     
     $sql = "
-      SELECT * FROM `basket_orders` WHERE `id` = $b_id
+      SELECT * FROM `".DB_PFX."basket_orders` WHERE `id` = $b_id
     ";
     
 

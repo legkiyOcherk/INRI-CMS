@@ -918,6 +918,10 @@ textarea#comment{
 .files_box{
   padding-bottom: 25px;
 }
+
+.radio_basked_box > .row>div:first-child{
+  padding-right: 0;
+}
 @media (max-width: 768px){
   .basket_item,
   .basket_img_box,
