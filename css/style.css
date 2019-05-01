@@ -92,10 +92,8 @@ body .ui-widget.ui-widget-content {
 .header, .top_menu, .mine_slider, .mine_row, .block, .mine_catalog, .content, .footer, .cms_footer{
   margin: 0 auto;
   max-width: 1280px;
-  /*overflow: hidden;*/
   padding-left: 15px;
   padding-right: 15px;
-  /*background-color: #fff;*/ 
 }
 
 .block_box{
@@ -150,7 +148,6 @@ body .ui-widget.ui-widget-content {
 
 /* --- top_menu --- */
 .top_menu_box{
-  /*background: #343a40;*/
   background: rgba(0,0,0,0.8);
 }
 .top_menu{
@@ -172,11 +169,8 @@ body .ui-widget.ui-widget-content {
   position: absolute;
   left: -200%;
   top: -10px;
-  /*border: 0px solid #343a40;*/
-  /*border: 0px solid rgba(0,0,0,0.8);*/
   box-shadow: 5px 0 10px rgba(0,0,0,0.2);
   z-index: -1;
-  /*background: #343a40;*/
   background: rgba(0,0,0,0.8);
 }
 .mm_item:hover .sub_menu {
@@ -185,7 +179,6 @@ body .ui-widget.ui-widget-content {
     top: 59px;
     opacity: 1;
     border: 0px solid #22262b;
-    /*border-top: 1px solid rgba(0,0,0,0);*/
     z-index: 5;
 }
 .mm_item .sub_list {
@@ -198,15 +191,11 @@ body .ui-widget.ui-widget-content {
   padding: 5px 10px;
   line-height: 20px;
   text-decoration: none;
-  /*color: #4b4b4b;*/
   color: #ffffff;
-  /*background: #343a40;*/
-  /*background: rgba(0,0,0,0.8);*/
 }
 .mm_item .sub_list .sub_list_item:hover .sub_list_link,
 .mm_item .sub_list .sub_list_item.active .sub_list_link{
   color: #fff;
-  /*background: #22262b;*/
   background: rgba(0,0,0,0.8);
   text-decoration: none;
 }
@@ -227,8 +216,6 @@ body .ui-widget.ui-widget-content {
 @media (min-width: 768px){
   .navbar-nav {
     flex-wrap: wrap;
-    /*margin-left: auto;
-    margin-right: auto;*/
     justify-content: space-between;
     width: 100%;
   }
@@ -259,11 +246,9 @@ body .ui-widget.ui-widget-content {
     position: absolute;
     left: -200%;
     top: -10px;
-    /*border: 0px solid #343a40;*/
     border: 0px solid rgba(0,0,0,0.8);
     box-shadow: 5px 0 10px rgba(0,0,0,0.2);
     z-index: -1;
-    /*background: #343a40;*/
     background: rgba(0,0,0,0.8);
   }
 }
@@ -520,6 +505,12 @@ ul.footer_menu li a:hover{
 .catalog_dir.card-deck .card .card_img_box{
   padding-left: 1.25rem;
   padding-right: 1.25rem;
+  
+  text-align: center;
+}
+
+.catalog_dir .card .card_img_box img{
+  max-height: 275px;
 }
 
 .available {
@@ -546,6 +537,12 @@ ul.footer_menu li a:hover{
   color: #f33;
   font-size: 24px;
   height: 26px;
+}
+.catalog_items .card .card_img_box{
+  text-align: center;
+}
+.catalog_items .card .card_img_box img{
+  max-height: 275px;
 }
 .catalog_items.card-deck .card .card_btn_box{
   padding: 5px;

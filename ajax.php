@@ -27,6 +27,109 @@ if(isset($_POST['show_hpv_panel'])){
  
 }
 
+if(isset($_POST['ajax_search']) && $_POST['ajax_search']){
+  global $PDO; 
+  $output = '';
+  
+  $ajax_search = $_POST['ajax_search'];
+  $ajax_search = strip_tags($ajax_search);
+  $ajax_search = trim(preg_replace('#[^a-zA-Z0-9а-яёйА-ЯЁЙ]+#ui', ' ', $ajax_search));
+  
+  if($sive_log = true){ # Ведем логи
+    $date_log = date("Y-m-d h:i:s");
+    $ip_log = $_SERVER['REMOTE_ADDR'];
+    
+    $arr = array(
+        'title' => $ajax_search,
+        'datetime' => $date_log,
+        'ip' => $ip_log
+    );
+    
+    $rres = db::insert( DB_PFX.'search_log', $arr, 0);
+  }
+  
+  require_once(NX_PATH.'vendors/phpmorphy/phpmorphy_init.php'); // Морфология
+  $searchs = str_word_count($ajax_search, 1, "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя0123456789");
+  $arr_sear = array();
+  foreach($searchs as $search){
+    $sear = mb_strtoupper($search, 'utf-8');
+    $collection = $morphy->findWord($sear);
+    
+    
+    if(false === $collection) { 
+      $arr_sear[] = '%'.$sear.'%';
+      continue;
+    } else {
+      
+    }
+
+    foreach($collection as $paradigm) {
+      $arr_sear[] = '%'.$paradigm[0]->getWord().'%';
+      break;
+    }
+  }
+  $i=0; $orm_search_name_item = $orm_search_item = '';
+  foreach ($arr_sear as $a_sear){
+    $prefix = '';
+    if($i++) $prefix = ' AND ';
+    
+    $orm_search_name_item .= $prefix." `orm_search_name`  LIKE  '$a_sear' ";
+    $orm_search_item .= $prefix." `orm_search`  LIKE  '$a_sear' ";
+  }
+  $tbl_url = DB_PFX."url";
+  $tbl_goods_cat = DB_PFX."goods_cat";
+  $tbl_goods = DB_PFX."goods";
+  $limit = "LIMIT 10";
+  $s = "
+    SELECT `$tbl_goods`.*, `$tbl_url`.`url` 
+    FROM  `$tbl_goods`
+    LEFT JOIN `$tbl_url`
+    ON (`$tbl_url`.`module` = '$tbl_goods') AND (`$tbl_url`.`module_id` = `$tbl_goods`.`id`)
+    WHERE (
+      ($orm_search_name_item)
+      
+    ";
+    /*OR
+      ($orm_search_item) 
+      OR
+      ($article_item) 
+      OR
+      ($article_provider_item) 
+    */
+    $s .= "
+    )
+    AND `$tbl_goods`.`hide` = 0
+    ORDER BY `$tbl_goods`.`img` DESC
+    $limit
+    "; #pri($s);
+    
+    if($q = $PDO->query($s)){
+      if( $q->rowCount()){
+        if(!isset($availability) || !$availability){
+          $availability_items =  db::select("*", DB_PFX."availability" );
+          
+          foreach($availability_items as $availability_item){
+            $availability[ $availability_item['id'] ] = $availability_item['title'];
+          }
+        }
+    
+        while($r = $q->fetch()){
+          $output .= '
+          <div class="row" style="border-bottom:1px solid #ddd; padding:5px;margin: 5px 5px 5px 5px;">
+            <div class="col-1"><img style="max-height:50px; max-width:50px;" src="'.Images::static_get_img_link("images/goods/slide", $r['img'],  'images/goods/variations/50x50',  50, null, 0xFFFFFF, 95).'"></div>
+            <div class="col-6">
+              <a class="posit" href="/'.$r['url'].'">'.$r['title'].'</a><br>
+            </div>
+            <div class="col-3">'.$availability[$r['availability_id']].'</div>
+            <div class="col-2">'.$r['price'].'  <span class="rouble" style = "color: #212529; font-size: 17px; height: 18px;">руб.</span></div>
+          </div>';
+        }
+      }
+    }
+  echo $output;
+}
+
+
 if(isset($_POST['search_query'])){
   $search_quer = $_POST['search_query'];
   

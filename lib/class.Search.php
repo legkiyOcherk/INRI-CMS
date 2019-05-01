@@ -39,7 +39,7 @@ class Search{
             <input type="text" class="search_query form-control" name="q" id = "q_search" placeholder="поиск по каталогу" value="';
     if(isset($_SESSION['search_q'])){
       if($_SESSION['search_q']){
-        #$output .= $_SESSION['search_q'];
+        $output .= $_SESSION['search_q'];
       }
     }
     $output .= '" />
@@ -194,7 +194,7 @@ class Search{
       $output .= '</div>';
       
       $href = "/".$url;
-      #$href = Url::getStaticUrlForModuleAndModuleId('il_url', 'il_news', $id);
+      #$href = Url::getStaticUrlForModuleAndModuleId( DB_PFX.'url', DB_PFX.'news', $id);
       $output .= '<div class="txt '.$st1.' col-12">
                     <div class="txt_title">
                       <a href="'.$href.'"> '.$title.' </a>
@@ -269,7 +269,7 @@ class Search{
               'ip' => $ip_log
           );
           
-          $rres = db::insert('il_search_log', $arr, 0);
+          $rres = db::insert( DB_PFX.'search_log', $arr, 0);
           #echo $rres;
         }
 
@@ -353,14 +353,16 @@ class Search{
         }
         
         //Поиск по категориям товаров
-        
+        $tbl_url = DB_PFX."url";
+        $tbl_goods_cat = DB_PFX."goods_cat";
+        $tbl_goods = DB_PFX."goods";
         $s = "
-        SELECT `il_cat_goods`.*, `il_url`.`url` 
-        FROM  `il_cat_goods` 
-        LEFT JOIN `il_url`
-        ON (`il_url`.`module` = 'il_cat_goods') AND (`il_url`.`module_id` = `il_cat_goods`.`id`)
+        SELECT `$tbl_goods_cat`.*, `$tbl_url`.`url` 
+        FROM  `$tbl_goods_cat` 
+        LEFT JOIN `$tbl_url`
+        ON (`$tbl_url`.`module` = '$tbl_goods_cat') AND (`$tbl_url`.`module_id` = `$tbl_goods_cat`.`id`)
         WHERE  ( ($orm_search_name_cat) OR ($orm_search_cat) )
-        AND `il_cat_goods`.`hide` = 0
+        AND `$tbl_goods_cat`.`hide` = 0
         ";
         #echo $s."<br>";
         /*if($q = $this->pdo->query($s)){
@@ -409,7 +411,7 @@ class Search{
         
         $s = "
         SELECT COUNT( * ) AS count
-        FROM  `il_goods`
+        FROM  `$tbl_goods`
         WHERE (
           ($orm_search_name_item)
           OR
@@ -446,10 +448,10 @@ class Search{
         
         
         $s = "
-        SELECT `il_goods`.*, `il_url`.`url` 
-        FROM  `il_goods`
-        LEFT JOIN `il_url`
-        ON (`il_url`.`module` = 'il_goods') AND (`il_url`.`module_id` = `il_goods`.`id`)
+        SELECT `$tbl_goods`.*, `$tbl_url`.`url` 
+        FROM  `$tbl_goods`
+        LEFT JOIN `$tbl_url`
+        ON (`$tbl_url`.`module` = '$tbl_goods') AND (`$tbl_url`.`module_id` = `$tbl_goods`.`id`)
         WHERE (
           ($orm_search_name_item)
           OR
@@ -464,16 +466,16 @@ class Search{
         $s .= "
         )
         
-        AND `il_goods`.`hide` = 0
+        AND `$tbl_goods`.`hide` = 0
         
-        ORDER BY `il_goods`.`img` DESC
+        ORDER BY `$tbl_goods`.`img` DESC
         $limit
         ";
         //echo "s = $s<br>";
         
         if($filter_count){
           $output .= '<h3>Товары</h3>';
-          $s_all_count = "SELECT COUNT(*) AS count FROM `il_goods` WHERE `hide` = 0 ";
+          $s_all_count = "SELECT COUNT(*) AS count FROM `$tbl_goods` WHERE `hide` = 0 ";
           $q_all_count = $site->pdo->query($s_all_count);
           $r_all_count = $q_all_count->fetch();
           $all_count = $r_all_count['count'];
@@ -493,14 +495,15 @@ class Search{
         }
         
         //Поиск по новостям
+        $tbl_news = DB_PFX."news";
         $s = "
-        SELECT `il_news`.*, `il_url`.`url` 
-        FROM  `il_news` 
-        LEFT JOIN `il_url`
-        ON (`il_url`.`module` = 'il_news') AND (`il_url`.`module_id` = `il_news`.`id`)
+        SELECT `$tbl_news`.*, `$tbl_url`.`url` 
+        FROM  `$tbl_news` 
+        LEFT JOIN `$tbl_url`
+        ON (`$tbl_url`.`module` = '$tbl_news') AND (`$tbl_url`.`module_id` = `$tbl_news`.`id`)
         WHERE  ( ($orm_search_name_news) OR ($orm_search_news) )
-        AND `il_news`.`hide` = 0
-        ORDER BY `il_news`.`date` DESC
+        AND `$tbl_news`.`hide` = 0
+        ORDER BY `$tbl_news`.`date` DESC
         "; #pri($s);
                   
         if($q = $this->pdo->query($s)){
@@ -514,15 +517,17 @@ class Search{
         }
       
         //Поиск по категориям статей
+        $tbl_articles_cat = DB_PFX."articles_cat";
+        $tbl_articles = DB_PFX."articles";
         $s = "
-        SELECT `il_cat_articles`.*, `il_url`.`url` 
-        FROM  `il_cat_articles` 
-        LEFT JOIN `il_url`
-        ON (`il_url`.`module` = 'il_cat_articles') AND (`il_url`.`module_id` = `il_cat_articles`.`id`)
+        SELECT `$tbl_articles_cat`.*, `$tbl_url`.`url` 
+        FROM  `$tbl_articles_cat` 
+        LEFT JOIN `$tbl_url`
+        ON (`$tbl_url`.`module` = '$tbl_articles_cat') AND (`$tbl_url`.`module_id` = `$tbl_articles_cat`.`id`)
         WHERE  ( ($orm_search_name_article) OR ($orm_search_article) )
-        AND `il_cat_articles`.`link` = ''
-        AND `il_cat_articles`.`hide` = 0
-        ORDER BY `il_cat_articles`.`id` DESC
+        AND `$tbl_articles_cat`.`link` = ''
+        AND `$tbl_articles_cat`.`hide` = 0
+        ORDER BY `$tbl_articles_cat`.`id` DESC
         "; #pri($s);
         
         if($q = $this->pdo->query($s)){
@@ -536,13 +541,13 @@ class Search{
         
         //Поиск по статьям
         $s = "
-        SELECT `il_articles`.*, `il_url`.`url` 
-        FROM  `il_articles` 
-        LEFT JOIN `il_url`
-        ON (`il_url`.`module` = 'il_articles') AND (`il_url`.`module_id` = `il_articles`.`id`)
+        SELECT `$tbl_articles`.*, `$tbl_url`.`url` 
+        FROM  `$tbl_articles` 
+        LEFT JOIN `$tbl_url`
+        ON (`$tbl_url`.`module` = '$tbl_articles') AND (`$tbl_url`.`module_id` = `$tbl_articles`.`id`)
         WHERE  ( ($orm_search_name_article) OR ($orm_search_article) )
-        AND `il_articles`.`hide` = 0
-        ORDER BY `il_articles`.`id` DESC
+        AND `$tbl_articles`.`hide` = 0
+        ORDER BY `$tbl_articles`.`id` DESC
         "; #pri($s);
         
         if($q = $this->pdo->query($s)){

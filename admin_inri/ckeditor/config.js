@@ -10,7 +10,6 @@ config.language = 'ru';
 
 /* cmlex_box,cmlex_tabs,cmlex_timer,lineutils,widget,leaflet,cmlex-article,cmlex-button,cmlex-igallery,cmlex-spoiler,cmlex-box,cmlex-bootstrap */
 config.extraPlugins = 'lineutils,widget,widgetselection,quicktable,youtube,codemirror,wordcount,glyphicons';
-//config.contentsCss = '../../iladmin/admin_style/vendor/bootstrap/css/bootstrap.min.css';
 // ckeditor/plugins/glyphiconspt
 config.contentsCss = '/css/ckeditor.css';
 config.allowedContent = true;
@@ -20,7 +19,6 @@ config.forcePasteAsPlainText = true;
 config.autoParagraph = false;
 
 /*config.filebrowserBrowseUrl = '/wordpad/plugins/AjexFileManager/elfinder.php';*/
-/*config.filebrowserBrowseUrl = '/iladmin/ckeditor/plugins/AjexFileManager/elfinder.php';*/
 
 // config.filebrowserUploadUrl = '../../ckeditor_upload_img.php';
    config.filebrowserBrowseUrl = 'kcfinder/browse.php?opener=ckeditor&type=files';

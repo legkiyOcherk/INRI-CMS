@@ -39,7 +39,7 @@ class Basket {
     
     /*if(isset($_SESSION['personal_user_id']))
       if($_SESSION['personal_user_id'])
-        $this->user = db::row("*", "il_personal_accaunt", "`id` = '".$_SESSION['personal_user_id']."'");
+        $this->user = db::row("*", DB_PFX."personal_accaunt", "`id` = '".$_SESSION['personal_user_id']."'");
       */  
     
 	}
@@ -143,7 +143,7 @@ class Basket {
     $id = intval($_POST['id']);
 		$amount = ($_POST['amount']) ? intval($_POST['amount']) : 1;
 		$item = db::row('*', $this->tbl_goods, "id = $id", null);
-    //$item = db::row('*', 'il_articul', "id = $id", null);
+    //$item = db::row('*', DB_PFX.'articul', "id = $id", null);
 		if (!$item) {
 			if ($this->debug) echo '!item';
 			return;
@@ -162,7 +162,7 @@ class Basket {
         
     
     
-    //$sitecatname=db::value('title', 'il_cat_goods', "id = ".$item["cat_id"]);
+    //$sitecatname=db::value('title', DB_PFX.'goods_cat', "id = ".$item["cat_id"]);
     
     $amount_exist = db::value('amount', DB_PFX.'basket_items', "item_id = $id AND basket_id = $this->basket_id");
     if ($amount_exist) {
@@ -340,7 +340,7 @@ class Basket {
 			
 			$i++;
 			extract($item);
-      #$nal=db::value("title", "il_availability_items", "id=$nal");
+      #$nal=db::value("title", DB_PFX."availability_items", "id=$nal");
       /*if($item["price"] > 0){
         $price = $item["price"];
       }else{
@@ -1089,7 +1089,7 @@ class Basket {
 			$basket_list = db::select('id', DB_PFX.'basket', "user_id = {$this->user_id}");
 			foreach ($basket_list as $basket) {
 				$basket_id = $basket['id'];
-				$sql = "SELECT bi.item_id, i.title, bi.id, bi.amount FROM basket_items AS bi LEFT JOIN il_goods AS i ON (bi.item_id = i.id) WHERE bi.basket_id = {$basket_id}";
+				$sql = "SELECT bi.item_id, i.title, bi.id, bi.amount FROM basket_items AS bi LEFT JOIN ".DB_PFX."goods AS i ON (bi.item_id = i.id) WHERE bi.basket_id = {$basket_id}";
 				$list = db::arr($sql);
 				?>
 				<table class="basket">

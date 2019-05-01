@@ -5,7 +5,7 @@ class MyValidator extends CustomValidator
 {
   var $id_row;
   var $table;
-  function __construct($id = 0, $table = 'il_url'){
+  function __construct($id = 0, $table = DB_PFX.'url'){
     $this->id_row = $id;
     $this->table = $table;
   }

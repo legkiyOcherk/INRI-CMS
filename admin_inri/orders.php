@@ -188,8 +188,8 @@ function show_row($row, $new=false){
 		$output .= "<a href='#' id='cr{$row["id"]}' onclick='$(\"#addr{$row["id"]}\").toggle();return(false)'>$addr <i class='fa fa-pencil' aria-hidden='true'></i></a> ";
     //echo "<i class='icon-map-marker onmap'  data-id='{$row["id"]}'></i>";
     if($row['personal_accaunt_id']){
-      $user = db::row("*", "il_personal_accaunt", "`id` = '".$row['personal_accaunt_id']."'");
-      $output .= '<br><br><a href = "/iladmin/personal_accaunt.php?edits='.$row['personal_accaunt_id'].'">'.$user['title'].' '.$user['phone'].'</a>';
+      $user = db::row("*", DB_PFX."personal_accaunt", "`id` = '".$row['personal_accaunt_id']."'");
+      $output .= '<br><br><a href = "'.IA_URL.'personal_accaunt.php?edits='.$row['personal_accaunt_id'].'">'.$user['title'].' '.$user['phone'].'</a>';
     }
 		$output .= "<div style='display:none' id='addr{$row["id"]}'><textarea id='taddr{$row["id"]}' class='addr'>{$row["address"]}</textarea><br><a class='btn' onclick='save_addr({$row["id"]})'>сохранить</a></div>";
 		$push=urlencode(serialize($row));
@@ -260,7 +260,7 @@ $output .= "<td style='vertical-align:top'>";
 		/*if ($row["manager_id"])
 		{
 			
-			$man=mysql_fetch_array(mysql_query("SELECT `login` FROM `il_accounts` WHERE `id`=".$row["manager_id"]));
+			$man=mysql_fetch_array(mysql_query("SELECT `login` FROM `".DB_PFX."accounts` WHERE `id`=".$row["manager_id"]));
 			$manager="$man[0]"; 
 		}
 		else $manager="<span class='label label-important'>[нет]</span>";*/
@@ -280,11 +280,8 @@ $output .= "<td style='vertical-align:top'>";
     
 		while ( $it = $q1->fetch() )
 		{
-      /*$line_item = db::select("*", "il_shop_items", "id=".$it[item_id], null, null, true );
-      $linkk=db::value("url",'il_shop_categories',"id=".$line_item['category_id']);
-
-      $link = "/cat/$linkk/$url";*/
-      /*$g_id = db::value("goods_id", "il_articul", "id = ".$it[item_id]);*/
+      
+      /*$g_id = db::value("goods_id", DB_PFX."articul", "id = ".$it[item_id]);*/
       $link = db::value("url", DB_PFX.'url', "module = '".DB_PFX."goods' AND module_id=".$it["item_id"]);
       $goods_item = db::row("*", "".DB_PFX."goods", "id = ".$it["item_id"]);
       $cats_item = db::row("*", "".DB_PFX."goods_cat", "id = ".$goods_item['cat_id']);
@@ -293,7 +290,6 @@ $output .= "<td style='vertical-align:top'>";
 			$output .= "</td><td>";
       
 			$output .= "<a href='/$link' target='_blank'>".$cats_item['title']." ".$goods_item['title']." ".$it["sitename"];
-      /*if($article_item = db::value("article", "il_shop_items", "id = ".$it[item_id])) $output .= " (".$article_item .") ";*/
       $output .= "</a> ";
 			$output .= "</td>";
 			$output .= "<td width = '100'>";

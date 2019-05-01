@@ -151,7 +151,7 @@ HTML;*/
 
 	// NUMBER OF PHOTOS INTO SELECTED ALBUM
 	
-	$query = $this->pdo->query("SELECT `id` FROM `il_reviews` WHERE hide='0'");
+	$query = $this->pdo->query("SELECT `id` FROM `".DB_PFX."reviews` WHERE hide='0'");
 	$count = $query->rowCount();
 
 	if ($count % $all_number == 0) $number = $count / $all_number;
@@ -161,8 +161,8 @@ HTML;*/
   #$output .= self::getPaginator($number, $lim, $all_number);
 	
   //Извлекаем из базы открытые  сообщения
-  #$string="SELECT DATE_FORMAT(date,\"%d.%m.%y\") as date, title, address, longtxt1, img, answer, id FROM il_reviews WHERE hide='0' ORDER BY id desc LIMIT $lim, $all_number";
-  $string="SELECT date, title, address, longtxt1, img, answer, id FROM il_reviews WHERE hide='0' ORDER BY date desc LIMIT $lim, $all_number";
+  #$string="SELECT DATE_FORMAT(date,\"%d.%m.%y\") as date, title, address, longtxt1, img, answer, id FROM ".DB_PFX."reviews WHERE hide='0' ORDER BY id desc LIMIT $lim, $all_number";
+  $string="SELECT date, title, address, longtxt1, img, answer, id FROM ".DB_PFX."reviews WHERE hide='0' ORDER BY date desc LIMIT $lim, $all_number";
   
   $res= array();
   $i=0;
@@ -294,7 +294,7 @@ $hide = 1;
         //echo "user_ip=$user_ip\n";
         
         $st = $site->pdo->prepare("
-          INSERT INTO `il_reviews` 
+          INSERT INTO `".DB_PFX."reviews` 
                   (`id`, `title`, `phone`, `email`,  `date`, `ip`, `longtxt1`, `hide`) 
           VALUES  (NULL, :title,  :phone,  :email,   :date,  :ip,  :longtxt1,  1     )
         ");
@@ -311,7 +311,7 @@ $hide = 1;
             
         $last_id = $this->pdo->lastInsertId();
         
-        /*$string="INSERT INTO il_reviews (date,ip, title, tel, email, address, longtxt1, hide, bani_id, is_favorite) VALUES ('$date','$user_ip','$name', '$tel', '$email', '$address', '$text', '1','$bani_id','off')";
+        /*$string="INSERT INTO ".DB_PFX."reviews (date,ip, title, tel, email, address, longtxt1, hide, bani_id, is_favorite) VALUES ('$date','$user_ip','$name', '$tel', '$email', '$address', '$text', '1','$bani_id','off')";
         //echo "string=$string";
         $query=mysql_query($string) or die('cant query '.mysql_error());
         $last_id= mysql_insert_id();*/

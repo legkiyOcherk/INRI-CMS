@@ -1800,12 +1800,15 @@ HTML;
     $sql_insert = "
       INSERT INTO `$table` (`id`, `title`, `type`, `view`, `ord`, `hide`, `value`, `comment`) VALUES ";
     $sql_insert .=<<<HTML
-      (1, 'Title главой', 'mine_title', NULL, 10, 0, 'Корпоративный сайт', NULL),
-      (2, 'Description Главной', 'mine_description', 1, 20, 0, 'Корпоративный сайт', NULL),
+      (1, 'Title главой', 'mine_title', NULL, 10, 0, 'Интернет магазин', NULL),
+      (2, 'Description Главной', 'mine_description', 1, 20, 0, 'Интернет магазин', NULL),
       (3, 'Keywords главной', 'mine_keywords', NULL, 21, 0, '', NULL),
       (4, 'Title текстовой статьи', 'lib_text_title', NULL, 110, 0, '*h1* ', NULL),
       (5, 'Title текстового раздела', 'lib_cat_title', NULL, 100, 0, '*h1*', NULL),
-      (6, 'Title новости', 'news_title', NULL, 90, 0, '*h1*', NULL)
+      (6, 'Title новости', 'news_title', NULL, 90, 0, '*h1*', NULL),
+      (7, 'Title каталога товаров', 'goods_cat_title', NULL, 100, 0, '*h1*', NULL),
+      (8, 'Title товара', 'goods_title', NULL, 110, 0, '*h1*', NULL),
+      (9, 'Alt изображений товара', 'img_alt', NULL, 130, 0, '*h1*', NULL);
 HTML;
     $output .= $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name ); 
     

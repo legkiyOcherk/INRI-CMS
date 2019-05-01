@@ -35,14 +35,18 @@ class Article {
 	static function show_head_chief_menu($site){
     $output = '';
     
+    $tbl_url = DB_PFX."url";
+    $tbl_articles_cat = DB_PFX."articles_cat";
+    $tbl_articles = DB_PFX."articles";
+    
     $s = "
-      SELECT `il_cat_articles`.*,  `il_url`.`url`
-      FROM `il_cat_articles`
-      LEFT JOIN `il_url`
-      ON (`il_url`.`module` = 'il_cat_articles') AND (`il_url`.`module_id` = `il_cat_articles`.`id`)
-      WHERE `il_cat_articles`.`parent_id` = 1
-      AND `il_cat_articles`.`hide` = 0
-      ORDER BY `il_cat_articles`.`ord` 
+      SELECT `$tbl_articles_cat`.*,  `$tbl_url`.`url`
+      FROM `$tbl_articles_cat`
+      LEFT JOIN `$tbl_url`
+      ON (`$tbl_url`.`module` = '$tbl_articles_cat') AND (`$tbl_url`.`module_id` = `$tbl_articles_cat`.`id`)
+      WHERE `$tbl_articles_cat`.`parent_id` = 1
+      AND `$tbl_articles_cat`.`hide` = 0
+      ORDER BY `$tbl_articles_cat`.`ord` 
     "; #pri($s);
     if( $q = $site->pdo->query($s)){
       if($q->rowCount()){
@@ -96,9 +100,9 @@ class Article {
         /*(!$i) ? $active = ' active ' : $active = ''; */
         (in_array( $id, $arr_act_cat_items)) ? $active = ' active ' : $active = ''; 
         
-        if( $href == "/katalog-tovarov" && ( in_array($site->module, array('il_goods', 'il_cat_goods'))) ){
+        if( $href == "/katalog-tovarov" && ( in_array($site->module, array( DB_PFX.'goods', DB_PFX.'goods_cat'))) ){
           $active = ' active ';
-        }elseif( $href == "/news" && ( in_array($site->module, array('il_news'))) ){
+        }elseif( $href == "/news" && ( in_array($site->module, array( DB_PFX.'news' ))) ){
           $active = ' active ';
         }
         
@@ -183,50 +187,7 @@ class Article {
             
               <div class="mine_popup_menu_items" style="display: none;">';
       $all_sub_menu .= $sub_menu;
-      /*$output .= '
-              <div class="mm_item_submenu_list_cell col-sm-6 col-md-4 col-lg-2">
-                <ul class=""> 
-                  <li class=""><a href="#">Руководство</a></li>  
-                  <li class=""><a href="#">Структура</a></li>  
-                  <li class=""><a href="#">История</a></li>  
-                  <li class=""><a href="#">Кадровое обеспечение</a></li>  
-                  <li class=""><a href="#">Совет втеранов</a></li>  
-                  <li class=""><a href="#">Виртуальный Музей</a></li> 
-                  <li class=""><a href="#">Контакты</a></li>   
-                </ul>
-              </div>
-              <div class="mm_item_submenu_list_cell col-sm-6 col-md-4 col-lg-2">
-                <ul class=""> 
-                  <li class=""><a href="#">Интернет приемная</a></li>  
-                  <li class=""><a href="#">Контакты для обращений</a></li>  
-                  <li class=""><a href="#">Порядок обращения и приема </a></li> 
-                  <li class=""><a href="#">График приема </a></li> 
-                  <li class=""><a href="#">Обзоры и обобщения</a></li> 
-                </ul>
-              </div>
-              <div class="mm_item_submenu_list_cell col-sm-6 col-md-4 col-lg-2">
-                <ul class=""> 
-                  
-                  <li class=""><a href="#">Прокуратура разъясняет</a></li>
-                  <li class=""><a href="#">Правовове просвещение</a></li> 
-                  <li class=""><a href="#">Борьба с коррупцией</a></li> 
-                  <li class=""><a href="#">Взаимодействие с общественностью</a></li> 
-                  <li class=""><a href="#">Защита прав предпринимателей</a></li> 
-                  <li class=""><a href="#">Сводный план проверок</a></li> 
-                  <li class=""><a href="#">Документы</a></li>  
-                  
-                </ul>
-              </div>
-              <div class="mm_item_submenu_list_cell col-sm-6 col-md-4 col-lg-2">
-                <ul class=""> 
-                  
-                  <li class=""><a href="#">Новости</a></li>
-                  <li class=""><a href="#">Мероприятия</a></li>
-                  <li class=""><a href="#">Выступления в СМИ</a></li>
-                  <li class=""><a href="#">Прграмма «На страже закона»</a></li>
-                  <li class=""><a href="#">Конкурс</a></li>
-                </ul>
-              </div>';*/
+      
     $all_sub_menu .= '
               
             </div>
@@ -273,83 +234,26 @@ class Article {
       
     }
     
-    
     $output .= $more;
     
     return $output;
-    
-    {/*            <li class = "mm_item active">
-                    <a href="#">О прокуратуре</a>
-                    <div class="mm_item_submenu_box hidden-xs">
-                      <div class="mm_item_submenu">
-                        
-                        <div class="mm_item_submenu_list row">
-                          <div class="mm_item_submenu_list_cell col-sm-6 col-md-4 col-lg-2">
-                            <ul class=""> 
-                              <li class = "" ><a href="#">Руководство</a></li>  
-                              <li class = "" ><a href="#">Структура</a></li>  
-                              <li class = "" ><a href="#">История</a></li>  
-                              <li class = "" ><a href="#">Кадровое обеспечение</a></li>  
-                              <li class = "" ><a href="#">Совет втеранов</a></li>  
-                              <li class = "" ><a href="#">Виртуальный Музей</a></li> 
-                              <li class = "" ><a href="#">Контакты</a></li>   
-                            </ul>
-                          </div>
-                          <div class="mm_item_submenu_list_cell col-sm-6 col-md-4 col-lg-2">
-                            <ul class=""> 
-                              <li class = "" ><a href="#">Интернет приемная</a></li>  
-                              <li class = "" ><a href="#">Контакты для обращений</a></li>  
-                              <li class = "" ><a href="#">Порядок обращения и приема </a></li> 
-                              <li class = "" ><a href="#">График приема </a></li> 
-                              <li class = "" ><a href="#">Обзоры и обобщения</a></li> 
-                            </ul>
-                          </div>
-                          <div class="mm_item_submenu_list_cell col-sm-6 col-md-4 col-lg-2">
-                            <ul class=""> 
-                              
-                              <li class = "" ><a href="#">Прокуратура разъясняет</a></li>
-                              <li class = "" ><a href="#">Правовове просвещение</a></li> 
-                              <li class = "" ><a href="#">Борьба с коррупцией</a></li> 
-                              <li class = "" ><a href="#">Взаимодействие с общественностью</a></li> 
-                              <li class = "" ><a href="#">Защита прав предпринимателей</a></li> 
-                              <li class = "" ><a href="#">Сводный план проверок</a></li> 
-                              <li class = "" ><a href="#">Документы</a></li>  
-                              
-                            </ul>
-                          </div>
-                          <div class="mm_item_submenu_list_cell col-sm-6 col-md-4 col-lg-2">
-                            <ul class=""> 
-                              
-                              <li class = "" ><a href="#">Новости</a></li>
-                              <li class = "" ><a href="#">Мероприятия</a></li>
-                              <li class = "" ><a href="#">Выступления в СМИ</a></li>
-                              <li class = "" ><a href="#">Прграмма «На страже закона»</a></li>
-                              <li class = "" ><a href="#">Конкурс</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class = "mm_item"><a href="#">Работа с гражданами</a></li>
-                  <li class = "mm_item"><a href="#">Деятельность</a></li>
-                  <li class = "mm_item"><a href="#">Взаимодействие со СМИ</a></li>
-                  */
-    }
   }
     
   static function show_sub_menu($site, $parent_id = 1){
     $output = '';
-    #$menu_items = db::select("*", "il_cat_articles", "parent_id	= $parent_id AND hide = 0 ", "`ord`" );
+    #$menu_items = db::select("*", DB_PFX."articles_cat", "parent_id	= $parent_id AND hide = 0 ", "`ord`" );
+    
+    $tbl_url = DB_PFX."url";
+    $tbl_goods_cat = DB_PFX."goods_cat";
     
     $s = " 
-      SELECT `il_cat_goods`.*,  `il_url`.`url` 
-      FROM `il_cat_goods`
-      LEFT JOIN `il_url`
-      ON (`il_url`.`module` = 'il_cat_goods') AND (`il_url`.`module_id` = `il_cat_goods`.`id`)
-      WHERE `il_cat_goods`.`parent_id`	= $parent_id 
-      AND `il_cat_goods`.`hide` = 0
-      ORDER BY `il_cat_goods`.`ord`
+      SELECT `$tbl_goods_cat`.*,  `$tbl_url`.`url` 
+      FROM `$tbl_goods_cat`
+      LEFT JOIN `$tbl_url`
+      ON (`$tbl_url`.`module` = '$tbl_goods_cat') AND (`$tbl_url`.`module_id` = `$tbl_goods_cat`.`id`)
+      WHERE `$tbl_goods_cat`.`parent_id`	= $parent_id 
+      AND `$tbl_goods_cat`.`hide` = 0
+      ORDER BY `$tbl_goods_cat`.`ord`
     ";
     if($q = $site->pdo->query($s))
       if($q->rowCount())
@@ -366,17 +270,6 @@ class Article {
                 <div class="col col-md-auto sub_menu_col">';
           }
         }
-        
-        
-                  /*        <div class="sub_link_box"><a class="sub_link" href="">Сетка</a></div>
-                  <div class="sub_link_box"><a class="sub_link" href="">Армокаркас</a></div>
-                  <div class="sub_link_box"><a class="sub_link" href="">Барьер безопасности</a></div>
-                  <div class="sub_link_box"><a class="sub_link" href="">Проволока</a></div>
-
-                  <div class="sub_link_box"><a class="sub_link" href="">Сетка</a></div>
-                  <div class="sub_link_box"><a class="sub_link" href="">Армокаркас</a></div>
-                  <div class="sub_link_box"><a class="sub_link" href="">Барьер безопасности</a></div>
-                  <div class="sub_link_box"><a class="sub_link" href="">Проволока</a></div>*/
     
     return $output;
   }
@@ -384,14 +277,18 @@ class Article {
   static function show_mine_articles(){
     $output = '';
     
+    $tbl_url = DB_PFX."url";
+    $tbl_articles_cat = DB_PFX."articles_cat";
+    $tbl_articles = DB_PFX."articles";
+    
     $s = "
-      SELECT `il_articles`.*,  `il_url`.`url` 
-      FROM `il_articles`
-      LEFT JOIN `il_url`
-      ON (`il_url`.`module` = 'il_articles') AND (`il_url`.`module_id` = `il_articles`.`id`)
-      WHERE `il_articles`.`fl_show_mine` = 1
-      AND `il_articles`.`hide` = 0
-      ORDER BY `il_articles`.`ord`
+      SELECT `$tbl_articles`.*,  `$tbl_url`.`url` 
+      FROM `$tbl_articles`
+      LEFT JOIN `$tbl_url`
+      ON (`$tbl_url`.`module` = '$tbl_articles') AND (`$tbl_url`.`module_id` = `$tbl_articles`.`id`)
+      WHERE `$tbl_articles`.`fl_show_mine` = 1
+      AND `$tbl_articles`.`hide` = 0
+      ORDER BY `$tbl_articles`.`ord`
     ";
     
     $q = mysql_query($s);
@@ -468,14 +365,18 @@ class Article {
   static function show_left_block(){
     $output = '';
     
+    $tbl_url = DB_PFX."url";
+    $tbl_articles_cat = DB_PFX."articles_cat";
+    $tbl_articles = DB_PFX."articles";
+    
     $s = "
-      SELECT `il_articles`.*,  `il_url`.`url` 
-      FROM `il_articles`
-      LEFT JOIN `il_url`
-      ON (`il_url`.`module` = 'il_articles') AND (`il_url`.`module_id` = `il_articles`.`id`)
-      WHERE `il_articles`.`fl_show_left_block` = 1
-      AND `il_articles`.`hide` = 0
-      ORDER BY `il_articles`.`ord`
+      SELECT `$tbl_articles`.*,  `$tbl_url`.`url` 
+      FROM `$tbl_articles`
+      LEFT JOIN `$tbl_url`
+      ON (`$tbl_url`.`module` = '$tbl_articles') AND (`$tbl_url`.`module_id` = `$tbl_articles`.`id`)
+      WHERE `$tbl_articles`.`fl_show_left_block` = 1
+      AND `$tbl_articles`.`hide` = 0
+      ORDER BY `$tbl_articles`.`ord`
     ";
     
     #pri($s);
@@ -575,11 +476,15 @@ class Article {
     
     $arr_act_cat_items =array(); $c_t_parent_id = 4;
     
-    if($site->getModule() == 'il_cat_articles' && $site->getModuleId()){
+    $tbl_url = DB_PFX."url";
+    $tbl_articles_cat = DB_PFX."articles_cat";
+    $tbl_articles = DB_PFX."articles";
+    
+    if($site->getModule() == $tbl_articles_cat && $site->getModuleId()){
       $arr_act_cat_items[] = $site->getModuleId();
       $arr_act_cat_items = self::get_arr_act_cat_items($site->getModuleId(), $arr_act_cat_items); 
-    }elseif($site->getModule() == 'il_articles' && $site->getModuleId()){
-      $act_cat_id = db::value('cat_id', 'il_articles', 'id = '.$site->getModuleId());
+    }elseif($site->getModule() == $tbl_articles && $site->getModuleId()){
+      $act_cat_id = db::value('cat_id', $tbl_articles, 'id = '.$site->getModuleId());
       $arr_act_cat_items[] = $act_cat_id;
       $arr_act_cat_items = self::get_arr_act_cat_items($act_cat_id, $arr_act_cat_items); 
     }
@@ -592,15 +497,14 @@ class Article {
       <div class="list-group cat-menu goods_cats">
     ';
     
-    $c_t = 'il_cat_articles';
     $s = "
-    SELECT `$c_t`.*,  `il_url`.`url`
-    FROM `$c_t` 
-    LEFT JOIN `il_url`
-    ON (`il_url`.`module` = '$c_t') AND (`il_url`.`module_id` = `$c_t`.`id`)
-    WHERE `$c_t`.`hide` = 0
+    SELECT `$tbl_articles_cat`.*,  `$tbl_url`.`url`
+    FROM `$tbl_articles_cat` 
+    LEFT JOIN `$tbl_url`
+    ON (`$tbl_url`.`module` = '$tbl_articles_cat') AND (`$tbl_url`.`module_id` = `$tbl_articles_cat`.`id`)
+    WHERE `$tbl_articles_cat`.`hide` = 0
     AND `parent_id` = $c_t_parent_id
-    ORDER BY `$c_t`.`ord`
+    ORDER BY `$tbl_articles_cat`.`ord`
     "; #pri($s);
     
     if($q = $site->pdo->query($s)){
@@ -608,15 +512,14 @@ class Article {
         while($r = $q->fetch()){
           (in_array( $r['id'], $arr_act_cat_items)) ? $active = ' active ' : $active = ''; 
           
-          $c_t = 'il_articles';
           $s_sub = "
-            SELECT `$c_t`.*,  `il_url`.`url`
-            FROM `$c_t` 
-            LEFT JOIN `il_url`
-            ON (`il_url`.`module` = '$c_t') AND (`il_url`.`module_id` = `$c_t`.`id`)
-            WHERE `$c_t`.`hide` = 0
+            SELECT `$tbl_articles`.*,  `$tbl_url`.`url`
+            FROM `$tbl_articles` 
+            LEFT JOIN `$tbl_url`
+            ON (`$tbl_url`.`module` = '$tbl_articles') AND (`$tbl_url`.`module_id` = `$tbl_articles`.`id`)
+            WHERE `$tbl_articles`.`hide` = 0
             AND `cat_id` = ".$r['id']."
-            ORDER BY `$c_t`.`ord`
+            ORDER BY `$tbl_articles`.`ord`
           ";
           $q_sub = $site->pdo->query($s_sub);
           $count = $q_sub->rowCount();
@@ -668,7 +571,10 @@ class Article {
   
   static function get_left_sub_menu(&$site, $s_sub, $arr_act_cat_items, $display = "none"){
     $output = '';
-    $c_t = 'il_cat_articles'; 
+    
+    $tbl_url = DB_PFX."url";
+    $tbl_articles_cat = DB_PFX."articles_cat";
+    $tbl_articles = DB_PFX."articles";
     #pri ($s_sub);
     
     //<span class="glyphicon glyphicon-plus"></span>
@@ -681,13 +587,13 @@ class Article {
             
           
           $s_sub = "
-            SELECT `$c_t`.*,  `il_url`.`url`
-            FROM `$c_t` 
-            LEFT JOIN `il_url`
-            ON (`il_url`.`module` = '$c_t') AND (`il_url`.`module_id` = `$c_t`.`id`)
-            WHERE `$c_t`.`hide` = 0
+            SELECT `$tbl_articles_cat`.*,  `$tbl_url`.`url`
+            FROM `$tbl_articles_cat` 
+            LEFT JOIN `$tbl_url`
+            ON (`$tbl_url`.`module` = '$tbl_articles_cat') AND (`$tbl_url`.`module_id` = `$tbl_articles_cat`.`id`)
+            WHERE `$tbl_articles_cat`.`hide` = 0
             AND `parent_id` = ".$r['id']."
-            ORDER BY `$c_t`.`ord`
+            ORDER BY `$tbl_articles_cat`.`ord`
           ";
           
           $q_sub = $site->pdo->query($s_sub);
@@ -725,37 +631,6 @@ class Article {
     
     return $output;
     
-  }
-    
-  static function show_left_menu_ivolga(&$site, $cid){
-    $output = '';
-    
-    $c_t = "il_articles";
-    $s = "
-    SELECT `$c_t`.*,  `il_url`.`url`
-    FROM `$c_t` 
-    LEFT JOIN `il_url`
-    ON (`il_url`.`module` = '$c_t') AND (`il_url`.`module_id` = `$c_t`.`id`)
-    WHERE `$c_t`.`hide` = 0
-    AND `cat_id` = $cid
-    ORDER BY `$c_t`.`ord`
-    "; #pri($s);
-    
-    if($q = $site->pdo->query($s)){
-      if($q->rowCount()){
-        $output .= '
-        <div class="list-group cat-menu goods_cats">';
-        while($r = $q->fetch()){
-          (($site->module == $c_t) && ($site->module_id == $r['id'])) ? $active = "active" : $active = '';
-          $output .= '
-          <div class="list-group-item '.$active.'"><a href="/'.$r['url'].'">'.$r['title'].' </a></div>';
-        }
-        $output .= '
-        </div>';
-      }
-    }
-    
-    return $output;
   }
   
   static function get_path_link($cid, $table, $path = ''){

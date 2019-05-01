@@ -406,8 +406,8 @@ class AdminOnlineshop extends AdminLTEextends{
     
     $this->mainmenu = array(	
       "index.php"              => ADM_DIR,
+      "orders.php"             => "Заказы",
       "mine_block.php"         => "Главная страница",
-      #"smpl_article.php"      => "Содержание сайта",
       "articles.php?c_id=root" => "Содержание сайта",     
       "goods.php?c_id=1"       => "Каталог товаров", 
       "goods.php?view_tree"    => "Дерево всех категорий", 
@@ -453,12 +453,20 @@ class AdminOnlineshop extends AdminLTEextends{
     foreach ($this->mainmenu as $k=>$v){
       switch ($v) {
           case ADMIN_NAME:
+          case ADM_DIR:
               $this->mainmenu_add_data[$v] = 
                 array(
                   'icon' => '<i class="fa fa-dashboard"></i>',
                   'short_decr' => 'Начальный экран'
                 ); break;
                 
+          case 'Главная страница':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fa fa-university" aria-hidden="true"></i>',
+                  'short_decr' => ''
+                ); break;
+                      
           case 'Статьи':
           case 'Содержание сайта':
               $this->mainmenu_add_data[$v] = 
@@ -485,6 +493,7 @@ class AdminOnlineshop extends AdminLTEextends{
                 ); break;
                 
           case 'Каталог':
+          case 'Каталог товаров':
               $this->mainmenu_add_data[$v] = 
                 array(
                   'icon' => '<i class="fa fa-folder-open-o"></i>',
@@ -492,6 +501,7 @@ class AdminOnlineshop extends AdminLTEextends{
                 ); break;
           
           case 'Полный каталог':
+          case 'Дерево всех категорий':
               $this->mainmenu_add_data[$v] = 
                 array(
                   'icon' => '<i class="fa fa-sitemap" aria-hidden="true"></i>',
@@ -514,10 +524,17 @@ class AdminOnlineshop extends AdminLTEextends{
                   'short_decr' => ''
                 ); break;
                 
+          case 'Логи поиска':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fa fa-search" aria-hidden="true"></i> ',
+                  'short_decr' => ''
+                ); break;
+                
           case 'Настройки':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-gear fa-fw" aria-hidden="true"></i> ',
+                  'icon' => '<i class="fa fa-gear" aria-hidden="true"></i> ',
                   'short_decr' => ''
                 ); break; 
                 
@@ -545,7 +562,7 @@ class AdminOnlineshop extends AdminLTEextends{
           case 'Настройки':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-gear fa-fw"></i>',
+                  'icon' => '<i class="fa fa-gear"></i>',
                   'short_decr' => ''
                 ); break;
                 
@@ -562,15 +579,22 @@ class AdminOnlineshop extends AdminLTEextends{
                   'icon' => '<i class="fa fa-bell" aria-hidden="true"></i>',
                   'short_decr' => ''
                 ); break;
+          
+          case 'Заказы':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fa fa-bullhorn" aria-hidden="true"></i>',
+                  'short_decr' => ''
+                ); break;
                 
           case 'Пользователи':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-user fa-fw"></i>',
+                  'icon' => '<i class="fa fa-user"></i>',
                   'short_decr' => ''
                 ); break;
               
-              
+               
           default:
               $this->mainmenu_add_data[$v] = 
                 array(

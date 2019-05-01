@@ -292,7 +292,7 @@ class Images extends BaseCarusel{
     
     $id = intval($_POST['id']);
     $name = substr(htmlspecialchars(trim($_POST['name'])), 0, 255);
-    $s = "UPDATE  `il_all_images` SET  `title` =  '$name' WHERE  `il_all_images`.`id` = $id";
+    $s = "UPDATE  `".DB_PFX."all_images` SET  `title` =  '$name' WHERE  `".DB_PFX."all_images`.`id` = $id";
         
     if($q = $this->pdo->query($s)){
       return 'ok';

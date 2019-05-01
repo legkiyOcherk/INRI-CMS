@@ -1179,7 +1179,7 @@ class SiteBase {
     $newHistoriArr[] = array(
                               'module'    => $module,
                               'module_id' => $module_id,
-                              'cont'     => $cont
+                              'cont'      => $cont
                             );
     if(is_array($this->visited_pages) && $this->visited_pages)                        
       foreach ($this->visited_pages as $his) {

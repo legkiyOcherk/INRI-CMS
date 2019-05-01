@@ -44,7 +44,7 @@ class SiteCorporate extends SiteBase{
           <!-- End top_menu -->
     ';
     
-    $output = $this->addEditAdminLink($output, '/wedadmin/article.php');
+    $output = $this->addEditAdminLink($output, IA_URL.'article.php');
     
     return $output;
   }
@@ -326,7 +326,7 @@ class SiteOnlineshop extends SiteBase{
           <!-- End top_menu -->
     ';
     
-    $output = $this->addEditAdminLink($output, '/wedadmin/article.php');
+    $output = $this->addEditAdminLink($output, IA_URL.'article.php');
     
     return $output;
   }
@@ -448,7 +448,7 @@ class SiteOnlineshop extends SiteBase{
         }
         
         $this->cat_arr = db::select('id, parent_id, title, hide', DB_PFX.'goods_cat');
-        $cont = Goods::show_cat_items($this, $this->module_id, DB_PFX.'goods_cat', DB_PFX.'il_goods');
+        $cont = Goods::show_cat_items($this, $this->module_id, DB_PFX.'goods_cat', DB_PFX.'goods');
         $cont = $this->getContentPrefix($left_menu).$cont.$this->getContentPostfix($left_menu);
         break;
         
@@ -526,9 +526,14 @@ class SiteOnlineshop extends SiteBase{
         $cont .= '</div>';
         
         $cont = $this->getContentPrefix(false).$cont.$this->getContentPostfix(false);
-
-        break;
         
+        break;
+      
+      case 'xlsorder':
+        echo Basket::xls_order($this);
+        die();
+        break;
+       
       case 'backup_sql':
         echo 'backup_sql';
         $GLOBALS['DATE_UPDATE'] = date("Y-m-d H:i:s");

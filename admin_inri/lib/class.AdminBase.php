@@ -127,7 +127,7 @@ class BaseAdmin{
     foreach ($this->mainmenu as $k=>$v){
       switch ($v) {
           case 'Главная':
-          case 'Wedadmin':
+          case ADM_DIR:
               $this->mainmenu_add_data[$v] = 
                 array(
                   'icon' => '<i class="fa fa-dashboard"></i>',

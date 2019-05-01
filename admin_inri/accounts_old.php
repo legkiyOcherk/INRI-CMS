@@ -3,7 +3,7 @@ require_once('lib/class.Admin.php');
 $admin = new Admin();
 
 global $PDO;
-$table = "il_accounts";
+$table = DB_PFX."accounts";
 $output = '';
 
 if (!(isset($_SESSION["WA_USER"]) && $_SESSION["WA_USER"]["is_admin"])) include(WA_PATH.'index.php'); else{

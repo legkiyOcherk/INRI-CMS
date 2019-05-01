@@ -2,7 +2,7 @@
 
 require_once('require.php');
 
-if(!$robots_content = db::value("value", "il_design", "type = 'user_robots'")){
+if(!$robots_content = db::value("value", DB_PFX."design", "type = 'user_robots'")){
 $robots_content = 'User-agent: * 
 Host:
 Sitemap: /sitemap.xml'; 
