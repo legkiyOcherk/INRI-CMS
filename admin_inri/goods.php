@@ -802,18 +802,22 @@ class Goods extends CatCarusel{
     return $output;
 	}
   
-  
   function full_tree(){
-    $output = '<h1><a href = "'.IA_URL.$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
+    
+    if( isset($_SESSION[$this->carusel_name]['c_id']) && $_SESSION[$this->carusel_name]['c_id'] ){
+      $item_cat_id = $_SESSION[$this->carusel_name]['c_id'];
+      $this->bread = array();
+      $this->show_bread_crumbs($item_cat_id);
+      $this->admin->setForName('bread', $this->getForName('bread')); 
+    }
+    $this->title = 'Полный каталог'; 
+    $this->header = '<h1><a href = "'.IA_URL.$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
+    $output .=  '
+    <table class="table table-condensed">
+      <tr class="r0"><td><a href="?view_tree">Дерево всех категорий</a></td></tr>
+      <tr class="r1"><td><a href="?full_tree">Полный каталог</a></td></tr>
+    </table>';
     $output .= '
-      <style>
-      .star_check {
-        font-size: 18px;
-        color: #f0ad4e;
-        cursor: pointer;
-        margin: 0 auto;;
-      }
-      </style>
 		  <script>
 		  $(function(){
 			  $("#article").keyup(function(){
@@ -824,44 +828,41 @@ class Goods extends CatCarusel{
 				  });
 		    });
 		  });
-      function star_check(id, field) {
-    		$.post(\''.$this->carusel_name.'.php?ajx&act=star_check\', {id:id, field:field}, function(data) {
-      ';
-      $output .= <<<HTML
-  			if (data == 1) {
-  				$('#'+field+'_'+id).removeClass('glyphicon glyphicon-star-empty')
-  				$('#'+field+'_'+id).addClass('glyphicon glyphicon-star')
-  			} else {
-  				$('#'+field+'_'+id).removeClass('glyphicon glyphicon-star')
-  				$('#'+field+'_'+id).addClass('glyphicon glyphicon-star-empty')
-  			}
-  		});
-  	}
-    </script>
-HTML;
-  
-	  $output .= '
+		  </script>
 
-      <div class="container-fluid">
-        <div class="row-fluid">
-          <div class="span6">
-            <div class="row-fluid">
-              <div class="span12">
-    ';
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-7 col-lg-8">
+            <div class="row">
+              <div class="col-xs-12">';
 	  $output .= $this->show_entrie_catalog();
     $output .= '
               </div>
             </div>
           </div>
-          <div class="span6">
-            <div class="row-fluid">
-              <div class="span12">
-                <input type="text" class="text span12" name="article" id="article" placeholder="Поиск...">
-              </div>
+          <div class="col-sm-12 col-md-5 col-lg-4">
+            <div class="row">
+              
+                <div class="box box-primary box-solid">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">Поиск</h3>
+
+                    <div class="box-tools pull-right">
+                      <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>                    <!-- /.box-tools -->
+                  </div>                      <!-- /.box-header -->
+                  <div class="box-body">
+                    <div class="form-group">
+                      <input type="text" class="text form-control" name="article" id="article" placeholder="Запрос..."> 
+                    </div>
+                  </div>                      <!-- /.box-body -->
+                </div>
+              
+                
             </div>
             
-            <div class="row-fluid">
-              <div class="span12" id="exists"></div>
+            <div class="row">
+              <div class="" id="exists"></div>
             </div>
           </div>
         </div>

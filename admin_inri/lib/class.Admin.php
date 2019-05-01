@@ -447,6 +447,15 @@ class AdminOnlineshop extends AdminLTEextends{
       */
           
 		);
+    
+    $this->adminFooterScripts .= '
+      <style>
+        .sidebar-menu > li > a {
+          padding: 7px 5px 7px 15px;
+          display: block;
+        }
+      </style>
+    ';
   }
   
   function setMineMenuAddData(){
