@@ -107,6 +107,10 @@ class SiteBase {
     
     $this->user_script       = db::value("value", DB_PFX."design", "type = 'user_script'");
     
+    if(!$this->user_meta    = db::value("value", DB_PFX."design", "type = 'user_meta'") ){
+      $this->user_meta = '';
+    }
+    
     if(!$this->user_style    = db::value("value", DB_PFX."design", "type = 'user_style'") ){
       $this->user_style = '';
     }
@@ -189,6 +193,7 @@ class SiteBase {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <link href="/css/style.css?v=1" rel="stylesheet">
     ';
+    $output .= $this->user_meta;
     $output .= $this->user_style;
     
     return  $output;
