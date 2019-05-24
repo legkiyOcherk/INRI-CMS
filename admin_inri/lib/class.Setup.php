@@ -1269,7 +1269,7 @@ HTML;
       (32, 'Ученые назвали причину исчезновения кораблей в Бермудском треугольнике', 'uchenye-nazvali-prichinu-ischeznoveniya', 'inri_news', 2, 0, 30),
       (33, 'Марафон «Европа-Азия» соберёт более шести тысяч участников', 'marafon-evropaaziya-soberyot-bolee', 'inri_news', 3, 0, 31),
       (NULL, 'Политика организации по обработке персональных данных', 'politikoy-organizacii-po-obrabotke-personalnyh', 'inri_articles', 4, 0, 0),
-      (NULL, 'Согласие посетителя сайта на обработку персональных данных', 'soglasie-posetitelya-sayta', 'inri_articles', 5, 0, 0),
+      (NULL, 'Согласие посетителя сайта на обработку персональных данных', 'soglasie-posetitelya-sayta', 'inri_articles', 5, 0, 0);
 HTML;
         
     return $this->sql_def_insert_database_table( $title, $table, $sql_insert, $script_name );
