@@ -459,7 +459,7 @@ class Goods extends CatCarusel{
         
        $output .= $this->show_form_row('ЧПУ', $this->url_item->show_form_field($_POST['url'], $this->prefix.$this->carusel_name."_cat", $id, $item['title']));  
       
-    }
+    } 
     
     if($item) {
       $_SESSION[$this->carusel_name]['c_id'] = htmlspecialchars($item['id']);
