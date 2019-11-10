@@ -450,14 +450,14 @@ class Goods extends CatCarusel{
     //Генерация Url
     if($this->url_item && $id && $item['title']){
       
-      $url = $this->url_item->getUrlForModuleAndModuleId($this->prefix.$this->carusel_name."_cat", $id);
+      $url = $this->url_item->getUrlForModuleAndModuleId($this->prefix."cat_".$this->carusel_name, $id);
       
       if($url){
         $tmp = '<a class="btn btn-info pull-right" href="/'.$url.'" target = "_blank" >Посмотреть на сайте</a>';
         $output .= $this->show_form_row(null, $tmp);
       } 
         
-       $output .= $this->show_form_row('ЧПУ', $this->url_item->show_form_field($_POST['url'], $this->prefix.$this->carusel_name."_cat", $id, $item['title']));  
+       $output .= $this->show_form_row('ЧПУ', $this->url_item->show_form_field($_POST['url'], $this->prefix."cat_".$this->carusel_name, $id, $item['title']));  
       
     } 
     
