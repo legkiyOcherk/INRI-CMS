@@ -814,13 +814,13 @@ class AdminLTEextends extends BaseAdmin{
       	if ($this->user["is_admin"]) $output .= "<li><a href='$k'>$icon $v</a></li>";
       	else
       	{
-      		if (array_key_exists($k, $this->scripts)) 
-      		{
-      		$ok=false;
-      			foreach ($this->current_rights as $val)
-      			{
-      				if (in_array($val, $this->scripts[$k])) $ok=true;
-      			}
+      		if (array_key_exists($k, $this->scripts)) {
+      		  $ok=false;
+            if( isset($this->current_rights) && $this->current_rights){
+              foreach ($this->current_rights as $val){
+      				  if (in_array($val, $this->scripts[$k])) $ok=true;
+      			  }  
+            }	
       		}
       		if ($ok) $output .= "<li><a href='$k'>$icon $v</a></li>";
       	}
