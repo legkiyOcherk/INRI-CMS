@@ -815,7 +815,8 @@ HTML;
     $sql_insert = "
       INSERT INTO `$table` (`id`, `title`, `img`, `login`, `key`, `hash`, `fullname`, `is_admin`, `is_programmer`, `untouchible`, `iscontent`, `ismanag`, `iscatalog`, `isjournalist`, `email`, `phone`, `longtxt1`, `hide`, `ord`) VALUES ";
     $sql_insert .=<<<HTML
-      (1, 'Администратор', '1552249940.jpeg', 'd', '1d319e1b83c1b7ec90328bcca7e6e200', '7d86b76f7b71aae04d6cd2d59090b4e9', 'Илья Ощепков', 1, 1, 0, 1, 1, 1, 1, 'ilya.oshepkov@gmail.com', '9058010809', '', 0, 0);
+      (1, 'Администратор', '1552249940.jpeg', 'd', '1d319e1b83c1b7ec90328bcca7e6e200', '7d86b76f7b71aae04d6cd2d59090b4e9', 'Илья Ощепков', 1, 1, 0, 1, 1, 1, 1, 'ilya.oshepkov@gmail.com', '9058010809', '', 0, 0),
+(2, 'Администратор', NULL, 'admin_inri', 'a321e4bf3dd0cadcb50b0f7053fb80c5', '0b25aeb39224a071ea2a4857b2f41e4a', 'Админ', 1, 0, 0, 0, 0, 0, 0, '', '', '', 0, 0);
 HTML;
     
     $output .= $this->create_img_dir( $name );
