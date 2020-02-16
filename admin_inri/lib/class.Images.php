@@ -736,7 +736,7 @@ class Images extends BaseCarusel{
             <input type="hidden" value="'.$r['id'].'" name="itSort[]">
             <IMG src="/images/'.$this->carusel_name.'/slide/'.$r["img"].'"  class="imgList" >
             <div class="delete_image" name = "'.$r['id'].'" onclick1="delete_image(this, '.$r['id'].')">X Удалить</div>
-            <div class="edit_image" ><a href = "/'.IA_URL.'/all_images.php?edits='.$r['id'].'" target = "_blank" >Редактировать</a></div>
+            <div class="edit_image" ><a href = "/'.ADM_DIR.'/all_images.php?edits='.$r['id'].'" target = "_blank" >Редактировать</a></div>
             <input type = "text" class="image_name" value = "'.$r['title'].'" data-id = "'.$r['id'].'">
           </li>
         ';
