@@ -31,7 +31,7 @@ class AllFunction{
   * @return
   */
   
-  function setHeaderForAdm($header, $title, &$admin = null){
+  static function setHeaderForAdm($header, $title, &$admin = null){
     $output = '';
     
     if(!is_null($admin) && isset($admin->is_admin_navigation) && ($admin->is_admin_navigation) ){
@@ -72,9 +72,9 @@ class AllFunction{
     foreach ($list as $param) {
     	extract($param);
     	$output .= '
-      	  <div class="form-group c_row">
-            <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 c_title control-label" for="'.$name.'">'.$title.'</label>
-      	    <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10 c_cont">
+      	  <div class="form-group row">
+            <label class="col-12 col-sm-4 col-md-3 col-lg-2 c_title control-label" for="'.$name.'">'.$title.'</label>
+      	    <div class="col-12 col-sm-8 col-md-9 col-lg-10 c_cont">
       ';
       if($type == 1) {
         $output .= '<textarea class = "form-control" name="'.$name.'" id="'.$name.'">'.htmlspecialchars($val).'</textarea>';
@@ -83,16 +83,16 @@ class AllFunction{
       }
       $output .= '
             </div>
-      	    <div class="col-xs-12 col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 col-lg-10 col-md-offset-2 c_comment">
+      	    <div class="col-12 col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 col-lg-10 col-md-offset-2 c_comment">
               <span class="comment">'.$comment.'</span> 
             </div>
       	  </div>
       ';
     }
     $output .= '
-          <div class="form-group c_row">
-            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2"></div>
-            <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10 c_cont" ><input type="submit" value="сохранить" class="btn btn-success btn-large"  value="Сохранить" /></div>
+          <div class="form-group row">
+            <div class="col-12 col-sm-4 col-md-3 col-lg-2"></div>
+            <div class="col-12 col-sm-8 col-md-9 col-lg-10 c_cont" ><input type="submit" value="сохранить" class="btn btn-success btn-large"  value="Сохранить" /></div>
           </div>
         </div>
       </form>
@@ -137,9 +137,9 @@ class AllFunction{
     foreach ($list as $param) {
     	extract($param);
     	$output .= '
-      	  <div class="form-group c_row">
-            <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 c_title control-label" for="'.$type.'">'.$title.'</label>
-      	    <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10 c_cont">
+      	  <div class="form-group row">
+            <label class="col-12 col-sm-4 col-md-3 col-lg-2 c_title control-label" for="'.$type.'">'.$title.'</label>
+      	    <div class="col-12 col-sm-8 col-md-9 col-lg-10 c_cont">
       ';
       if($view == 1) {
         $output .= '<textarea class = "form-control" name="'.$type.'" id="'.$type.'">'.htmlspecialchars($value).'</textarea>';
@@ -178,16 +178,16 @@ class AllFunction{
       }
       $output .= '
             </div>
-      	    <div class="col-xs-12 col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 col-lg-10 col-md-offset-2 c_comment">
+      	    <div class="col-12 col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 col-lg-10 col-md-offset-2 c_comment">
               <span class="comment">'.$comment.'</span> 
             </div>
       	  </div>
       ';
     }
     $output .= '
-          <div class="form-group c_row">
-            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2"></div>
-            <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10 c_cont" ><input type="submit" value="сохранить" class="btn btn-success btn-large" id="submit" value="Сохранить" /></div>
+          <div class="form-group row">
+            <div class="col-12 col-sm-4 col-md-3 col-lg-2"></div>
+            <div class="col-12 col-sm-8 col-md-9 col-lg-10 c_cont" ><input type="submit" value="сохранить" class="btn btn-success btn-large" id="submit" value="Сохранить" /></div>
           </div>
         </div>
       </form>

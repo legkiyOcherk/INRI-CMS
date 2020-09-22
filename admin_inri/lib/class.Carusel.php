@@ -1,5 +1,5 @@
 <?php
-require_once "class.BaseCarusel.php"; 
+require_once __DIR__."/class.BaseCarusel.php"; 
 
 class Carusel extends BaseCarusel{
   
@@ -30,10 +30,10 @@ class Carusel extends BaseCarusel{
   var $validateError_arr = array();
   #var $items_per_page = array( 50, 100, 500, 1000);
   var $pager = array(
-        'perPage' => 10,
+        'perPage' => 50,
         'page' => 1,
         'url' => '',
-        'items_per_page' => array( 10, 50, 100, 500, 1000, 5000)
+        'items_per_page' => array( 50, 100, 500, 1000, 5000)
       );
       
   var $filter_field = array('title');
@@ -130,7 +130,7 @@ class Carusel extends BaseCarusel{
       'price', 'userPhone');
     
     $arr_ignore = array(                       // ignore field
-      'title', 'ignore' );
+      'title', 'ignore', 'hide', 'ord' );
     
     //genprok
     $arr_text[] = 'site_item_descr';
@@ -235,11 +235,11 @@ class Carusel extends BaseCarusel{
   function show_table_header_rows(){
     $output = '
           <tr class="th nodrop nodrag">
-          	<td style="width: 55px;">#</td>
-      		  <td style="width: 50px;">Скрыть</td>
-            <td style="width: 60px;">Картинка</td>
-      		  <td>Название</td>
-      		  <td style="width: 80px">Действие</td>
+          	<th style="width: 55px;">#</th>
+      		  <th style="width: 50px;">Скрыть</th>
+            <th style="width: 60px;">Картинка</th>
+      		  <th>Название</th>
+      		  <th style="width: 80px">Действие</th>
           </tr>';
     
     return $output;
@@ -257,7 +257,7 @@ class Carusel extends BaseCarusel{
           </td>
             
             <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>  
-            <td style="max-width: 60px;">';
+            <td class = "zoomImg_box" style="">';
             
     if($img){
       $output .= '
@@ -278,14 +278,14 @@ class Carusel extends BaseCarusel{
               <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
-                <i class="fa fa-pencil"></i>
+                <i class="fas fa-pencil-alt"></i>
               </a>
               
               <span >
               <span class="btn btn-danger btn-sm" 
                     title="удалить" 
                     onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                <i class="fa fa-trash-o"></i>
+                <i class="far fa-trash-alt"></i>
               </span>
             </td>
   			  </tr>';
@@ -342,29 +342,21 @@ class Carusel extends BaseCarusel{
       >
         <input type="hidden" name="slideid" value="1">
     ';
-    if($q = $this->pdo->query($s))
-      if($q->rowCount()){
-        
-        
-    #if($items){
-      
-      $output .= '
-  	    <table id="sortabler" class="table sortab table-condensed table-striped ">
-          '.$this->show_table_header_rows();
-      
-      while($item = $q->fetch()){
-        
-        $output .= $this->show_table_rows($item);
-
-        
+    if($q = $this->pdo->query($s)){
+      if($q->rowCount()){      
+        $output .= '
+    	    <table id="sortabler" class="table sortab table-sm table-striped ">
+            <thead>'.$this->show_table_header_rows().'</thead>
+            <tbody>';
+        while($item = $q->fetch()){
+          $output .= $this->show_table_rows($item);
+        }
+        $output .= '
+            </tbody>
+          </table>';
       }
-      
-      $output .= '
-        </table>
-      ';
-      
-      
     }
+    
     $output .= $groupOperationsCont;
     $output .= '
     <br>
@@ -389,7 +381,7 @@ class Carusel extends BaseCarusel{
       $url = $this->url_item->getUrlForModuleAndModuleId($this->prefix.$this->carusel_name, $id);
       
       if($url){
-        $tmp = '<a class="btn btn-info pull-right" href="/'.$url.'" target = "_blank" >Посмотреть на сайте</a>';
+        $tmp = '<a class="btn btn-sm btn-info float-right" href="/'.$url.'" target = "_blank" >Посмотреть на сайте</a>';
         $output .= $this->show_form_row(null, $tmp);
       }  
       
@@ -410,32 +402,14 @@ class Carusel extends BaseCarusel{
       
       // Отступы SEO
       if($key == 'seo_h1'){
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> <h3 class="panel-title">SEO</h3> </div> 
-            <div class="panel-body"> 
-        ';
-        $is_open_panel_div = true;  
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('SEO');
+        $is_open_panel_div = true;   
       }
       
       if($key == 'img_alt') {
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> <h3 class="panel-title">Атрибуты основого изображения</h3> </div> 
-            <div class="panel-body"> 
-        ';
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('Атрибуты основого изображения');
         $is_open_panel_div = true;         
       }
       
@@ -492,11 +466,10 @@ class Carusel extends BaseCarusel{
   function create_slide(){
     $output = "
     <style>
-    img {max-width: 992px;}
     .validate_rerror{color: red;font-size: 12px;}
     </style>        
     ";
-    
+    $id = '';
     if($this->validationValue($id)){
       
       $sql_names = ''; $sql_vals = ''; 
@@ -644,6 +617,7 @@ class Carusel extends BaseCarusel{
       }
       
       if($this->log){ // Ведение лога
+        $s = db::row("*", $this->prefix.$this->carusel_name, "id = ".$id, null, 1);
         $backUpItem = serialize ( db::row("*", $this->prefix.$this->carusel_name, "id = ".$id) );
         $res_log = $this->log->addLogRecord("Удаление", "delete", $this->prefix.$this->carusel_name, $id, $backUpItem, addslashes($s));
       }

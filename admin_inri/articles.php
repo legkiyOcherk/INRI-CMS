@@ -68,7 +68,7 @@ class Article extends CatCarusel{
                         class = "btn btn-info btn-sm"
                         title = "Редактировать"
                         style = "color: #fff;">
-                        <i class="fa fa-pencil"></i>
+                        <i class="fas fa-pencil-alt"></i>
                     </a> &nbsp;
                     <a href="'.IA_URL.$this->carusel_name.'.php?c_id='.$id.'" title="редактировать"><b>'.$title.'</b></a>';
               if($link){
@@ -88,7 +88,7 @@ class Article extends CatCarusel{
                     <a  href="..'.IA_URL.$this->carusel_name.'.php?editc='.$id.'" 
                         class = "btn btn-info btn-sm"
                         title = "Редактировать">
-                        <i class="fa fa-pencil"></i>
+                        <i class="fas fa-pencil-alt"></i>
                     </a>';
 /*<a href="..'.IA_URL.$this->carusel_name.'.php?editc='.$id.'"><img src="..'.IA_URL.'images/icons/b_props.png" width="16" height="16" border="0"></a>&nbsp;*/                    
                     
@@ -115,7 +115,7 @@ class Article extends CatCarusel{
                           class="btn btn-danger btn-sm" 
                           title="удалить" 
                           onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                      <i class="fa fa-trash-o"></i>
+                      <i class="far fa-trash-alt"></i>
                     </a>
                 ';
                 /*<a href="..'.IA_URL.$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}">
@@ -172,7 +172,7 @@ class Article extends CatCarusel{
                   class = "btn btn-info btn-sm"
                   title = "Редактировать"
                   style = "color: #fff;">
-                  <i class="fa fa-pencil"></i>
+                  <i class="fas fa-pencil-alt"></i>
               </a> &nbsp;
               <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a><br />
               <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$longtxt1.'</a>
@@ -183,14 +183,14 @@ class Article extends CatCarusel{
               <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
-                <i class="fa fa-pencil"></i>
+                <i class="fas fa-pencil-alt"></i>
               </a>
               
               <span >
               <span class="btn btn-danger btn-sm" 
                     title="удалить" 
                     onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                <i class="fa fa-trash-o"></i>
+                <i class="far fa-trash-alt"></i>
               </span>
             </td>
   			  </tr>
@@ -325,13 +325,6 @@ class Article extends CatCarusel{
     
     $output .= '<div class = "c_form_box">';
     
-    /*$output .= '
-      <div class="panel panel-default"> 
-        <div class="panel-heading"> 
-          <h3 class="panel-title">Основное</h3>
-        </div> 
-        <div class="panel-body"> 
-    ';*/
     $is_open_panel_div = false;
     
     //Генерация Url
@@ -407,40 +400,15 @@ class Article extends CatCarusel{
       
       // Отступы SEO
       if($key == 'seo_h1'){
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> 
-              <h3 class="panel-title">SEO</h3>
-            </div> 
-            <div class="panel-body"> 
-        ';
-        $is_open_panel_div = true;  
-      
-        //$output .= '<div class = "col-xs-12"><h2></h2></div>';
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('SEO');
+        $is_open_panel_div = true;   
       }
       
-      if($key == 'img_alt') {
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> 
-              <h3 class="panel-title">Атрибуты основого изображения</h3>
-            </div> 
-            <div class="panel-body"> 
-        ';
-        $is_open_panel_div = true;         
-        //$output .= '<div class = "col-xs-12"><b>Атрибуты основого изображения</b></div>';
+      if($key == 'img_alt'){
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('Атрибуты основого изображения');
+        $is_open_panel_div = true;   
       }
       
       if($item){
@@ -478,11 +446,8 @@ class Article extends CatCarusel{
     }
     
     if($is_open_panel_div){
-      $is_open_panel_div = false;
-      $output .= '
-        </div>
-      </div>
-      ';
+      $is_open_panel_div = false; 
+      $output .= $this->getCardPanelFooter();
     }
     
     $output .= ' </div> ';
@@ -580,40 +545,15 @@ class Article extends CatCarusel{
       
       // Отступы SEO
       if($key == 'seo_h1'){
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> 
-              <h3 class="panel-title">SEO</h3>
-            </div> 
-            <div class="panel-body"> 
-        ';
-        $is_open_panel_div = true;  
-      
-        //$output .= '<div class = "col-xs-12"><h2></h2></div>';
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('SEO');
+        $is_open_panel_div = true;   
       }
       
-      if($key == 'img_alt') {
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> 
-              <h3 class="panel-title">Атрибуты основого изображения</h3>
-            </div> 
-            <div class="panel-body"> 
-        ';
-        $is_open_panel_div = true;         
-        //$output .= '<div class = "col-xs-12"><b>Атрибуты основого изображения</b></div>';
+      if($key == 'img_alt'){
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('Атрибуты основого изображения');
+        $is_open_panel_div = true;   
       }
       
       if($item){
@@ -650,11 +590,8 @@ class Article extends CatCarusel{
     }
     
     if($is_open_panel_div){
-      $is_open_panel_div = false;
-      $output .= '
-        </div>
-      </div>
-      ';
+      $is_open_panel_div = false; 
+      $output .= $this->getCardPanelFooter();
     }
     $output .= $this->getFormPicture($id, $item);
       

@@ -1,5 +1,5 @@
 <?php
-require_once "class.BaseCarusel.php"; 
+require_once __DIR__."/class.BaseCarusel.php"; 
  
 class CatCarusel extends BaseCarusel{
 
@@ -496,10 +496,10 @@ class CatCarusel extends BaseCarusel{
   function show_cat_table_header_rows(){
     $output = '
                 <tr class="th">
-            		  <td style="width: 55px;">#</td>
-            		  <td style="width: 50px;">Скрыть</td>
-            		  <td colspan = "2">Название</td>
-            		  <td style="width: 80px">Действие</td>
+            		  <th style="width: 55px;">#</th>
+            		  <th style="width: 60px;">Скрыть</th>
+            		  <th colspan = "2">Название</th>
+            		  <th style="width: 80px">Действие</th>
                 </tr>';
     
     return $output;
@@ -514,7 +514,7 @@ class CatCarusel extends BaseCarusel{
                   
                   <td style="width: 30px;" class="img-act"><div title="Скрыть" onclick="star_cat_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>
               	  
-                  <td style="width: 50px;">
+                  <td class = "zoomImg_box" style="">
               ';
               if($img){
                 $output .= '
@@ -540,7 +540,7 @@ class CatCarusel extends BaseCarusel{
                     <a  href="..'.IA_URL.$this->carusel_name.'.php?editc='.$id.'" 
                         class = "btn btn-info btn-sm"
                         title = "Редактировать">
-                        <i class="fa fa-pencil"></i>
+                        <i class="fas fa-pencil-alt"></i>
                     </a>';
 /*<a href="..'.IA_URL.'$this->carusel_name.'.php?editc='.$id.'"><img src="..'.IA_URL.'images/icons/b_props.png" width="16" height="16" border="0"></a>&nbsp;*/                    
                     
@@ -567,7 +567,7 @@ class CatCarusel extends BaseCarusel{
                           class="btn btn-danger btn-sm" 
                           title="удалить" 
                           onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                      <i class="fa fa-trash-o"></i>
+                      <i class="far fa-trash-alt"></i>
                     </a>
                 ';
                 /*<a href="..'.IA_URL.'$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}">
@@ -612,18 +612,16 @@ class CatCarusel extends BaseCarusel{
     if($q = $this->pdo->query($s)){
       if($q->rowCount()){
         $output .= '
-  	      <table id="sorcattabler" class="table sorcattab table-condensed table-striped">
-            '.$this->show_cat_table_header_rows();  
-        
+  	      <table id="sorcattabler" class="table sorcattab table-sm table-striped">
+            <thead>'.$this->show_cat_table_header_rows().'</thead>
+            <tbody>'; 
         $i = 0; 
         while($item = $q->fetch()){
-          
-          $output .= $this->show_cat_table_rows($item, $i++);
-          
+          $output .= $this->show_cat_table_rows($item, $i++); 
         }
-        
         $output .= '
-              </table>';
+            <tbody>
+          </table>';
       }
     }
     $output .= '
@@ -662,11 +660,11 @@ class CatCarusel extends BaseCarusel{
         ';
         $output .= <<<HTML
     	  		if (data == 1) {
-      				$('#'+field+'_'+id).removeClass('glyphicon glyphicon-star-empty')
-      				$('#'+field+'_'+id).addClass('glyphicon glyphicon-star')
+      				$('#'+field+'_'+id).removeClass('far fa-star')
+      				$('#'+field+'_'+id).addClass('fas fa-star')
       			} else {
-      				$('#'+field+'_'+id).removeClass('glyphicon glyphicon-star')
-      				$('#'+field+'_'+id).addClass('glyphicon glyphicon-star-empty')
+      				$('#'+field+'_'+id).removeClass('fas fa-star')
+      				$('#'+field+'_'+id).addClass('far fa-star')
     	  		}
     	  	})
           
@@ -685,11 +683,11 @@ HTML;
   function show_table_header_rows(){
     $output = '
           <tr class="th nodrop nodrag">
-          	<td style="width: 55px;">#</td>
-      		  <td style="width: 50px;">Скрыть</td>
-            <td style="width: 60px;">Картинка</td>
-      		  <td>Название</td>
-      		  <td style="width: 80px">Действие</td>
+          	<th style="width: 55px;">#</th>
+      		  <th style="width: 50px;">Скрыть</th>
+            <th style="width: 60px;">Картинка</th>
+      		  <th>Название</th>
+      		  <th style="width: 80px">Действие</th>
           </tr>';
     
     return $output;
@@ -707,7 +705,7 @@ HTML;
           </td>
             
             <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>  
-            <td style="max-width: 60px;">';
+            <td class = "zoomImg_box" style="">';
             
     if($img){
       $output .= '
@@ -727,14 +725,14 @@ HTML;
               <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
-                <i class="fa fa-pencil"></i>
+                <i class="fas fa-pencil-alt"></i>
               </a>
               
               <span >
               <span class="btn btn-danger btn-sm" 
                     title="удалить" 
                     onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                <i class="fa fa-trash-o"></i>
+                <i class="far fa-trash-alt"></i>
               </span>
             </td>
   			  </tr>
@@ -764,7 +762,7 @@ HTML;
     (!is_null($this->admin)) ?  : $output .=  $header;
     
     $output .=  '
-    <table class="table table-condensed">
+    <table class="table table-sm">
       <tr class="r0"><td><a href="?view_tree">Дерево всех категорий</a></td></tr>
       <tr class="r1"><td><a href="?full_tree">Полный каталог</a></td></tr>
     </table>';
@@ -824,28 +822,19 @@ HTML;
       >
         <input type="hidden" name="slideid" value="1">
     ';
-    if($q = $this->pdo->query($s))
+    if($q = $this->pdo->query($s)){
       if($q->rowCount()){
-        
-        
-    #if($items){
-      
-      $output .= '
-  	    <table id="sortabler" class="table sortab table-condensed table-striped ">
-          '.$this->show_table_header_rows();
-      
-      while($item = $q->fetch()){
-        
-        $output .= $this->show_table_rows($item);
-
-        
+        $output .= '
+    	    <table id="sortabler" class="table sortab table-sm table-striped ">
+            <thead>'.$this->show_table_header_rows().'</thead>
+            <tbody>';
+        while($item = $q->fetch()){
+          $output .= $this->show_table_rows($item);
+        }
+        $output .= '
+            </tbody>
+          </table>';
       }
-      
-      $output .= '
-        </table>
-      ';
-      
-      
     }
     $output .= $groupOperationsCont;
     $output .= '
@@ -867,13 +856,6 @@ HTML;
     
     $output .= '<div class = "c_form_box">';
     
-    /*$output .= '
-      <div class="panel panel-default"> 
-        <div class="panel-heading"> 
-          <h3 class="panel-title">Основное</h3>
-        </div> 
-        <div class="panel-body"> 
-    ';*/
     $is_open_panel_div = false;
     
     //Генерация Url
@@ -882,7 +864,7 @@ HTML;
       $url = $this->url_item->getUrlForModuleAndModuleId($this->prefix.$this->carusel_name, $id);
       
       if($url){
-        $tmp = '<a href="/'.$url.'" class="btn btn-info pull-right" style="color:#fff"><i class="icon-eye-open icon-white"></i> Посмотреть на сайте</a>';
+        $tmp = '<a href="/'.$url.'" class="btn btn-sm btn-info float-right" style="color:#fff"><i class="icon-eye-open icon-white"></i> Посмотреть на сайте</a>';
         $output .= $this->show_form_row(null, $tmp);
       }
       
@@ -920,45 +902,20 @@ HTML;
         $tmp .= '</select>';
         
         $output .= $this->show_form_row( $val, $tmp);
-        continue;  
+        continue;
       }
       
       // Отступы SEO
       if($key == 'seo_h1'){
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> 
-              <h3 class="panel-title">SEO</h3>
-            </div> 
-            <div class="panel-body"> 
-        ';
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('SEO');
         $is_open_panel_div = true;  
-      
-        //$output .= '<div class = "col-xs-12"><h2></h2></div>';
       }
       
       if($key == 'img_alt') {
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> 
-              <h3 class="panel-title">Атрибуты основого изображения</h3>
-            </div> 
-            <div class="panel-body"> 
-        ';
-        $is_open_panel_div = true;         
-        //$output .= '<div class = "col-xs-12"><b>Атрибуты основого изображения</b></div>';
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('Атрибуты основого изображения');
+        $is_open_panel_div = true;
       }
       
       if($item){
@@ -1314,30 +1271,17 @@ HTML;
     
     $output .= '<div class = "c_form_box">';
     
-    /*$output .= '
-      <div class="panel panel-default"> 
-        <div class="panel-heading"> 
-          <h3 class="panel-title">Основное</h3>
-        </div> 
-        <div class="panel-body"> 
-    ';*/
     $is_open_panel_div = false;
     
     //Генерация Url
     if($this->url_item && $id && $item['title']){
-      
       $url = $this->url_item->getUrlForModuleAndModuleId($this->cat_carusel_name, $id);
-      
       if($url){
-        $tmp = '<a class="btn btn-info pull-right" href="/'.$url.'" target = "_blank" >Посмотреть на сайте</a>';
+        $tmp = '<a class="btn btn-sm btn-info float-right" href="/'.$url.'" target = "_blank" >Посмотреть на сайте</a>';
         $output .= $this->show_form_row(null, $tmp);
       } 
-        
-       $output .= $this->show_form_row('ЧПУ', $this->url_item->show_form_field($_POST['url'], $this->cat_carusel_name, $id, $item['title']));  
-      
+      $output .= $this->show_form_row('ЧПУ', $this->url_item->show_form_field($_POST['url'], $this->cat_carusel_name, $id, $item['title']));
     }
-    
-    
        
     foreach($this->date_cat_arr as $key=>$val){
       
@@ -1366,40 +1310,15 @@ HTML;
       
       // Отступы SEO
       if($key == 'seo_h1'){
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> 
-              <h3 class="panel-title">SEO</h3>
-            </div> 
-            <div class="panel-body"> 
-        ';
-        $is_open_panel_div = true;  
-      
-        //$output .= '<div class = "col-xs-12"><h2></h2></div>';
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('SEO');
+        $is_open_panel_div = true;   
       }
       
       if($key == 'img_alt') {
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> 
-              <h3 class="panel-title">Атрибуты основого изображения</h3>
-            </div> 
-            <div class="panel-body"> 
-        ';
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('Атрибуты основого изображения');
         $is_open_panel_div = true;         
-        //$output .= '<div class = "col-xs-12"><b>Атрибуты основого изображения</b></div>';
       }
       
       if($item){
@@ -1832,7 +1751,7 @@ HTML;
     $this->title = 'Дерево всех категорий'; 
     $this->header = '<h1><a href = "'.IA_URL.$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
     $output .=  '
-    <table class="table table-condensed">
+    <table class="table table-sm">
       <tr class="r0"><td><a href="?view_tree">Дерево всех категорий</a></td></tr>
       <tr class="r1"><td><a href="?full_tree">Полный каталог</a></td></tr>
     </table>';
@@ -1903,11 +1822,11 @@ HTML;
     $this->title = 'Полный каталог'; 
     $this->header = '<h1><a href = "'.IA_URL.$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
     $output .=  '
-    <table class="table table-condensed">
+    <table class="table table-sm">
       <tr class="r0"><td><a href="?view_tree">Дерево всех категорий</a></td></tr>
       <tr class="r1"><td><a href="?full_tree">Полный каталог</a></td></tr>
     </table>';
-    
+     
     $output .= '
 		  <script>
 		  $(function(){
@@ -1925,7 +1844,7 @@ HTML;
         <div class="row">
           <div class="col-sm-12 col-md-7 col-lg-8">
             <div class="row">
-              <div class="col-xs-12 alert alert-info">';
+              <div class="col-12 alert alert-info">';
 	  $output .= $this->show_entrie_catalog();
     $output .= '
               </div>
@@ -1933,7 +1852,7 @@ HTML;
           </div>
           <div class="col-sm-12 col-md-5 col-lg-4">
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-12">
                 <div class="form-group">
                   <label>Поиск</label>
                   <input type="text" class="text form-control" name="article" id="article" placeholder="Запрос..."> 
@@ -1942,7 +1861,7 @@ HTML;
             </div>
             
             <div class="row">
-              <div class="col-xs-12" id="exists"></div>
+              <div class="col-12" id="exists"></div>
             </div>
           </div>
         </div>
@@ -2235,43 +2154,41 @@ HTML;
       $pageLinks = ceil($countItems / $itemsPerPage);
       
       $output .= '
-        <nav class = "text-right ">
-          <div style = "    float: left;     margin: 20px 0 20px; padding: 6px 12px 6px 0px;     line-height: 1.42857143;" >Всего: '.$countItems.'</div>
-        <select class="form-control items-per-page"  data-id_cat = '.$id_cat.'
-        
-          style = "
-            float: left;
-            margin: 20px 0 20px;
-            padding: 6px 12px 6px 0px;
-            line-height: 1.42857143;
-            display: inline-block;
-            width: 65px;
-          "
-        >
-      ';
+        <div class = "pagination_row row align-items-center ">
+          <div class = "col-auto" >Всего: '.$countItems.'</div>
+          <div class = "col">
+            <select class="form-control items-per-page"  data-id_cat = '.$id_cat.'
+            
+              style = "
+                width: 65px;
+                height: 33px;
+                padding: 2px 5px;
+              "
+            >';
+       
       foreach($this->pager['items_per_page'] as $k => $v){
         $output .= '  
-          <option value = "'.$v.'" '; if($itemsPerPage == $v) $output.= 'selected'; $output .= ' >'.$v.'</option>
-        ';
+              <option value = "'.$v.'" '; if($itemsPerPage == $v) $output.= 'selected'; $output .= ' >'.$v.'</option>';
+          
       }
       
       $output .= '
-        </select>
-      ';
+            </select>
+          </div>';
 
       $output .= '
-          <ul class="pagination ">
+          <div class = "col-auto" >
+            <ul class="pagination pagination-sm">
       ';
       $output .= '<li ';
-      if($page <= 1){ $output .= ' class="disabled" '; }
+      if($page <= 1){ $output .= ' class="page-item disabled" '; }
       $output .= ' > <a ';
-      if($page >= 1){ $output .= ' class="set_pager_page" data-page = '.($page-1).' data-id_cat = '.$id_cat.' style = "cursor: pointer;" '; /*$output .= '?page='.($page-1).''; */}
+      if($page >= 1){ $output .= ' class=" set_pager_page" data-page = '.($page-1).' data-id_cat = '.$id_cat.' style = "cursor: pointer;" '; /*$output .= '?page='.($page-1).''; */}
       
       $output .= '" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      ';
+                  <span class = "page-link"">&laquo;</span>
+                </a>
+              </li>';
       
       $minusItems = $plusItems = 5;
       if($page <= 6 ){
@@ -2285,30 +2202,29 @@ HTML;
         if( (($i - $minusItems) <= $page) && ($page <= ($i + $plusItems) ) ){
           if($i == $page){
             $output .= '
-              <li class="active"><span>'.$i.'</span></a></li>
-            ';
+                <li class="page-item active"><span class = "page-link">'.$i.'</span></a></li>';
+              
           }else{
             $output .= '
-              <li ><a class="set_pager_page" data-page = '.$i.' data-id_cat = '.$id_cat.' style = "cursor: pointer;">'.$i.'</a></li>
-            ';  
+                <li class="page-item"><a class="page-link set_pager_page" data-page = '.$i.' data-id_cat = '.$id_cat.' style = "cursor: pointer;">'.$i.'</a></li>';  
+                
           }
         }
       }
       
       $output .= '<li ';
-      if($page >= ($pageLinks ) ){ $output .= ' class="disabled" '; }
+      if($page >= ($pageLinks ) ){ $output .= ' class="page-item disabled" '; }
       $output .= ' > <a  ';
-      if($page <= ($pageLinks ) ){ $output .= ' class="set_pager_page" data-page = '.($page+1).' data-id_cat = '.$id_cat.' style = "cursor: pointer;" '; /*$output .= '?page='.($page+1).''; */}
+      if($page <= ($pageLinks ) ){ $output .= ' class="page-link set_pager_page" data-page = '.($page+1).' data-id_cat = '.$id_cat.' style = "cursor: pointer;" '; /*$output .= '?page='.($page+1).''; */}
       $output .= '
-         aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      ';
+               aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>';
       $output .= '
-          </ul>
-        </nav>
-      ';
+            </ul>
+          </div> 
+        </div>'; 
       
       if($page){
         $offset = ' LIMIT '.($page - 1)*$itemsPerPage.', '.$itemsPerPage.' ';
@@ -2319,7 +2235,7 @@ HTML;
     }
     
     return $output;
-  }  
+  }
   
   function getContent(&$admin = null){
     $carisel = $this;

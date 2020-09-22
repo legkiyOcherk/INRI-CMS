@@ -1,5 +1,9 @@
 <?
-require_once "class.AdminLTE.php";
+ini_set('display_errors','On');
+error_reporting('E_ALL');
+
+require_once __DIR__."/class.AdminLTE.php";
+require_once __DIR__."/../../define.php";
 
 class AdminCutaway extends AdminLTEextends{
   
@@ -92,21 +96,21 @@ class AdminCutaway extends AdminLTEextends{
           case 'Файлы':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-file-text-o" aria-hidden="true"></i>',
+                  'icon' => '<i class="far fa-file-alt"></i>',
                   'short_decr' => ''
                 ); break;
               
           case 'SEO Настройки':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-sliders" aria-hidden="true"></i>',
+                  'icon' => '<i class="fas fa-sliders-h"></i>',
                   'short_decr' => ''
                 ); break;
                 
           case 'Настройки':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-gear fa-fw"></i>',
+                  'icon' => '<i class="fas fa-cog"></i>',
                   'short_decr' => ''
                 ); break;
                 
@@ -238,7 +242,7 @@ class AdminCorporate extends AdminLTEextends{
           case ADMIN_NAME:
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-dashboard"></i>',
+                  'icon' => '<i class="fas fa-tachometer-alt"></i>',
                   'short_decr' => 'Начальный экран'
                 ); break;
                 
@@ -260,7 +264,7 @@ class AdminCorporate extends AdminLTEextends{
           case 'Новости':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-newspaper-o" aria-hidden="true"></i>',
+                  'icon' => '<i class="far fa-newspaper"></i>',
                   'short_decr' => ''
                 ); break;
                 
@@ -268,7 +272,7 @@ class AdminCorporate extends AdminLTEextends{
           case 'Изображения':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-picture-o" aria-hidden="true"></i>',
+                  'icon' => '<i class="far fa-images"></i>',
                   'short_decr' => ''
                 ); break;
                 
@@ -297,21 +301,21 @@ class AdminCorporate extends AdminLTEextends{
           case 'Файлы':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-file-text-o" aria-hidden="true"></i>',
+                  'icon' => '<i class="far fa-file-alt"></i>',
                   'short_decr' => ''
                 ); break;
               
           case 'SEO Настройки':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-sliders" aria-hidden="true"></i>',
+                  'icon' => '<i class="fas fa-sliders-h"></i>',
                   'short_decr' => ''
                 ); break;
                 
           case 'Настройки':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-gear fa-fw"></i>',
+                  'icon' => '<i class="fas fa-cog"></i>',
                   'short_decr' => ''
                 ); break;
                 
@@ -465,7 +469,7 @@ class AdminOnlineshop extends AdminLTEextends{
           case ADM_DIR:
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-dashboard"></i>',
+                  'icon' => '<i class="fas fa-tachometer-alt"></i>',
                   'short_decr' => 'Начальный экран'
                 ); break;
                 
@@ -487,17 +491,15 @@ class AdminOnlineshop extends AdminLTEextends{
           case 'Новости':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-list-ul" aria-hidden="true"></i>',
+                  'icon' => '<i class="far fa-newspaper"></i>',
                   'short_decr' => ''
                 ); break;
                 
           case 'Слайдер на главной':
-          case 'Слайдер Гостиница':
-          case 'Слайдер Кафе':
           case 'Изображения':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-picture-o" aria-hidden="true"></i>',
+                  'icon' => '<i class="far fa-images"></i>',
                   'short_decr' => ''
                 ); break;
                 
@@ -505,7 +507,7 @@ class AdminOnlineshop extends AdminLTEextends{
           case 'Каталог товаров':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-folder-open-o"></i>',
+                  'icon' => '<i class="far fa-folder-open"></i>',
                   'short_decr' => ''
                 ); break;
           
@@ -557,21 +559,21 @@ class AdminOnlineshop extends AdminLTEextends{
           case 'Файлы':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-file-text-o" aria-hidden="true"></i>',
+                  'icon' => '<i class="far fa-file-alt"></i>',
                   'short_decr' => ''
                 ); break;
               
           case 'SEO Настройки':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-sliders" aria-hidden="true"></i>',
+                  'icon' => '<i class="fas fa-sliders-h"></i>',
                   'short_decr' => ''
                 ); break;
                 
           case 'Настройки':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-gear"></i>',
+                  'icon' => '<i class="fas fa-cog"></i>',
                   'short_decr' => ''
                 ); break;
                 
@@ -602,7 +604,34 @@ class AdminOnlineshop extends AdminLTEextends{
                   'icon' => '<i class="fa fa-user"></i>',
                   'short_decr' => ''
                 ); break;
-              
+                
+          case 'Бренд':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="far fa-copyright"></i>',
+                  'short_decr' => ''
+                ); break;    
+                
+          case 'Страны':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="far fa-flag"></i>',
+                  'short_decr' => ''
+                ); break;   
+          
+          case 'Варианты наличия':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="far fa-check-circle"></i>',
+                  'short_decr' => ''
+                ); break;
+                
+          case 'Ед. измерения':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fas fa-balance-scale-right"></i>',
+                  'short_decr' => ''
+                ); break; 
                
           default:
               $this->mainmenu_add_data[$v] = 
@@ -651,8 +680,7 @@ class AdminOnlineshop extends AdminLTEextends{
   }
   
 }
-
-require_once('../define.php');
+ 
 switch(SITE_TYPE){
   case 'CUTAWAY':
     class Admin extends AdminCutaway{};

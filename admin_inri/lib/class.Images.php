@@ -1,6 +1,6 @@
 <?php
-require_once "class.BaseCarusel.php"; 
-require_once "formvalidator.php"; // Валидатор
+require_once __DIR__."/class.BaseCarusel.php"; 
+require_once __DIR__."/formvalidator.php";// Валидатор
 
 class Images extends BaseCarusel{
   var $img_ideal_width = 960;
@@ -309,15 +309,15 @@ class Images extends BaseCarusel{
   function show_table_header_rows(){
     $output = '
           <tr class="th nodrop nodrag">
-          	<td style="width: 40px;">#</td>
-      		  <td style="width: 50px;">Скрыть</td>
-            <td style="width: 60px;">Картинка</td>
-      		  <td>Название</td>
-            <td>Скачать изображение</td>
-            <td>Модуль</td>
-            <td>Модуль ID</td>
-            <td>Ссылка</td>
-      		  <td style="width: 80px">Действие</td>
+          	<th style="width: 40px;">#</th>
+      		  <th style="width: 50px;">Скрыть</th>
+            <th style="width: 60px;">Картинка</th>
+      		  <th>Название</th>
+            <th>Скачать изображение</th>
+            <th>Модуль</th>
+            <th>Модуль ID</th>
+            <th>Ссылка</th>
+      		  <th style="width: 80px">Действие</th>
           </tr>';
     
     return $output;
@@ -335,7 +335,7 @@ class Images extends BaseCarusel{
           </td>
             
             <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>  
-            <td style="max-width: 60px;">';
+            <td class = "zoomImg_box" style="">';
             
     if($img){
       $output .= '
@@ -369,14 +369,14 @@ class Images extends BaseCarusel{
               <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
-                <i class="fa fa-pencil"></i>
+                <i class="fas fa-pencil-alt"></i>
               </a>
               
               <span >
               <span class="btn btn-danger btn-sm" 
                     title="удалить" 
                     onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                <i class="fa fa-trash-o"></i>
+                <i class="far fa-trash-alt"></i>
               </span>
             </td>
   			  </tr>';
@@ -434,28 +434,19 @@ class Images extends BaseCarusel{
       >
         <input type="hidden" name="slideid" value="1">
     ';
-    if($q = $this->pdo->query($s))
+    if($q = $this->pdo->query($s)){
       if($q->rowCount()){
-        
-        
-    #if($items){
-      
-      $output .= '
-  	    <table id="sortabler" class="table sortab table-condensed table-striped ">
-          '.$this->show_table_header_rows();
-      
-      while($item = $q->fetch()){
-        
-        $output .= $this->show_table_rows($item);
-
-        
-      }
-      
-      $output .= '
-        </table>
-      ';
-      
-      
+        $output .= '
+    	    <table id="sortabler" class="table sortab table-sm table-striped ">
+            <thead>'.$this->show_table_header_rows().'</thead>
+            <tbody>';
+        while($item = $q->fetch()){
+          $output .= $this->show_table_rows($item);
+        }
+        $output .= '
+            </tbody>
+          </table>';
+      }  
     }
     $output .= $groupOperationsCont;
     $output .= '
@@ -484,7 +475,7 @@ class Images extends BaseCarusel{
       $url = $this->url_item->getUrlForModuleAndModuleId($this->prefix.$this->carusel_name, $id);
       
       if($url){
-        $tmp = '<a class="btn btn-info pull-right" href="/'.$url.'" target = "_blank" >Посмотреть на сайте</a>';
+        $tmp = '<a class="btn btn-info float-right" href="/'.$url.'" target = "_blank" >Посмотреть на сайте</a>';
         $output .= $this->show_form_row(null, $tmp);
       }  
       
@@ -502,50 +493,22 @@ class Images extends BaseCarusel{
       if( in_array($key, array("date")))     $type = 'date';
       if( in_array($key, array("datetime"))) $type = 'datetime';
       if( in_array($key, array("title", "module", "module_id", "seo_h1", "seo_title", "img_alt", "img_title"))) $type = 'text';
-        
       // Отступы SEO
       if($key == 'seo_h1'){
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> <h3 class="panel-title">SEO</h3> </div> 
-            <div class="panel-body"> 
-        ';
-        $is_open_panel_div = true;  
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('SEO');
+        $is_open_panel_div = true;   
       }
       
       if($key == 'img_alt') {
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> <h3 class="panel-title">Атрибуты основого изображения</h3> </div> 
-            <div class="panel-body"> 
-        ';
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('Атрибуты основого изображения');
         $is_open_panel_div = true;         
       }
       
       if($key == 'module') {
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> <h3 class="panel-title">Принадлежность</h3> </div> 
-            <div class="panel-body"> 
-        ';
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('Принадлежность');
         $is_open_panel_div = true;         
       }
       

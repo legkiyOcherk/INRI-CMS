@@ -21,16 +21,15 @@ function show_orders_list(){
   $output .= '<h1>Заказы</h1>';
   $output .= '
     <div class="row-fluid">
-      <div class="col-xs-12">
-        <div class="well ">
+      <div class="col-12">
+        <div class="card card-body ">
           <div class="btn-group-sm">
-        Фильтр: 
-  ';
-  $output .= '<a href="orders.php" class="btn">все</a> ';
+            <span class="py-2 my-1 mx-1">Фильтр:</span>';
+  $output .= '<a href="orders.php" class="btn my-1 mx-1 btn btn-primary">все</a> ';
 
   foreach($opti as $k=>$v){
   	
-  	$output .= '<a href="orders.php?status='.$k.'" class="btn ';
+  	$output .= '<a href="orders.php?status='.$k.'" class="btn my-1 mx-1  ';
   	if ($k==1) $output .= 'btn-success';
   	elseif (in_array($k,array(2,3,5))) $output .= 'btn-danger';
   	elseif (in_array($k,array(6,7,8))) $output .= 'btn-warning';
@@ -75,7 +74,7 @@ function show_orders_list(){
 
   	
   $output .= '
-    <table class="table  table-condensed">
+    <table class="table  table-sm">
       <thead>
   ';
   $output .= '
@@ -160,10 +159,10 @@ function show_row($row, $new=false){
 		if ($new) $output .= "ord_new'";
 		else 
 		{
-			if ($row["status"]==1) $output .= "success'";
-			elseif (in_array($status,array(2,3,5))) $output .= "error'";
-			elseif (in_array($status,array(6,7,8))) $output .= "warning'";
-			elseif ($status==9) $output .= "info'";
+			if ($row["status"]==1) $output .= "table-success'";
+			elseif (in_array($status,array(2,3,5))) $output .= "table-danger'";
+			elseif (in_array($status,array(6,7,8))) $output .= "table-warning'"; 
+			elseif ($status==9) $output .= "table-info'";
 			elseif ($status==10) $output .= "' style='color:#aaa; text-decoration:line-through'";
 		}
 		$output .= ' id="row_'.$row["id"].'"><td><a href="?id='.$row["id"].'">'.$row["id"].'</a></td>';	
@@ -185,7 +184,7 @@ function show_row($row, $new=false){
 		$output .= "<td>";
 		if($row["date_dost"]) $output .= "дата доставки: ".$row["date_dost"]."<br>";
 		if (!$row["address"]) $addr="адрес не указан"; else $addr=$row["address"];
-		$output .= "<a href='#' id='cr{$row["id"]}' onclick='$(\"#addr{$row["id"]}\").toggle();return(false)'>$addr <i class='fa fa-pencil' aria-hidden='true'></i></a> ";
+		$output .= "<a href='#' id='cr{$row["id"]}' onclick='$(\"#addr{$row["id"]}\").toggle();return(false)'>$addr <i class='fas fa-pencil-alt' aria-hidden='true'></i></a> ";
     //echo "<i class='icon-map-marker onmap'  data-id='{$row["id"]}'></i>";
     if($row['personal_accaunt_id']){
       $user = db::row("*", DB_PFX."personal_accaunt", "`id` = '".$row['personal_accaunt_id']."'");
@@ -235,7 +234,7 @@ $output .= "<td style='vertical-align:top'>";
           <a class='btn btn-success' onclick='save_fio({$row["id"]})'>сохранить</a>
         </div>
       </span>
-			<span class='valu'>{$row["fio"]} <i class='fa fa-pencil' aria-hidden='true'></i></span>
+			<span class='valu'>{$row["fio"]} <i class='fas fa-pencil-alt' aria-hidden='true'></i></span>
 		</span>
 		<span class='editable alert alert-info' id='c_phone{$row["id"]}'>
 			<span class='area'>
@@ -244,7 +243,7 @@ $output .= "<td style='vertical-align:top'>";
           <a class='btn btn-success' onclick='save_phone({$row["id"]})'>сохранить</a>
         </div>
       </span>
-			<span class='valu'>{$row["phone"]} <i class='fa fa-pencil' aria-hidden='true'></i></span>
+			<span class='valu'>{$row["phone"]} <i class='fas fa-pencil-alt' aria-hidden='true'></i></span>
 		</span>
 		<span class='editable alert alert-info' id='c_email{$row["id"]}'>
 			<span class='area'>
@@ -253,7 +252,7 @@ $output .= "<td style='vertical-align:top'>";
           <a class='btn btn-success'  onclick='save_email({$row["id"]})'>сохранить</a>
         </div>
       </span> 
-			<span class='valu'>{$row["email"]} <i class='fa fa-pencil' aria-hidden='true'></i></span>
+			<span class='valu'>{$row["email"]} <i class='fas fa-pencil-alt' aria-hidden='true'></i></span>
 		</span>
     <span class='alert' style='display:block'>{$row["ip"]}</span>
 		</td>";					
@@ -271,7 +270,7 @@ $output .= "<td style='vertical-align:top'>";
 		if ($row["id"]>0)
 		{
 		if ($row["tovar"]) $output .= "<b>{$row["tovar"]}</b> - быстрый заказ";
-		$output .= "<table class='goods table-condensed'>";
+		$output .= "<table class='goods table-sm'>";
     
     $unit_items =  db::select("*", DB_PFX."units" );
     foreach($unit_items as $unit_item){
@@ -324,9 +323,9 @@ $output .= "<td style='vertical-align:top'>";
 		}
 		$output .= "<div class='well'><a href='#' id='cm{$row["id"]}' onclick='$(\"#comman{$row["id"]}\").toggle();return(false)'>";
 		$output .= nl2br($row["comment_manager"]);
-		$output .= "<i class='fa fa-pencil' aria-hidden='true'></i></a><div style='display:none' id='comman{$row["id"]}'><textarea id='tcomman{$row["id"]}' class='comman'>{$row["comment_manager"]}</textarea><br><a class='btn' onclick='save_comm({$row["id"]})'>сохранить</a></div></div>";
+		$output .= "<i class='fas fa-pencil-alt' aria-hidden='true'></i></a><div style='display:none' id='comman{$row["id"]}'><textarea id='tcomman{$row["id"]}' class='comman'>{$row["comment_manager"]}</textarea><br><a class='btn' onclick='save_comm({$row["id"]})'>сохранить</a></div></div>";
 		$output .= "</td>";
-		$output .= "<td style='vertical-align:top; text-align:center'><a onclick='delete_item({$row["id"]})' class='btn btn-danger pull-right'  title='Удалить'><i class='fa fa-times' aria-hidden='true'></i></a><br style='clear:both'><br>$manager</td>";
+		$output .= "<td style='vertical-align:top; text-align:center'><a onclick='delete_item({$row["id"]})' class='btn btn-sm btn-danger float-right'  title='Удалить'><i class='fa fa-times' aria-hidden='true'></i></a><br style='clear:both'><br>$manager</td>";
 		
 		$output .= "</tr>";
 		
@@ -532,15 +531,15 @@ $(".status").change(function(){
 	var valu=$(this).val();
 		$.post("orders.php", {upd: id,  valu:valu}).done(function() 
 		{ 
-			$("#row_"+id).removeClass("success")
-			$("#row_"+id).removeClass("error")
-			$("#row_"+id).removeClass("warning")
-			$("#row_"+id).removeClass("info")
+			$("#row_"+id).removeClass("table-success")
+			$("#row_"+id).removeClass("table-danger")
+			$("#row_"+id).removeClass("table-warning")
+			$("#row_"+id).removeClass("table-info")
 			$("#row_"+id).removeClass("ord_new")
-			if (valu==1) $("#row_"+id).addClass("success")
-			if (valu==2 || valu==3 || valu==5) $("#row_"+id).addClass("error")
-			if (valu==6 || valu==7 || valu==8) $("#row_"+id).addClass("warning")
-			if (valu==9) $("#row_"+id).addClass("info")
+			if (valu==1) $("#row_"+id).addClass("table-success")
+			if (valu==2 || valu==3 || valu==5) $("#row_"+id).addClass("table-danger")
+			if (valu==6 || valu==7 || valu==8) $("#row_"+id).addClass("table-warning")
+			if (valu==9) $("#row_"+id).addClass("table-info")
 		});
 	
 });

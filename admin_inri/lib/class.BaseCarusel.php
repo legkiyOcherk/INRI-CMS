@@ -1,6 +1,6 @@
 <?php
 
-require_once "formvalidator.php"; // Валидатор
+require_once __DIR__."/formvalidator.php"; // Валидатор
 
 
 class BaseCarusel{
@@ -287,7 +287,7 @@ class BaseCarusel{
     (!is_null($this->admin)) ?  : $output .=  '<h1>'.$header.'</h1>';
     
     $this->bread[ucfirst_utf8($this->header)] = $this->carusel_name.'.php'; 
-    $title .=' Редактирование записи';
+    $title =' Редактирование записи';
     $this->title  = $title;
     
     
@@ -334,7 +334,7 @@ class BaseCarusel{
   
   
   function getStarValStyle($isStarOn){
-    ($isStarOn) ? $star_val = "glyphicon glyphicon-star" : $star_val = "glyphicon glyphicon-star-empty";
+    ($isStarOn) ? $star_val = "fas fa-star" : $star_val = "far fa-star"; 
     return $star_val;
   }
   
@@ -398,11 +398,11 @@ class BaseCarusel{
     ';
     $output .= <<<HTML
 			if (data == 1) {
-				$('#'+field+'_'+id).removeClass('glyphicon glyphicon-star-empty')
-				$('#'+field+'_'+id).addClass('glyphicon glyphicon-star')
+				$('#'+field+'_'+id).removeClass('far fa-star')
+				$('#'+field+'_'+id).addClass('fas fa-star')
 			} else {
-				$('#'+field+'_'+id).removeClass('glyphicon glyphicon-star')
-				$('#'+field+'_'+id).addClass('glyphicon glyphicon-star-empty')
+				$('#'+field+'_'+id).removeClass('fas fa-star')
+				$('#'+field+'_'+id).addClass('far fa-star')
 			}
 		});
 	}
@@ -478,23 +478,26 @@ HTML;
     
     $output .= '
       <form method="post" action="'.$this->carusel_name.'.php" class="form-horizontal form-label-left">
-      <div class = "filter_tbl_box form-group">
-        <label class="col-xs-12 col-sm-12 col-md-3 col-lg-2 c_title control-label">Фильтр</label>
-        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-          <select class = "filter_tbl form-control" name = "filter_field[1][name]">
-      ';
+        <div syle = "padding-left: 5px;">
+          <div class = "filter_tbl_box alert alert-info ">  
+            <div class="row"> 
+              <label class="col-12 col-md-auto c_title control-label">Фильтр</label>
+              <div   class="col-12 col-md-auto">
+                <select class = "filter_tbl form-control" name = "filter_field[1][name]">';
     $output .= $this->getFilterTableSelect($filter_field_name);
     $output .= '
-          </select>
+                </select>
+              </div>
+              <div  class="col-12 col-md">
+                <input type = "text" class = "form-control" name = "filter_field[1][val]" value = "'.$filter_field_val.'">
+              </div>
+              <div   class="col-12 col-md-auto">
+                <button class="btn btn-sm btn-primary">Применить</button>
+                <button class="btn btn-sm btn-warning" name = "filter_field_reset" value = "1">Сбросить</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div  class="col-xs-12 col-sm-12 col-md-3 col-lg-4">
-          <input type = "text" class = "form-control" name = "filter_field[1][val]" value = "'.$filter_field_val.'">
-        </div>
-        <div   class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-          <button class="btn btn-primary">Применить</button>
-          <button class="btn btn-warning" name = "filter_field_reset" value = "1">Сбросить</button>
-        </div>
-      </div>
       </form>
     ';
     
@@ -585,22 +588,21 @@ HTML;
     </style>
     ';
     $output .= '
-    
     <div class = "group_operation_box">
-      <span class="glyphicon glyphicon-arrow-up btn-lg"></span>
-      <span class="btn btn-default" id = "group_check_all" ><span class="glyphicon glyphicon-check"></span> Отметить все</span>
-      <span class="btn btn-default" id = "group_check_off_all" ><span class="glyphicon glyphicon-unchecked"></span> Снять выделение</span>
+      <span class="fas fa-angle-double-up"></span>      
+      <span class="btn btn-sm btn-default" id = "group_check_all" ><span class="far fa-check-square"></span> Отметить все</span>
+      <span class="btn btn-sm btn-default" id = "group_check_off_all" ><span class="far fa-square"></span> Снять выделение</span>
       
-      <button type="submit" class="btn btn-warning" name = "group_action" value="group_hide" onclick="javascript: if (confirm(\'Скрыть выделеные?\')) { return true;} else { return false;}">
-        <span class="glyphicon glyphicon-star"></span> Скрыть
+      <button type="submit" class="btn btn-sm  btn-warning" name = "group_action" value="group_hide" onclick="javascript: if (confirm(\'Скрыть выделеные?\')) { return true;} else { return false;}">
+        <span class="far fa-star"></span> Скрыть
       </button>
       
-      <button type="submit" class="btn btn-warning" name = "group_action" value="group_show"  onclick="javascript: if (confirm(\'Показать выделеные?\')) { return true;} else { return false;}">
-        <span class="glyphicon glyphicon-star-empty"></span> Показать
+      <button type="submit" class="btn btn-sm  btn-warning" name = "group_action" value="group_show"  onclick="javascript: if (confirm(\'Показать выделеные?\')) { return true;} else { return false;}">
+        <span class="fas fa-star"></span> Показать
       </button>
       
-      <button type="submit" class="btn btn-danger" name = "group_action"  value="group_del"   onclick="javascript: if (confirm(\'Удалить выделеные?\')) { return true;} else { return false;}">
-        <span class="glyphicon glyphicon-remove-sign"></span> Удалить
+      <button type="submit" class="btn btn-sm  btn-danger" name = "group_action"  value="group_del"   onclick="javascript: if (confirm(\'Удалить выделеные?\')) { return true;} else { return false;}">
+        <span class="fas fa-trash"></span> Удалить
       </button>
     </div>
     ';
@@ -611,9 +613,9 @@ HTML;
   
   function show_form_row($title = '', $cont = ''){
     $output = '
-      <div class="form-group c_row">
-        <label class="col-xs-12 col-sm-12 col-md-3 col-lg-2 c_title control-label">'.$title.'</label>
-        <div class = "col-xs-12 col-sm-12 col-md-9 col-lg-10 c_cont">'.$cont.'</div>
+      <div class="form-group row">
+        <label class="col-12 col-sm-12 col-md-3 col-lg-2 c_title control-label">'.$title.'</label>
+        <div class = "col-12 col-sm-12 col-md-9 col-lg-10 c_cont">'.$cont.'</div>
       </div>
     ';
     
@@ -649,9 +651,9 @@ HTML;
     $output = '';
     
     $output .='
-        <div class="panel panel-default"> 
-          <div class="panel-heading"> <h3 class="panel-title">Основное изображение</h3> </div> 
-          <div class="panel-body">';
+        <div class="card"> 
+          <div class="card-header">Основное изображение</div> 
+          <div class="card-body">';
         
     $output .= $this->show_form_row( 
             ' Изображение  (Иделальный размер '.$this->img_ideal_width.' x '.$this->img_ideal_height.'):', 
@@ -931,6 +933,27 @@ HTML;
   	}
   }
   
+  function getCardPanelHeader($title){
+    $output = '';
+    
+    $output = '
+          <div class="card my-3"> 
+            <div class="card-header">'.$title.'</div> 
+            <div class="card-body">';
+            
+    return $output;
+  }
+  
+  function getCardPanelFooter(){
+    $output = '';
+    
+    $output = '
+            </div>
+          </div>';
+          
+    return $output;
+  }
+  
   function setPagerParamers(){
     
     if(!isset($_SESSION['pager'][$this->carusel_name])){
@@ -990,7 +1013,119 @@ HTML;
     return $output;
   }
   
-  function getPager($countItems, &$offset = 0, $show_pager_always = true){
+function getPager($countItems, &$offset = 0, $id_cat = 0, $show_pager_always = true){
+    $output = '';
+    
+    #$this->resetPagerParamers();
+    #$_SESSION['pager'][$this->carusel_name]['perPage'] = 5;
+    
+    $this->getPagerParamers();
+    #pri($this->pager);
+    #return;
+    $itemsPerPage = $this->pager['perPage'];
+    
+    if($this->pager['url'] != $id_cat){
+      $_SESSION['pager'][$this->carusel_name]['page'] = $this->pager['page'] = 1;
+      $_SESSION['pager'][$this->carusel_name]['url'] = $this->pager['url'] = $id_cat;
+      $this->pager['page'] = 1;
+    }
+      
+    
+    $page = $this->pager['page'];
+    #echo " page = ".$page;
+    
+    if(($countItems > $itemsPerPage) || $show_pager_always) {
+      $pageLinks = ceil($countItems / $itemsPerPage);
+      
+      $output .= '
+        <div class = "pagination_row row align-items-center ">
+          <div class = "col-auto" >Всего: '.$countItems.'</div>
+          <div class = "col">
+            <select class="form-control items-per-page"  data-id_cat = '.$id_cat.'
+              style = "
+                width: 65px;
+                height: 33px;
+                padding: 2px 5px;
+              "
+            >';
+            
+      foreach($this->pager['items_per_page'] as $k => $v){
+        $output .= '  
+              <option value = "'.$v.'" '; if($itemsPerPage == $v) $output.= 'selected'; $output .= ' >'.$v.'</option>
+        ';
+      }
+      
+      $output .= '
+            </select>
+          </div>
+      ';
+
+      $output .= '
+          <div class = "col-auto" >
+            <ul class="pagination pagination-sm">
+        ';
+      $output .= '<li ';
+      if($page <= 1){ $output .= ' class="page-item disabled" '; }
+      $output .= ' > <a ';
+      if($page >= 1){ $output .= ' class=" set_pager_page" data-page = '.($page-1).' data-id_cat = '.$id_cat.' style = "cursor: pointer;" '; /*$output .= '?page='.($page-1).''; */}
+      
+      $output .= '" aria-label="Previous">
+            <span class = "page-link"">&laquo;</span>
+          </a>
+        </li>
+      ';
+      
+      $minusItems = $plusItems = 5;
+      if($page <= 6 ){
+        $minusItems = 10 - $page;
+      }
+      if($page >= ($pageLinks - 6) ){
+        $plusItems = 10 - ($pageLinks - $page) ;
+      }
+      
+      for($i = 1; $i <= $pageLinks; $i++){
+        if( (($i - $minusItems) <= $page) && ($page <= ($i + $plusItems) ) ){
+          if($i == $page){
+            $output .= '
+                <li class="page-item active"><span class = "page-link">'.$i.'</span></a></li>
+            ';
+          }else{
+            $output .= '
+                <li class="page-item"><a class="page-link set_pager_page" data-page = '.$i.' data-id_cat = '.$id_cat.' style = "cursor: pointer;">'.$i.'</a></li>
+            ';  
+          }
+        }
+      }
+      
+      $output .= '<li ';
+      if($page >= ($pageLinks ) ){ $output .= ' class="page-item disabled" '; }
+      $output .= ' > <a  ';
+      if($page <= ($pageLinks ) ){ $output .= ' class="page-link set_pager_page" data-page = '.($page+1).' data-id_cat = '.$id_cat.' style = "cursor: pointer;" '; /*$output .= '?page='.($page+1).''; */}
+      $output .= '
+           aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+      ';
+      $output .= '
+            </ul>
+          </div> 
+        </div>
+      '; 
+      
+      if($page){
+        $offset = ' LIMIT '.($page - 1)*$itemsPerPage.', '.$itemsPerPage.' ';
+      }else{
+        $offset = ' LIMIT '.$itemsPerPage.' ';
+      }
+      
+    }
+    
+    return $output;
+  }  
+  
+  
+  function getPager_old($countItems, &$offset = 0, $show_pager_always = true){
     $output = '';
     
     $this->getPagerParamers();
@@ -1031,9 +1166,9 @@ HTML;
           <ul class="pagination ">
       ';
       $output .= '<li ';
-      if($page <= 1){ $output .= ' class="disabled" '; }
+      if($page <= 1){ $output .= ' class="page-item disabled" '; }
       $output .= ' > <a ';
-      if($page >= 1){ $output .= ' class="set_pager_page" data-page = '.($page-1).' style = "cursor: pointer;" '; /*$output .= '?page='.($page-1).'';*/ }
+      if($page >= 1){ $output .= ' class="page-item set_pager_page" data-page = '.($page-1).' style = "cursor: pointer;" '; /*$output .= '?page='.($page-1).'';*/ }
       
       $output .= ' aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
@@ -1087,7 +1222,7 @@ HTML;
     }
     
     return $output;
-  }  
+  } 
   
   function getContent(&$admin = null){
     $carisel = $this;

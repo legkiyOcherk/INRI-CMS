@@ -41,15 +41,16 @@ class BaseAdmin{
   
   // конструктор
   function __construct () {
-    $this->adminTitle = $this->prefix.'admin v3.0';
-    session_start();
+    $this->adminTitle = $this->prefix.'admin v4.0';
     
-    require_once('../define.php');
-    require_once(WA_PATH.'config.inc.php');
-    require_once(WA_PATH.'lib/mysql.lib.php');
-    require_once(WA_PATH.'lib/global.lib.php');
-    require_once(WA_PATH.'lib/class.db.php');
-    require_once(WA_PATH.'lib/auth.lib.php');
+    if (!session_id()) session_start();
+    
+    require_once(__DIR__.'/../../define.php');
+    require_once(__DIR__.'/../config.inc.php');
+    require_once(__DIR__.'/mysql.lib.php');
+    require_once(__DIR__.'/global.lib.php');
+    require_once(__DIR__.'/class.db.php');
+    require_once(__DIR__.'/auth.lib.php');
     
     $this->prefix   = DB_PFX; 
     $this->sitelink = SITE_NAME;
@@ -130,7 +131,7 @@ class BaseAdmin{
           case ADM_DIR:
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-dashboard"></i>',
+                  'icon' => '<i class="fas fa-tachometer-alt"></i>',
                   'short_decr' => 'Начальный экран'
                 ); break;
                 
@@ -303,35 +304,39 @@ class BaseAdmin{
     
     $output .= '
         <!-- Bootstrap Core CSS -->
-        <link href="'.IA_URL.'admin_style/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">';
+        #<link href="'.IA_URL.'admin_style/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    $output .= '
         <!-- Custom Fonts -->
-        <link href="'.IA_URL.'admin_style/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn\'t work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" >';
+        #<link href="'.IA_URL.'admin_style/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         
+    $output .= '
         <!-- Custom Theme JavaScript -->';
         
     $output .= $this->getHeadCustom();
     
     $output .= '
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
         <link href="primary.css" rel="stylesheet" type="text/css" media="screen">
         <link href="print.css" rel="stylesheet" type="text/css" media="print">
         <link rel="stylesheet" href="'.IA_URL.'js/ui/css/ui-lightness/jquery-ui-1.10.4.min.css">
         
         <!-- iCheck for checkboxes and radio inputs -->
-        <link rel="stylesheet" href="'.IA_URL.'admin_style/vendor/iCheck/skins/all.css">
-    ';
+        <link rel="stylesheet" href="'.IA_URL.'admin_style/vendor/iCheck/skins/all.css">';
         
+    #$output .= '
+    #    <script src="'.IA_URL.'js/ui/js/jquery-1.10.2.js"></script>
+    #    <script src="'.IA_URL.'js/ui/js/jquery-ui-1.10.4.min.js"></script> 
+    #    <script src="'.IA_URL.'js/ui/js/jquery-migrate-1.2.0.js"></script>';
+    
     $output .= '
-        <script src="'.IA_URL.'js/ui/js/jquery-1.10.2.js"></script>
-        <script src="'.IA_URL.'js/ui/js/jquery-ui-1.10.4.min.js"></script> 
-        <script src="'.IA_URL.'js/ui/js/jquery-migrate-1.2.0.js"></script>';
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://code.jquery.com/jquery-migrate-1.4.1.js"></script>';
+        
     $output .= '
         <script type="text/javascript" src="'.IA_URL.'js/json2.js"></script>
         
@@ -474,7 +479,7 @@ HTML;
   $output .= '
             <li><a href="'.IA_URL.'config.php"><i class="fa fa-gear fa-fw"></i> Настройки</a></li> 
             <li class="divider"></li>
-            <li><a href="'.IA_URL.'?logout"><i class="fa fa-sign-out fa-fw"></i> Выход</a></li>
+            <li><a href="'.IA_URL.'?logout"><i class="fas fa-sign-out-alt"></i> Выход</a></li>
           </ul>
           <!-- /.dropdown-user -->
         </li>
@@ -510,7 +515,7 @@ HTML;
     }
     
     $output_example = '
-            <li><a href="'.IA_URL.'/admin_style/pages/index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
+            <li><a href="'.IA_URL.'/admin_style/pages/index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             
             <li>
               <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
@@ -691,7 +696,10 @@ HTML;
       			if (in_array($v,$this->scripts[$this->check])) $ok=true;
       		}
     	}
-    	if (!$ok) die("<div class='alert alert-error'>Недостаточно прав</div>");
+    	if (!$ok){
+        unset( $_SESSION["WA_USER"] );
+        die("<div class='alert alert-error'>Недостаточно прав</div>");
+      }
     }
   }
   
@@ -809,10 +817,10 @@ HTML;
         /*$output .= '  
     </div>
   <div class="box-body">';*/
-        
+         
         if($type){
           $output .= '
-          <table id="" class="adm_search_table table  table-condensed table-striped ">
+          <table id="" class="adm_search_table table  table-sm table-striped">
             <thead>
               <tr class="th nodrop nodrag" style = "background-color: #3c8dbc; color: #fff;">
               	<th style="width: 55px;">#</th>

@@ -131,7 +131,7 @@ class Image {
 		imagejpeg($this->image, $dest, $quality);
 	}
   
-  function corpImg($debug = 0){
+  static function corpImg($debug = 0){
     $output = '';
     $output .= '
       <!-- Cropper -->  
@@ -175,11 +175,11 @@ class Image {
     return $output;
   }
   
-  function getCorpImgCenterBtn(){
+  static function getCorpImgCenterBtn(){
     $output = '';
     $output .= '
                   <div class = "row">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                     
                       <div class="docs-toggles">
                         <h4 class = "">Кадрирование</h4>
@@ -253,7 +253,7 @@ class Image {
     return $output;
   }
   
-  function getCorpImgRightBtn(){
+  static function getCorpImgRightBtn(){
     $output = '';
     
     $output .= '
@@ -411,7 +411,7 @@ class Image {
     return $output;
   }
   
-  function getCorpImgForm(){
+  static function getCorpImgForm(){
     $output = '';
     
     $output .= '
@@ -449,7 +449,7 @@ class Image {
             
             <div class="modal-footer">
             
-              <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>-->
+              <!-- <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Закрыть</button>-->
               <div class="docs-toggles">
                 <div class="docs-buttons">
                   <button type="button" class="btn btn-success" data-method="getCroppedCanvas">
@@ -487,7 +487,7 @@ class Image {
     return $output;
   }
   
-  function getCorpImgFormDebug(){
+  function getCorpImgFormDebug(){ 
     $output = '';
     
     /*

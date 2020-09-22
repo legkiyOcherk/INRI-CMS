@@ -1,5 +1,5 @@
 <?php
-require_once "class.AdminBase.php"; 
+require_once __DIR__."/class.AdminBase.php"; 
 
 class AdminLTEextends extends BaseAdmin{
   
@@ -19,7 +19,7 @@ class AdminLTEextends extends BaseAdmin{
     $output = '';$i = 0;
     #pri($this->bread);
     $output .= '
-      <li><a href="/'.ADM_DIR.'"><i class="fa fa-dashboard"></i> Главная</a></li>';
+      <li><a href="/'.ADM_DIR.'"><i class="fas fa-tachometer-alt"></i> Главная</a></li>';
     
     if(is_array($this->bread) && $count = count($this->bread))
       foreach($this->bread as $k => $v){
@@ -50,7 +50,7 @@ class AdminLTEextends extends BaseAdmin{
                 <ul class="menu">
                   <li><!-- start message -->
                     <a href="#">
-                      <div class="pull-left">
+                      <div class="float-left">
                         <img src="'.IA_URL.'admin_style/a_lte/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                       </div>
                       <h4>
@@ -102,7 +102,7 @@ class AdminLTEextends extends BaseAdmin{
                     <a href="#">
                       <h3>
                         Design some buttons
-                        <small class="pull-right">20%</small>
+                        <small class="float-right">20%</small>
                       </h3>
                       <div class="progress xs">
                         <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
@@ -161,7 +161,7 @@ class AdminLTEextends extends BaseAdmin{
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="'.$this->profile_img.'" class="user-image" alt="User Image">
-              <span class="hidden-xs">'.$user_name.'</span>
+              <span class="d-none d-sm-block">'.$user_name.'</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -192,10 +192,10 @@ class AdminLTEextends extends BaseAdmin{
     $output .= '
               <!-- Menu Footer-->
               <li class="user-footer">
-                <div class="pull-left">
+                <div class="float-left">
                   <a href="'.IA_URL.'accounts.php?edits='.$this->user['id'].'" class="btn btn-default btn-flat">Аккаунт</a>
                 </div>
-                <div class="pull-right">
+                <div class="float-right">
                   <a href="'.IA_URL.'?logout" class="btn btn-default btn-flat">Выход</a>
                 </div>
               </li>
@@ -225,16 +225,16 @@ class AdminLTEextends extends BaseAdmin{
              <li><a href="'.IA_URL.'accounts.php"><i class="fa fa-user fa-fw"></i> Пользователи</a></li>';
   }
   $output .= '
-            <li><a href="'.IA_URL.'config.php"><i class="fa fa-gear fa-fw"></i> Настройки</a></li>
+            <li><a href="'.IA_URL.'config.php"><i class="fas fa-cog"></i> Настройки</a></li>
             <li class="divider"></li>
-            <li><a href="'.IA_URL.'?logout"><i class="fa fa-sign-out fa-fw"></i> Выход</a></li>
+            <li><a href="'.IA_URL.'?logout"><i class="fas fa-sign-out-alt"></i> Выход</a></li>
           </ul>
           <!-- /.dropdown-user -->
         </li>
         <!-- /.dropdown -->';
           /*<!-- Control Sidebar Toggle Button -->
           <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+            <a href="#" data-toggle="control-sidebar"><i class="fas fa-cog"></i></a>
           </li>*/
     $output .= '
         </ul>
@@ -261,9 +261,9 @@ class AdminLTEextends extends BaseAdmin{
     $output .= '
     <li class="treeview">
           <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+            <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+            <span class="float-right-container">
+              <i class="fa fa-angle-left float-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
@@ -275,8 +275,8 @@ class AdminLTEextends extends BaseAdmin{
           <a href="#">
             <i class="fa fa-files-o"></i>
             <span>Layout Options</span>
-            <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
+            <span class="float-right-container">
+              <span class="label label-primary float-right">4</span>
             </span>
           </a>
           <ul class="treeview-menu">
@@ -289,8 +289,8 @@ class AdminLTEextends extends BaseAdmin{
         <li>
           <a href="../widgets.html">
             <i class="fa fa-th"></i> <span>Widgets</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">Hot</small>
+            <span class="float-right-container">
+              <small class="label float-right bg-green">Hot</small>
             </span>
           </a>
         </li>
@@ -298,8 +298,8 @@ class AdminLTEextends extends BaseAdmin{
           <a href="#">
             <i class="fa fa-pie-chart"></i>
             <span>Charts</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+            <span class="float-right-container">
+              <i class="fa fa-angle-left float-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
@@ -313,8 +313,8 @@ class AdminLTEextends extends BaseAdmin{
           <a href="#">
             <i class="fa fa-laptop"></i>
             <span>UI Elements</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+            <span class="float-right-container">
+              <i class="fa fa-angle-left float-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
@@ -329,8 +329,8 @@ class AdminLTEextends extends BaseAdmin{
         <li class="treeview">
           <a href="#">
             <i class="fa fa-edit"></i> <span>Forms</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+            <span class="float-right-container">
+              <i class="fa fa-angle-left float-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
@@ -342,8 +342,8 @@ class AdminLTEextends extends BaseAdmin{
         <li class="treeview">
           <a href="#">
             <i class="fa fa-table"></i> <span>Tables</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+            <span class="float-right-container">
+              <i class="fa fa-angle-left float-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
@@ -354,27 +354,27 @@ class AdminLTEextends extends BaseAdmin{
         <li>
           <a href="../calendar.html">
             <i class="fa fa-calendar"></i> <span>Calendar</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-red">3</small>
-              <small class="label pull-right bg-blue">17</small>
+            <span class="float-right-container">
+              <small class="label float-right bg-red">3</small>
+              <small class="label float-right bg-blue">17</small>
             </span>
           </a>
         </li>
         <li>
           <a href="../mailbox/mailbox.html">
             <i class="fa fa-envelope"></i> <span>Mailbox</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-yellow">12</small>
-              <small class="label pull-right bg-green">16</small>
-              <small class="label pull-right bg-red">5</small>
+            <span class="float-right-container">
+              <small class="label float-right bg-yellow">12</small>
+              <small class="label float-right bg-green">16</small>
+              <small class="label float-right bg-red">5</small>
             </span>
           </a>
         </li>
         <li class="treeview active">
           <a href="#">
             <i class="fa fa-folder"></i> <span>Examples</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+            <span class="float-right-container">
+              <i class="fa fa-angle-left float-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
@@ -392,24 +392,24 @@ class AdminLTEextends extends BaseAdmin{
         <li class="treeview">
           <a href="#">
             <i class="fa fa-share"></i> <span>Multilevel</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+            <span class="float-right-container">
+              <i class="fa fa-angle-left float-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
             <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
             <li>
               <a href="#"><i class="fa fa-circle-o"></i> Level One
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
+                <span class="float-right-container">
+                  <i class="fa fa-angle-left float-right"></i>
                 </span>
               </a>
               <ul class="treeview-menu">
                 <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
                 <li>
                   <a href="#"><i class="fa fa-circle-o"></i> Level Two
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
+                    <span class="float-right-container">
+                      <i class="fa fa-angle-left float-right"></i>
                     </span>
                   </a>
                   <ul class="treeview-menu">
@@ -526,10 +526,10 @@ class AdminLTEextends extends BaseAdmin{
     <section class="sidebar">
       <!-- Sidebar user panel -->
       <div class="user-panel">
-        <div class="pull-left image">
+        <div class="float-left image">
           <img src="'.$this->profile_img.'" class="img-circle" alt="'.$this->user['fullname'].'">
         </div>
-        <div class="pull-left info">
+        <div class="float-left info">
           <p>'.$this->getUserName().'</p>     
           <a href="#"><i class="fa fa-circle text-success"></i> В сети</a>
         </div>
@@ -566,7 +566,7 @@ class AdminLTEextends extends BaseAdmin{
     <!-- /.sidebar -->
     ';
     
-    #<li><a href="https://adminlte.io/themes/AdminLTE/index.html" target = "_blank"><i class="fa fa-dashboard"></i> <span>Шаблон</span></a></li>
+    #<li><a href="https://adminlte.io/themes/AdminLTE/index.html" target = "_blank"><i class="fas fa-tachometer-alt"></i> <span>Шаблон</span></a></li>
     
     return $output;
   }
@@ -575,7 +575,7 @@ class AdminLTEextends extends BaseAdmin{
     
     $output .= '
 <footer class="main-footer">
-    <!--div class="pull-right hidden-xs">
+    <!--div class="float-right hidden-xs">
       <b>Версия</b> 3.180725
     </div-->
     <strong> &copy; '.date("Y").' <a href="http://'.$this->sitelink.'" target = "_blank">'.$this->sitelink.'</a></strong> <b>Версия</b> 3.180725
@@ -587,7 +587,7 @@ class AdminLTEextends extends BaseAdmin{
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
       <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
 
-      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fas fa-cog"></i></a></li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
@@ -648,7 +648,7 @@ class AdminLTEextends extends BaseAdmin{
             <a href="javascript:void(0)">
               <h4 class="control-sidebar-subheading">
                 Custom Template Design
-                <span class="label label-danger pull-right">70%</span>
+                <span class="label label-danger float-right">70%</span>
               </h4>
 
               <div class="progress progress-xxs">
@@ -660,7 +660,7 @@ class AdminLTEextends extends BaseAdmin{
             <a href="javascript:void(0)">
               <h4 class="control-sidebar-subheading">
                 Update Resume
-                <span class="label label-success pull-right">95%</span>
+                <span class="label label-success float-right">95%</span>
               </h4>
 
               <div class="progress progress-xxs">
@@ -672,7 +672,7 @@ class AdminLTEextends extends BaseAdmin{
             <a href="javascript:void(0)">
               <h4 class="control-sidebar-subheading">
                 Laravel Integration
-                <span class="label label-warning pull-right">50%</span>
+                <span class="label label-warning float-right">50%</span>
               </h4>
 
               <div class="progress progress-xxs">
@@ -684,7 +684,7 @@ class AdminLTEextends extends BaseAdmin{
             <a href="javascript:void(0)">
               <h4 class="control-sidebar-subheading">
                 Back End Framework
-                <span class="label label-primary pull-right">68%</span>
+                <span class="label label-primary float-right">68%</span>
               </h4>
 
               <div class="progress progress-xxs">
@@ -708,7 +708,7 @@ class AdminLTEextends extends BaseAdmin{
           <div class="form-group">
             <label class="control-sidebar-subheading">
               Report panel usage
-              <input type="checkbox" class="pull-right" checked>
+              <input type="checkbox" class="float-right" checked>
             </label>
 
             <p>
@@ -720,7 +720,7 @@ class AdminLTEextends extends BaseAdmin{
           <div class="form-group">
             <label class="control-sidebar-subheading">
               Allow mail redirect
-              <input type="checkbox" class="pull-right" checked>
+              <input type="checkbox" class="float-right" checked>
             </label>
 
             <p>
@@ -732,7 +732,7 @@ class AdminLTEextends extends BaseAdmin{
           <div class="form-group">
             <label class="control-sidebar-subheading">
               Expose author name in posts
-              <input type="checkbox" class="pull-right" checked>
+              <input type="checkbox" class="float-right" checked>
             </label>
 
             <p>
@@ -746,7 +746,7 @@ class AdminLTEextends extends BaseAdmin{
           <div class="form-group">
             <label class="control-sidebar-subheading">
               Show me as online
-              <input type="checkbox" class="pull-right" checked>
+              <input type="checkbox" class="float-right" checked>
             </label>
           </div>
           <!-- /.form-group -->
@@ -754,7 +754,7 @@ class AdminLTEextends extends BaseAdmin{
           <div class="form-group">
             <label class="control-sidebar-subheading">
               Turn off notifications
-              <input type="checkbox" class="pull-right">
+              <input type="checkbox" class="float-right">
             </label>
           </div>
           <!-- /.form-group -->
@@ -762,7 +762,7 @@ class AdminLTEextends extends BaseAdmin{
           <div class="form-group">
             <label class="control-sidebar-subheading">
               Delete chat history
-              <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+              <a href="javascript:void(0)" class="text-red float-right"><i class="far fa-trash-alt"></i></a>
             </label>
           </div>
           <!-- /.form-group -->
@@ -803,7 +803,7 @@ class AdminLTEextends extends BaseAdmin{
       {
         if(strripos($k, ".php") === false) {
           $sub_header = '<li class="header"><b>'.$v.'</b></li>';
-          $output .= $sub_header;
+          if ($this->user["is_admin"]) $output .= $sub_header;
           continue;
         }
         $icon = '';
@@ -909,15 +909,15 @@ class AdminLTEextends extends BaseAdmin{
         #<input type="email" class="form-control" placeholder="Email">
     $output .= '
         <input type="text" class="form-control" placeholder="login" name="login" required="" autofocus />
-        <span class="glyphicon glyphicon glyphicon-log-in form-control-feedback"></span>
+        <span class="fas fa-sign-out-alt form-control-feedback"></span>
         
       </div>
       <div class="form-group has-feedback">
         <input type="password" class="form-control" placeholder="Password" name="password" value="" required="" >
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <span class="fas fa-lock form-control-feedback"></span>
       </div>
-      <div class="row">
-        <div class="col-xs-8">
+      <div class="row align-items-center">
+        <div class="col-8">
           <div class="checkbox icheck">
             <label>
               <input type="checkbox"> Запомнить меня
@@ -925,7 +925,7 @@ class AdminLTEextends extends BaseAdmin{
           </div>
         </div>
         <!-- /.col -->
-        <div class="col-xs-4">
+        <div class="col-4">
           <button type="submit" class="btn btn-primary btn-block btn-flat">Войти</button>
         </div>
         <!-- /.col -->
@@ -939,13 +939,14 @@ class AdminLTEextends extends BaseAdmin{
     <style>
     .login_content {
       color: #73879C;
-      font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
+      /*font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;*/
       font-size: 13px;
       font-weight: 400;
       line-height: 1.471;
     }
     .login_content h1 {
-        font: 400 25px Helvetica,Arial,sans-serif;
+        /*font: 400 25px Helvetica,Arial,sans-serif;*/
+        font-size: 25px;
         letter-spacing: -.05em;
         line-height: 20px;
         margin: 10px 0 30px;
@@ -1026,7 +1027,7 @@ class AdminLTEextends extends BaseAdmin{
           <div class="box-header with-border">
             <h3 class="box-title">'.$this->title.'</h3>
 
-            <div class="box-tools pull-right">
+            <div class="box-tools float-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                 <i class="fa fa-minus"></i></button>';
                 

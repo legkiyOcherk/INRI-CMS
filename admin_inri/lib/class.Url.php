@@ -1,6 +1,7 @@
 <?php
-require_once "class.BaseCarusel.php"; 
-require_once "formvalidator.php";
+require_once __DIR__."/class.BaseCarusel.php"; 
+require_once __DIR__."/formvalidator.php";// Валидатор
+
 class MyValidator extends CustomValidator
 {
   var $id_row;
@@ -185,14 +186,14 @@ class Url extends BaseCarusel{
   function show_table_header_rows(){
     $output = '
           <tr class="th nodrop nodrag">
-      		  <td style="width: 55px;">#</td>
-      		  <td style="width: 50px;">Скрыть</td>
-      		  <td >Название</td>
-            <td >ЧПУ</td>
-            <td >Модуль</td>
-            <td >Модуль ID</td>
-            <td>Ссылка</td>
-      		  <td style="width: 80px">Действие</td>
+      		  <th style="width: 55px;">#</th>
+      		  <th style="width: 50px;">Скрыть</th>
+      		  <th >Название</th>
+            <th >ЧПУ</th>
+            <th >Модуль</th>
+            <th >Модуль ID</th>
+            <th>Ссылка</th>
+      		  <th style="width: 80px">Действие</th>
           </tr>';
     
     return $output;
@@ -228,14 +229,14 @@ class Url extends BaseCarusel{
               <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
-                <i class="fa fa-pencil"></i>
+                <i class="fas fa-pencil-alt"></i>
               </a>
               
               <span >
               <span class="btn btn-danger btn-sm" 
                     title="удалить" 
                     onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                <i class="fa fa-trash-o"></i>
+                <i class="far fa-trash-alt"></i>
               </span>
             </td>
   			  </tr>
@@ -293,28 +294,19 @@ class Url extends BaseCarusel{
       >
         <input type="hidden" name="slideid" value="1">
     ';
-    if($q = $this->pdo->query($s))
-      if($q->rowCount()){
-        
-        
-    #if($items){
-      
-      $output .= '
-  	    <table id="sortabler" class="table sortab table-condensed table-striped ">
-          '.$this->show_table_header_rows();
-      
-      while($item = $q->fetch()){
-        
-        $output .= $this->show_table_rows($item);
-
-        
+    if($q = $this->pdo->query($s)){
+      if($q->rowCount()){  
+        $output .= '
+    	    <table id="sortabler" class="table sortab table-sm table-striped ">
+            <thead>'.$this->show_table_header_rows().'</thead>
+            <tbody>';
+        while($item = $q->fetch()){
+          $output .= $this->show_table_rows($item);
+        }
+        $output .= '
+            </tbody>
+          </table>';
       }
-      
-      $output .= '
-        </table>
-      ';
-      
-      
     }
     $output .= $groupOperationsCont;
     $output .= '
@@ -965,7 +957,7 @@ class Url extends BaseCarusel{
         }
         if ($t2u_no == 7)
             break;
-        if (strlen($word) > 6)
+        if (strlen($word) > 1)
             $t2u_no++;
       }
       //echo "Перевод = ".$result."<br>";

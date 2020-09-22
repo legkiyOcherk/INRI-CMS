@@ -73,14 +73,14 @@ class Accounts extends Carusel{
               <a  href="../'.ADM_DIR.'/'.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
-                <i class="fa fa-pencil"></i>
+                <i class="fas fa-pencil-alt"></i>
               </a>
               
               <span >
               <span class="btn btn-danger btn-sm" 
                     title="удалить" 
                     onclick="delete_item('.$id.', \'Удалить элемент?\', \'tr_'.$id.'\')">
-                <i class="fa fa-trash-o"></i>
+                <i class="far fa-trash-alt"></i>
               </span>
             </td>
   			  </tr>
@@ -124,65 +124,28 @@ class Accounts extends Carusel{
       
       // Отступы
       if($key == 'login'){
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> <h3 class="panel-title">Авторизация</h3> </div> 
-            <div class="panel-body"> 
-        ';
-        $is_open_panel_div = true;  
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('Авторизация');
+        $is_open_panel_div = true;   
       }
       
       if($key == 'is_admin'){
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> <h3 class="panel-title">Права</h3> </div> 
-            <div class="panel-body"> 
-        ';
-        $is_open_panel_div = true;  
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('Права');
+        $is_open_panel_div = true;   
       }
-      
       
       // Отступы SEO
       if($key == 'seo_h1'){
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> <h3 class="panel-title">SEO</h3> </div> 
-            <div class="panel-body"> 
-        ';
-        $is_open_panel_div = true;  
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('SEO');
+        $is_open_panel_div = true;   
       }
       
-      if($key == 'img_alt') {
-        if($is_open_panel_div){
-          $output .= '
-            </div>
-          </div>  
-          ';
-        }
-        $output .= ' 
-          <div class="panel panel-default"> 
-            <div class="panel-heading"> <h3 class="panel-title">Атрибуты основого изображения</h3> </div> 
-            <div class="panel-body"> 
-        ';
-        $is_open_panel_div = true;         
+      if($key == 'img_alt'){
+        if($is_open_panel_div) $output .= $this->getCardPanelFooter();
+        $output .= $this->getCardPanelHeader('Атрибуты основого изображения');
+        $is_open_panel_div = true;   
       }
       
       if( in_array( $key, $this->checkbox_array) ){
@@ -225,11 +188,8 @@ class Accounts extends Carusel{
     }
     
     if($is_open_panel_div){
-      $is_open_panel_div = false;
-      $output .= '
-        </div>
-      </div>
-      '; 
+      $is_open_panel_div = false; 
+      $output .= $this->getCardPanelFooter();
     }
     
     $output .= $this->getFormPicture($id, $item);

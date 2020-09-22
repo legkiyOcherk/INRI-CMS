@@ -492,7 +492,7 @@ class SiteBase {
       $output .= $cont;
       $output .= '
           <a class = "admin_edit_link btn btn-info btn-sm" href = "'.$link.'" title="Редактировать">
-            <i class="fa fa-pencil"></i>
+            <i class="fas fa-pencil-alt"></i>
           </a>
         </div>';
     }else{

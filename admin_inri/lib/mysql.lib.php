@@ -158,6 +158,19 @@ function sqlDateToRusDate(&$date){
   return $rus_date;
 }
 
+function convert_date($date, $input_format, $output_format){
+  
+  $res_date = $date;
+  $dt = DateTime::createFromFormat($input_format, $date);
+  $methodVariable = array($dt, 'format');
+  if( is_callable($methodVariable)  ){
+    $res_date = $dt->format($output_format);
+  }
+  
+  return $res_date;
+  
+}
+
 function pri($arr, $head = null){
   if($head) echo '<br>'.$head.'<br>';
   echo '<pre>';

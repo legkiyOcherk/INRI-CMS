@@ -1,6 +1,6 @@
 <?php
-require_once "class.BaseCarusel.php"; 
-require_once "formvalidator.php";
+require_once __DIR__."/class.BaseCarusel.php"; 
+require_once __DIR__."/formvalidator.php";// Валидатор
 
 class Log extends BaseCarusel{
   // Настройка модуля (меняется при установке модуля)
@@ -189,16 +189,16 @@ class Log extends BaseCarusel{
   function show_table_header_rows(){
     $output = '
           <tr class="th nodrop nodrag">
-      		  <td style="width: 55px;">#</td>
-      		  <td style="width: 50px;">Скрыть</td>
-            <td style="width: 150px;">Дата</td>
-      		  <td style="width: 250px;">Действие</td>
-            <td >Материал</td>
-            <td >Пользователь</td>
-            <td >IP</td>
-            <td >Название модуля</td>
-            <td >Id модуля</td>
-      		  <td style="width: 80px">Действие</td>
+      		  <th style="width: 55px;">#</th>
+      		  <th style="width: 50px;">Скрыть</th>
+            <th style="width: 150px;">Дата</th>
+      		  <th style="width: 250px;">Действие</th>
+            <th >Материал</th>
+            <th >Пользователь</th>
+            <th >IP</th>
+            <th >Название модуля</th>
+            <th >Id модуля</th>
+      		  <th style="width: 80px">Действие</th>
           </tr>';
     
     return $output;
@@ -264,14 +264,14 @@ class Log extends BaseCarusel{
               <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
-                <i class="fa fa-pencil"></i>
+                <i class="fas fa-pencil-alt"></i>
               </a>
               
               <span >
               <span class="btn btn-danger btn-sm" 
                     title="удалить" 
                     onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                <i class="fa fa-trash-o"></i>
+                <i class="far fa-trash-alt"></i>
               </span>
             </td>
   			  </tr>
@@ -329,28 +329,23 @@ class Log extends BaseCarusel{
       >
         <input type="hidden" name="slideid" value="1">
     ';
-    if($q = $this->pdo->query($s))
+    if($q = $this->pdo->query($s)){
       if($q->rowCount()){
-        
-        
-    #if($items){
-      
-      $output .= '
-  	    <table id="sortabler" class="table sortab table-condensed table-striped ">
-          '.$this->show_table_header_rows();
-      
-      while($item = $q->fetch()){
-        
-        $output .= $this->show_table_rows($item);
-
-        
+        $output .= '
+    	    <table id="sortabler" class="table sortab table-sm table-striped ">
+            <thead>'.$this->show_table_header_rows().'</thead>
+            <tbody>';
+        while($item = $q->fetch()){
+          try {
+            $output .= $this->show_table_rows($item);
+          } catch (Exception $e) {
+            echo $e->getMessage();
+          }
+        }
+        $output .= '
+            </tbody>
+          </table>';
       }
-      
-      $output .= '
-        </table>
-      ';
-      
-      
     }
     $output .= $groupOperationsCont;
     $output .= '
@@ -368,12 +363,11 @@ class Log extends BaseCarusel{
     
   }
   
-  
   function show_form_row($title = '', $cont = ''){
     $output = '
-      <div class="form-group c_row">
-        <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 c_title control-label">'.$title.'</label>
-        <div class = "col-xs-12 col-sm-8 col-md-9 col-lg-10 c_cont">'.$cont.'</div>
+      <div class="form-group row">
+        <label class="col-12 col-sm-4 col-md-3 col-lg-2 c_title control-label">'.$title.'</label>
+        <div class = "col-12 col-sm-8 col-md-9 col-lg-10 c_cont">'.$cont.'</div>
       </div>
     ';
     
