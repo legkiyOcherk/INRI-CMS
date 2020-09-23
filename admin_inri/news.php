@@ -1,10 +1,15 @@
 <?php
-require_once('lib/class.Admin.php');
+require_once(__DIR__.'/lib/class.Admin.php');
 $admin = new Admin();
-require_once('lib/class.Carusel.php');
-require_once('lib/class.Image.php');
-require_once('../vendors/phpmorphy/phpmorphy_init.php'); // Морфология
-
+if(  ( IS_AJAX_BACKEND == 1 ) ){
+  require_once( __DIR__.'/lib/class.AjaxCarusel.php');
+  class BlockClass extends AjaxCarusel {}
+}else{
+  require_once( __DIR__.'/lib/class.Carusel.php');  
+  class BlockClass extends Carusel {}
+} 
+require_once( __DIR__.'/lib/class.Image.php' );
+require_once( __DIR__.'/../vendors/phpmorphy/phpmorphy_init.php' ); // Морфология
 
 function get_phpmorphy($descr_str) {
     global $morphy;
@@ -38,7 +43,21 @@ function get_phpmorphy($descr_str) {
     return $orm_search;
 }
 
-class News extends Carusel{  
+class News extends BlockClass{  
+  
+  function getAjaxCompleteScript(){
+    $output = '';
+    
+    $output .= '
+    <script>
+      $(document).ajaxComplete(function() {
+        CKEDITOR.replace( "longtxt1" );
+        CKEDITOR.replace( "longtxt2" );
+      });
+    </script>';
+    
+    return $output; 
+  }
   
   function star_check(){
     
@@ -73,13 +92,13 @@ class News extends Carusel{
   
   function show_table_header_rows(){
     $output = '
-          <tr class="th nodrop nodrag">
-          	<td style="width: 55px;">#</td>
-      		  <td style="width: 50px;">Скрыть</td>
-            <td style="width: 115px;">Дата</td>
-            <td style="width: 60px;">Картинка</td>
-      		  <td>Название</td>
-      		  <td style="width: 80px">Действие</td>
+          <tr class="tth nodrop nodrag">
+          	<th style="width: 55px;">#</th>
+      		  <th style="width: 50px;">Скрыть</th>
+            <th style="width: 115px;">Дата</th>
+            <th style="width: 60px;">Картинка</th>
+      		  <th>Название</th>
+      		  <th style="width: 80px">Действие</th>
           </tr>';
     
     return $output;
@@ -141,114 +160,15 @@ class News extends Carusel{
         	  
             <td style="text-align: left;">
               <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать"><b>'.$title.'</b> '.$longtxt1.'</a>
-            </td>';
-            
-    $output .= '
-        	  <td style="" class="img-act">
-              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
-                  class = "btn btn-info btn-sm"
-                  title = "Редактировать">
-                <i class="fas fa-pencil-alt"></i>
-              </a>
-              
-              <span >
-              <span class="btn btn-danger btn-sm" 
-                    title="удалить" 
-                    onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                <i class="far fa-trash-alt"></i>
-              </span>
             </td>
-  			  </tr>
+            
+        	  <td style="" class="action_btn_box">
+              '.$this->show_table_row_action_btn($id).'
+            </td>
   			  </tr>';
     
     return $output;
   }
-
-    function show_table(){
-    $output = "";
-   
-    $output .= $this->getFormStyleAndScript(); 
-    
-    $header = '<h1>'.$this->header.'</h1>';
-    (!is_null($this->admin)) ?  : $output .=  $header;
-    
-    #$this->bread[ucfirst_utf8($this->header)] = $this->carusel_name.'.php'; 
-    $this->title  = ucfirst_utf8($this->header);
-    
-    $s = "
-      SELECT COUNT( * ) AS count
-      FROM `".$this->prefix.$this->carusel_name."`
-    ";
-    
-    $q = $this->pdo->query($s);
-    $r = $q->fetch();
-    $count_items = $r['count'];
-
-    $s_filter = $s_sorting = $s_limit = $strPager = $groupOperationsCont = '';
-    $s_order = " ORDER BY `date` DESC ";
-    
-    if(!$count_items) $output .= "<p>Раздел пуст</p>";
-    if($this->is_filter &&  $count_items) $output .= $this->getFilterTable($s_filter);
-    if( $count_items) $groupOperationsCont = $this->getGroupOperations();
-    if($this->is_pager && $count_items) $strPager = $this->getPager( $count_items, $s_limit);
-   
-    $output .= $strPager;
-    
-    $s = "
-      SELECT *
-      FROM `".$this->prefix.$this->carusel_name."`
-      $s_filter
-      $s_sorting
-      $s_order
-      $s_limit
-    ";
-    #echo $s;
-    
-    $output .= '
-      <form 
-        method="post" 
-        action="'.$this->carusel_name.'.php" 
-        id="sortSlide"
-        class="table-responsive"
-      >
-        <input type="hidden" name="slideid" value="1">
-    ';
-    if($q = $this->pdo->query($s))
-      if($q->rowCount()){
-        
-        
-    #if($items){
-      
-      $output .= '
-  	    <table id="sortabler" class="table sortab table-condensed table-striped ">
-          '.$this->show_table_header_rows();
-      
-      while($item = $q->fetch()){
-        
-        $output .= $this->show_table_rows($item);
-
-        
-      }
-      
-      $output .= '
-        </table>
-      ';
-      
-      
-    }
-    $output .= $groupOperationsCont;
-    $output .= '
-    <br>
-  	<center><a class="btn btn-success " href="?adds" id="submit">Добавить</a></center>
-    </form>';
-
-    
-    if($this->is_pager) $output .= $strPager;
-    
-    return $output;
-    
-  }
-  
   
   function show_form($item = null, $output = '', $id = null){ 
     

@@ -1,10 +1,17 @@
 <?php
-require_once('lib/class.Admin.php');
+require_once( __DIR__.'/lib/class.Admin.php' );
 $admin = new Admin();
-require_once('lib/class.Carusel.php');
-require_once('lib/class.Image.php');
+if(  ( IS_AJAX_BACKEND == 1 ) ){
+  require_once( __DIR__.'/lib/class.AjaxCarusel.php');
+  class BlockClass extends AjaxCarusel {}
+}else{
+  require_once( __DIR__.'/lib/class.Carusel.php');  
+  class BlockClass extends Carusel {}
+} 
+require_once( __DIR__.'/lib/class.Image.php');
 
-class Article extends Carusel{  
+class Article extends BlockClass{  
+
   function show_table_header_rows(){
     $output = '
           <tr class="th nodrop nodrag">
@@ -42,21 +49,9 @@ class Article extends Carusel{
             </td>';
             
     $output .= '
-        	  <td style="" class="img-act">
-              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
-                  class = "btn btn-info btn-sm"
-                  title = "Редактировать">
-                <i class="fas fa-pencil-alt"></i>
-              </a>
-              
-              <span >
-              <span class="btn btn-danger btn-sm" 
-                    title="удалить" 
-                    onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                <i class="far fa-trash-alt"></i>
-              </span>
+        	  <td style="" class="action_btn_box">
+              '.$this->show_table_row_action_btn($id).'
             </td>
-  			  </tr>
   			  </tr>';
     
     return $output;
@@ -123,4 +118,4 @@ $carisel->checkbox_array = array('fl_is_fixed', 'hide');                # Гал
 if($output = $carisel->getContent($admin)){
   $admin->setContent($output);
   echo $admin->showAdmin('content');
-}
+} 

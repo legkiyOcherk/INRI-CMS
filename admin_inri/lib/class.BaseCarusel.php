@@ -70,7 +70,9 @@ class BaseCarusel{
     $is_validation = true;
     
     $validator = new FormValidator();
-    $validator->addValidation("title","req","Пожалуйста, заполните ".$this->date_arr['title']);
+    if(isset($this->date_arr['title'])){
+      $validator->addValidation("title", "req", "Пожалуйста, заполните ".$this->date_arr['title']);  
+    }
     
     if($validator->ValidateForm())
     {
@@ -267,7 +269,7 @@ class BaseCarusel{
 
     $output .= $this->show_form($item);
 
-    $output .= ' <BR/><BR/><INPUT type="submit" value="сохранить" class="btn btn-success btn-large" id="submit" >';
+    $output .= ' <BR/><BR/><INPUT type="submit" value="сохранить" class="btn btn-success btn-large submit_form" id="submit" >';
     $output .= '</FORM></div>';
     
     $sql="SHOW TABLE STATUS LIKE '".$this->prefix.$this->carusel_name."'";
@@ -315,7 +317,7 @@ class BaseCarusel{
       $output .= $this->show_form($item, '', $id);
 
       
-      $output .= '<input type="submit" value="сохранить" class="btn btn-success btn-large" id="submit">';
+      $output .= '<input type="submit" value="сохранить" class="btn btn-success btn-large submit_form" id="submit">';
       $output .= '</form>';
       
       /*//Модуль картинок
@@ -338,9 +340,9 @@ class BaseCarusel{
     return $star_val;
   }
   
-  function getFormStyleAndScript(){
+    function getFormStyle(){
     $output = '';
-    
+     
     $output .= '
     <style>
      table td { text-align: left; }
@@ -367,9 +369,23 @@ class BaseCarusel{
      div.img_preview { display: none; position: absolute; z-index: 99; border: 1px #ccc dotted; }
      .img-act { text-align: right; }
      table td.img-act a:visited { color: #ffffff; }
-     
+     .cat_img_box{
+       
+     }
+     .cat_img_item{
+       max-width: 100%;
+     }
     </style>
     ';
+    
+    return $output;
+  }
+  
+  function getFormStyleAndScript(){
+    $output = '';
+    
+    $output .= $this->getFormStyle();
+    
     $output .= '
     <script type="text/javascript" src="js/tablednd.js"></script>
     <script>
@@ -444,7 +460,7 @@ HTML;
     $output = '';
     
     $filter_field_name = $filter_field_val = '';
-    if($_POST['filter_field_reset']){
+    if( (isset($_POST['filter_field_reset'])) && ($_POST['filter_field_reset']) ){
       unset ($_SESSION[$this->carusel_name]);
       unset ($_POST['filter_field']);
     }#pri($_POST);
@@ -464,10 +480,10 @@ HTML;
         #pri($fval);
         $filter_field_name = $fval['name'];
         $filter_field_val  = $fval['val'];
-        if(empty($s_filter)) $s_filter .= "WHERE 1";
         if($filter_field_val){
+          (!$s_filter) ? $s_filter .= "WHERE " : $s_filter .= " AND ";
           $s_filter .= "
-            AND `".$this->prefix.$this->carusel_name."`.`".$filter_field_name."`
+            `".$this->prefix.$this->carusel_name."`.`".$filter_field_name."`
             LIKE '%".$filter_field_val."%'
           ";    
         }
@@ -657,7 +673,7 @@ HTML;
         
     $output .= $this->show_form_row( 
             ' Изображение  (Иделальный размер '.$this->img_ideal_width.' x '.$this->img_ideal_height.'):', 
-            ' <input type="file" name="picture" value="" class="form-control">'
+            ' <input type="file" name="picture" id = "fr_picture" value="" class="form-control">'
           );
       
     $item_img = $item['img'];

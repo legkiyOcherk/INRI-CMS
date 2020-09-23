@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__."/class.BaseCarusel.php"; 
+require_once __DIR__."/class.BaseCarusel.php";
 
 class Carusel extends BaseCarusel{
   
@@ -234,7 +234,7 @@ class Carusel extends BaseCarusel{
 
   function show_table_header_rows(){
     $output = '
-          <tr class="th nodrop nodrag">
+          <tr class="tth nodrop nodrag">
           	<th style="width: 55px;">#</th>
       		  <th style="width: 50px;">Скрыть</th>
             <th style="width: 60px;">Картинка</th>
@@ -262,7 +262,7 @@ class Carusel extends BaseCarusel{
     if($img){
       $output .= '
             <div class="zoomImg" ><img style="width:50px;" src="../images/'.$this->carusel_name.'/slide/'.$img.'"></div>        ';
-    }elseif($color){
+    }elseif( isset($color) && $color ){
       $output .= '
             <div class="zoomImg" style = "background-color: '.$color.'">';
     }
@@ -274,21 +274,30 @@ class Carusel extends BaseCarusel{
             </td>';
             
     $output .= '
-        	  <td style="" class="img-act">
+        	  <td style="" class="action_btn_box">
+              '.$this->show_table_row_action_btn($id).'
+            </td>
+  			  </tr>';
+    
+    return $output;
+  }
+  
+  function show_table_row_action_btn($id){
+    $output = '';
+    
+    $output .= '
               <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
                 <i class="fas fa-pencil-alt"></i>
               </a>
               
-              <span >
               <span class="btn btn-danger btn-sm" 
                     title="удалить" 
                     onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
                 <i class="far fa-trash-alt"></i>
               </span>
-            </td>
-  			  </tr>';
+    ';
     
     return $output;
   }
@@ -308,16 +317,21 @@ class Carusel extends BaseCarusel{
       SELECT COUNT( * ) AS count
       FROM `".$this->prefix.$this->carusel_name."`
     ";
+    $q = $this->pdo->query($s); $r = $q->fetch(); $count_items = $r['count'];
     
-    $q = $this->pdo->query($s);
-    $r = $q->fetch();
-    $count_items = $r['count'];
-
-    $s_filter = $s_sorting = $s_limit = $strPager = $groupOperationsCont = '';
+    $where = $s_sorting = $s_limit = $strPager = $groupOperationsCont = '';
     $s_order = " ORDER BY `ord` ASC ";
-    
+      
     if(!$count_items) $output .= "<p>Раздел пуст</p>";
-    if($this->is_filter &&  $count_items) $output .= $this->getFilterTable($s_filter);
+    if($this->is_filter &&  $count_items) $output .= $this->getFilterTable($where);
+    
+    $s = "
+      SELECT COUNT( * ) AS count
+      FROM `".$this->prefix.$this->carusel_name."`
+      $where
+    "; #pri($s);
+    $q = $this->pdo->query($s); $r = $q->fetch(); $count_items = $r['count'];
+    
     if( $count_items) $groupOperationsCont = $this->getGroupOperations();
     if($this->is_pager && $count_items) $strPager = $this->getPager( $count_items, $s_limit);
    
@@ -326,12 +340,11 @@ class Carusel extends BaseCarusel{
     $s = "
       SELECT *
       FROM `".$this->prefix.$this->carusel_name."`
-      $s_filter
+      $where
       $s_sorting
       $s_order
       $s_limit
-    ";
-    #echo $s;
+    "; #pri($s);
     
     $output .= '
       <form 
@@ -359,8 +372,9 @@ class Carusel extends BaseCarusel{
     
     $output .= $groupOperationsCont;
     $output .= '
-    <br>
-  	<center><a class="btn btn-success " href="?adds" id="submit">Добавить</a></center>
+    <br>';
+  	$output .=  $this->get_add_btn_show_table();
+    $output .= '
     </form>';
 
     
@@ -368,6 +382,14 @@ class Carusel extends BaseCarusel{
     
     return $output;
     
+  }
+  
+  function get_add_btn_show_table(){
+    $output = '';
+    $output .= '
+    <center><a class="btn btn-success " href="?adds" id="submit">Добавить</a></center>';
+    
+    return $output;
   }
   
   function show_form($item = null, $output = '', $id = null){
@@ -616,13 +638,12 @@ class Carusel extends BaseCarusel{
         $this->files_items->deleteImageForModuleAndModuleId($this->prefix.$this->carusel_name, $id);
       }
       
+      $s = "DELETE FROM `".$this->prefix.$this->carusel_name."` WHERE `id` = '$id'";
       if($this->log){ // Ведение лога
-        $s = db::row("*", $this->prefix.$this->carusel_name, "id = ".$id, null, 1);
         $backUpItem = serialize ( db::row("*", $this->prefix.$this->carusel_name, "id = ".$id) );
         $res_log = $this->log->addLogRecord("Удаление", "delete", $this->prefix.$this->carusel_name, $id, $backUpItem, addslashes($s));
       }
-      
-      $this->pdo->query("DELETE FROM `".$this->prefix.$this->carusel_name."` WHERE `id` = '$id'");
+      $this->pdo->query($s);
       
     }
     switch($view){
@@ -636,11 +657,10 @@ class Carusel extends BaseCarusel{
         break;
     }
     
-    
     return $output;
   }
   
-  // END BACKEND function
+  // END BACKEND function 
 
 }
 

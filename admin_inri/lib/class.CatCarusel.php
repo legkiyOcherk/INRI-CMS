@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__."/class.BaseCarusel.php"; 
+require_once __DIR__."/class.BaseCarusel.php";  
  
 class CatCarusel extends BaseCarusel{
 
@@ -495,7 +495,7 @@ class CatCarusel extends BaseCarusel{
   
   function show_cat_table_header_rows(){
     $output = '
-                <tr class="th">
+                <tr class="tth">
             		  <th style="width: 55px;">#</th>
             		  <th style="width: 60px;">Скрыть</th>
             		  <th colspan = "2">Название</th>
@@ -520,7 +520,7 @@ class CatCarusel extends BaseCarusel{
                 $output .= '
                   <div class="zoomImg"><img style="width:50px" src="../images/'.$this->carusel_name.'/cat/slide/'.$img.'"></div>  
                 ';
-              }else if($color){
+              }else if( isset($color) && $color ){
                 $output .= '
                   <div class="zoomImg" style = "background-color: '.$color.'">
                 ';
@@ -531,53 +531,57 @@ class CatCarusel extends BaseCarusel{
                   <td style="text-align: left;">
                     <a href="'.IA_URL.$this->carusel_name.'.php?c_id='.$id.'" title="редактировать">'.$title.'</a>
                   </td>
-              	  
-            	';
-
-              $output .= '
-              	  <td style="" class="img-act">
-                    
-                    <a  href="..'.IA_URL.$this->carusel_name.'.php?editc='.$id.'" 
-                        class = "btn btn-info btn-sm"
-                        title = "Редактировать">
-                        <i class="fas fa-pencil-alt"></i>
-                    </a>';
-/*<a href="..'.IA_URL.'$this->carusel_name.'.php?editc='.$id.'"><img src="..'.IA_URL.'images/icons/b_props.png" width="16" height="16" border="0"></a>&nbsp;*/                    
-                    
-              $val_is_cildren = $val_is_items = '';
-              #$val_is_cildren = db::value('id', '`'.$this->prefix.$this->carusel_name.'_cat'.'`', "parent_id = ".$id);
-              #$val_is_items = db::value('id', '`'.$this->prefix.$this->carusel_name.'`', "cat_id = ".$id);
-              
-              $s = "SELECT id FROM `".$this->prefix.$this->carusel_name.'_cat'."` WHERE parent_id = $id";
-              $q = $this->pdo->query($s);
-              if($q->rowCount()) {
-                $r = $q->fetch();
-                $val_is_cildren = $r['id'];
-              }
-              $s = "SELECT id FROM `".$this->prefix.$this->carusel_name."` WHERE cat_id = $id";
-              $q = $this->pdo->query($s);
-              if($q->rowCount()) {
-                $r = $q->fetch();
-                $val_is_items = $r['id'];
-              }
-              
-              if(!$val_is_cildren && !$val_is_items){
-                $output .= '
-                    <a href="..'.IA_URL.$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}"
-                          class="btn btn-danger btn-sm" 
-                          title="удалить" 
-                          onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                      <i class="far fa-trash-alt"></i>
-                    </a>
-                ';
-                /*<a href="..'.IA_URL.'$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}">
-                      <img src="..'.IA_URL.'images/icons/b_drop.png" width="16" height="16" border="0">
-                    </a>*/
-              }
-              $output .= '
+                  
+                  <td style="" class="action_btn_box">
+                    '.$this->show_cat_table_row_action_btn($id).'
                   </td>
         			  </tr>
               ';
+    
+    return $output;
+  }
+  
+  function show_cat_table_row_action_btn($id){
+    $output = '';
+    
+    $output .= '
+        
+        <a  href="..'.IA_URL.$this->carusel_name.'.php?editc='.$id.'" 
+            class = "btn btn-info btn-sm"
+            title = "Редактировать">
+            <i class="fa fa-pencil"></i>
+        </a>';
+            
+    $val_is_cildren = $val_is_items = '';
+    
+    $s = "SELECT id FROM `".$this->prefix.$this->carusel_name.'_cat'."` WHERE parent_id = $id";
+    $q = $this->pdo->query($s);
+    if($q->rowCount()) {
+      $r = $q->fetch();
+      $val_is_cildren = $r['id'];
+    }
+    $s = "SELECT id FROM `".$this->prefix.$this->carusel_name."` WHERE cat_id = $id";
+    $q = $this->pdo->query($s);
+    if($q->rowCount()) {
+      $r = $q->fetch();
+      $val_is_items = $r['id'];
+    }
+    
+    if(!$val_is_cildren && !$val_is_items){
+      $output .= '
+          <a href="..'.IA_URL.$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}"
+                class="btn btn-danger btn-sm" 
+                title="удалить" 
+                onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
+            <i class="fa fa-trash-o"></i>
+          </a>
+      ';
+      #<a href="..'.IA_URL.'$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}">
+      #      <img src="..'.IA_URL.'images/icons/b_drop.png" width="16" height="16" border="0">
+      #    </a>
+    }
+    $output .= '
+      </td>';
     
     return $output;
   }
@@ -626,11 +630,21 @@ class CatCarusel extends BaseCarusel{
     }
     $output .= '
             </form>';
-    $output .= '<div style = "text-align: right;" ><a class="btn btn-primary" href="?addc">Добавить категорию</a></div>';
+    
+    $output .= $this->get_add_cat_btn_show_table();
     
     return $output;
     
   }
+  
+  function get_add_cat_btn_show_table(){
+    $output = '';
+    $output .= '
+    <div style = "text-align: right;" ><a class="btn btn-primary" href="?addc">Добавить категорию</a></div>';
+    
+    return $output;
+  }
+  
   
   function getFormStyleAndScript(){
     $output = '';
@@ -638,6 +652,17 @@ class CatCarusel extends BaseCarusel{
     $output .= parent::getFormStyleAndScript();
     $output .= '
       <script>
+        function delete_cat_item(del_id, title, id_block) {
+      		if (confirm( title )) {
+      			$.post(\''.$this->carusel_name.'.php?ajx&act=delete_cat_item\', {del_id: del_id}, function(data) {
+      				if (data == "ok") {
+                
+      					$("#"+id_block).fadeOut("slow").remove();
+      				}
+      			})
+      		}
+      	}
+        
         $(document).ready(function() {
          
             // Initialise the first table (as before)
@@ -682,7 +707,7 @@ HTML;
   
   function show_table_header_rows(){
     $output = '
-          <tr class="th nodrop nodrag">
+          <tr class="tth nodrop nodrag">
           	<th style="width: 55px;">#</th>
       		  <th style="width: 50px;">Скрыть</th>
             <th style="width: 60px;">Картинка</th>
@@ -720,40 +745,50 @@ HTML;
             <td style="text-align: left;">
               <a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">'.$title.'</a>
             </td>
-
-            <td style="" class="img-act">
+            
+            <td style="" class="action_btn_box">
+              '.$this->show_table_row_action_btn($id).'
+            </td>
+  			  </tr>
+          ';
+    
+    return $output;
+  }
+  
+  function show_table_row_action_btn($id){
+    $output = '';
+    
+    $output .= '
               <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
-                <i class="fas fa-pencil-alt"></i>
+                <i class="fa fa-pencil"></i>
               </a>
               
-              <span >
               <span class="btn btn-danger btn-sm" 
                     title="удалить" 
                     onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                <i class="far fa-trash-alt"></i>
+                <i class="fa fa-trash-o"></i>
               </span>
-            </td>
-  			  </tr>
-  			  </tr>';
-    
+    ';
     return $output;
   }
   
   function show_table(){
     $output = "";
     
+    $_SESSION[$this->carusel_name]['c_id'] = 0;
     if(isset($_GET['c_id'])){
       // Запоминаем новую позициию в дереве категорий
       if($_GET['c_id'] != 'root'){
         $_SESSION[$this->carusel_name]['c_id'] = $_GET['c_id'];  
-      }else{
-        $_SESSION[$this->carusel_name]['c_id'] = 0;
       }
+      #else{
+      #  $_SESSION[$this->carusel_name]['c_id'] = 0;
+      #}
       
-    }
-    $c_id = $_SESSION[$this->carusel_name]['c_id'];
+    } 
+    $c_id = $_SESSION[$this->carusel_name]['c_id']; 
     
     $output .= $this->getFormStyleAndScript();
     $header = '<h1><a href = "'.IA_URL.$this->carusel_name.'.php?c_id=root">'.$this->header.'</a></h1>';
@@ -777,42 +812,45 @@ HTML;
     
     #$output .= $this->getFormStyleAndScript(); 
     #$output .= '<h1>'.$this->header.'</h1>';
-    $s_filter = $s_sorting = $s_limit = $strPager = $groupOperationsCont = '';
+    $s_sorting = $s_limit = $strPager = $groupOperationsCont = '';
     $s_order = " ORDER BY `ord` ASC ";
-    $where = "`cat_id` =  $c_id";
+    $where = "WHERE `cat_id` =  $c_id";
     
     $s = "
       SELECT COUNT( * ) AS count
       FROM `".$this->prefix.$this->carusel_name."`
-      WHERE $where
-    ";
-    
-    $q = $this->pdo->query($s);
-    $r = $q->fetch();
-    $count_items = $r['count'];
-
+      $where
+    "; #pri($s);
+    $q = $this->pdo->query($s); $r = $q->fetch(); $count_items = $r['count'];
     
     $output .= '
       <h2 class = "items_header">Содержание</h2>';
       
-    if($this->is_filter &&  $count_items) $output .= $this->getFilterTable($s_filter);
-    if( $count_items) $groupOperationsCont = $this->getGroupOperations();
-    if($this->is_pager && $count_items) $strPager = $this->getPager( $count_items, $s_limit);
-   
-    $output .= $strPager;
+    if($this->is_filter && $count_items) $output  .= $this->getFilterTable($where);
+    
+    $s = "
+      SELECT COUNT( * ) AS count
+      FROM `".$this->prefix.$this->carusel_name."`
+      $where
+    "; #pri($s);
+    $q = $this->pdo->query($s); $r = $q->fetch(); $count_items = $r['count'];
+    
+    if($this->is_pager  && $count_items) $strPager = $this->getPager( $count_items, $s_limit);
+    if( $count_items ) $groupOperationsCont = $this->getGroupOperations(); 
+    
+    if($this->is_pager) $output .= $strPager;
     
     $s = "
       SELECT *
       FROM `".$this->prefix.$this->carusel_name."`
-      WHERE $where
-      $s_filter
+      $where
       $s_sorting
       $s_order
       $s_limit
-    ";
-    #echo $s;
+    "; #pri($s);
 
     if(!$count_items) $output .= "<p>Отсутствует</p>";
+    
     $output .= '
       <form 
         method="post" 
@@ -822,8 +860,9 @@ HTML;
       >
         <input type="hidden" name="slideid" value="1">
     ';
+    $filter_count_items = 0;
     if($q = $this->pdo->query($s)){
-      if($q->rowCount()){
+      if($filter_count_items = $q->rowCount()){
         $output .= '
     	    <table id="sortabler" class="table sortab table-sm table-striped ">
             <thead>'.$this->show_table_header_rows().'</thead>
@@ -836,14 +875,17 @@ HTML;
           </table>';
       }
     }
-    $output .= $groupOperationsCont;
-    $output .= '
-    <br>
-  	<center><a class="btn btn-success" href="?adds" id="submit">Добавить</a></center>
-    </form>';
-
     
+    $output .= $groupOperationsCont;
+    
+    $output .= '
+    <br>';
+    $output .=  $this->get_add_btn_show_table();
+  	#<center><a class="btn btn-success" href="?adds" id="submit">Добавить</a></center>
+    $output .= '
+    </form>';
     if($this->is_pager) $output .= $strPager;
+    
     $output .= '
 	</div>
   ';
@@ -852,8 +894,16 @@ HTML;
     
   }
   
-  function show_form($item = null, $output = '', $id = null){
+  function get_add_btn_show_table(){
+    $output = '';
+    $output .= '
+    <center><a class="btn btn-success " href="?adds" id="submit">Добавить</a></center>';
     
+    return $output;
+  }
+  
+  function show_form($item = null, $output = '', $id = null){
+    $title = '';
     $output .= '<div class = "c_form_box">';
     
     $is_open_panel_div = false;
@@ -1000,7 +1050,7 @@ HTML;
 
     $output .= $this->show_form($item);
 
-    $output .= ' <BR/><BR/><INPUT type="submit" value="сохранить" class="btn btn-success btn-large" id="submit">';
+    $output .= ' <BR/><BR/><INPUT type="submit" value="сохранить" class="btn btn-success btn-large submit_form" id="submit">';
     $output .= '</FORM></div>';
     
     $sql="SHOW TABLE STATUS LIKE '".$this->prefix.$this->carusel_name."'";
@@ -1031,6 +1081,7 @@ HTML;
     ";
     
     //if (isset($_POST['title'])){
+    $id = '';
     if($this->validationValue($id)){
       
       $sql_names = ''; $sql_vals = ''; 
@@ -1141,7 +1192,7 @@ HTML;
       
       $output .= $this->show_form($item, '', $id);
       
-      $output .= ' <BR/><BR/><INPUT type="submit" value="сохранить" class="btn btn-success btn-large" id="submit">';
+      $output .= ' <BR/><BR/><INPUT type="submit" value="сохранить" class="btn btn-success btn-large submit_form" id="submit">';
       $output .= '</FORM>';
       
       //Модуль картинок
@@ -1243,12 +1294,14 @@ HTML;
         $this->files_items->deleteImageForModuleAndModuleId($this->prefix.$this->carusel_name, $id);
       }
       
+      $s = "DELETE FROM `".$this->prefix.$this->carusel_name."` WHERE `id` = '$id'";
+      
       if($this->log){ // Ведение лога
         $backUpItem = serialize ( db::row("*", $this->prefix.$this->carusel_name, "id = ".$id) );
         $res_log = $this->log->addLogRecord("Удаление", "delete", $this->prefix.$this->carusel_name, $id, $backUpItem, addslashes($s));
       }
       
-      $this->pdo->query("DELETE FROM `".$this->prefix.$this->carusel_name."` WHERE `id` = '$id'");
+      $this->pdo->query($s);
       
     }  
     switch($view){
@@ -1366,7 +1419,7 @@ HTML;
     $output .= ' </div> ';
     
     $output .= ' Изображение  (Иделальный размер '.$this->img_cat_ideal_width.' x '.$this->img_cat_ideal_height.'):';
-    $output .= '<BR/><INPUT type="file" name="picture" value="" class="w100"><BR/>';
+    $output .= '<BR/><INPUT type="file" name="picture" id = "fr_picture" value="" class="w100"><BR/>';
     
     return $output;
     
@@ -1400,7 +1453,7 @@ HTML;
 
     $output .= $this->show_cat_form();
 
-    $output .= ' <BR/><BR/><INPUT type="submit" value="сохранить" class="btn btn-success btn-large" id="submit">';
+    $output .= ' <BR/><BR/><INPUT type="submit" value="сохранить" class="btn btn-success btn-large submit_cat_form" id="submit">';
     $output .= '</FORM></div>';
     
     $sql="SHOW TABLE STATUS LIKE '".$this->cat_carusel_name."'";
@@ -1431,6 +1484,7 @@ HTML;
     ";
     
     //if (isset($_POST['title'])){
+    if(!isset($id)) $id = '';
     if($this->validationCatValue($id)){
       
       $sql_names = ''; $sql_vals = ''; 
@@ -1461,7 +1515,7 @@ HTML;
       }
       
 
-      if ($name = $this->load_cat_picture()){
+      if ($name = $this->load_cat_picture($id)){
   		  $this->pdo->query("UPDATE `".$this->cat_carusel_name."` SET `img` = '$name' WHERE `id` = '$id'");
         
         if($this->log)// Ведение лога
@@ -1500,6 +1554,7 @@ HTML;
     ";
     
     #$id = intval($_GET["edits"]);
+    if( !isset($header) ) $header = '';
     $header .='<h1><a href="'.IA_URL.$this->carusel_name.'.php">'.$this->header.'</a></h1>';
     $this->header = $header;
     (!is_null($this->admin)) ?  : $output .=  $header;
@@ -1544,7 +1599,9 @@ HTML;
       
       $output .= $this->show_cat_form($item, '', $id);
       
-      $item_img = $item['img'];
+      $item_img = '';
+      if( isset($item['img']) ) $item_img = $item['img'];
+      
       if(!$item_img){
         #$item_img = db::value('img', $this->cat_carusel_name, "id = $id");
         $s = "SELECT img FROM `".$this->cat_carusel_name."` WHERE `id` = $id";
@@ -1553,13 +1610,16 @@ HTML;
         $item_img = $r['img'];
         
       }
+      
       if ($item_img !== ''){
-        $output .= '<BR/>загружено:'.$item_img.'<BR/><IMG src="/images/'.$this->carusel_name.'/cat/slide/'.$item_img.'">';
-  		  $output .= '[ <A href="'.IA_URL.$this->carusel_name.'.php?delete_picture_c=1&id='.$id.'" onClick="javascript: if (confirm('."'Удалить картинку?')) { return true;} else { return false;}\"".'>удалить</A> ]<BR/>';
+        $output .= '<p>загружено:'.$item_img.'</p>
+        <div class = "cat_img_box">
+          <img class = "cat_img_item" src="/images/'.$this->carusel_name.'/cat/slide/'.$item_img.'" >
+        </div>';
+  		  $output .= $this->getDeleteCatImgBtn($id);
       }
       
-      
-      $output .= ' <BR/><BR/><INPUT type="submit" value="сохранить" class="btn btn-success btn-large" id="submit">';
+      $output .= ' <BR/><BR/><INPUT type="submit" value="сохранить" class="btn btn-success btn-large submit_cat_form" id="submit">';
       $output .= '</FORM>';
       
       //Модуль картинок
@@ -1572,6 +1632,14 @@ HTML;
         $output .= $this->files_items->showFilesForm($this->cat_carusel_name, $id);
       }
     }
+    
+    return $output;
+  }
+    
+  function getDeleteCatImgBtn($id){
+    $output .= '';
+    
+    $output .= '[ <A href="'.IA_URL.$this->carusel_name.'.php?delete_picture_c=1&id='.$id.'" onClick="javascript: if (confirm('."'Удалить картинку?')) { return true;} else { return false;}\"".' class = "delete_cat_img_btn"  style = "color:red;">X удалить</A> ]<BR/>';
     
     return $output;
   }
@@ -1594,7 +1662,7 @@ HTML;
     // Если форма прошла валидацию
     if($this->validationCatValue($id)){
 
-      if ($name = $this->load_cat_picture()){
+      if ($name = $this->load_cat_picture($id)){
   			$this->pdo->query("UPDATE `".$this->cat_carusel_name."` SET `img` = '$name' WHERE `id` = '$id'");
         
         if($this->log) // Ведение лога
@@ -1637,7 +1705,7 @@ HTML;
     return $output;
   }
   
-  function load_cat_picture(){
+  function load_cat_picture($id){
     $picture_uploaded = FALSE;
 		
     if (isset($_FILES["picture"])){
@@ -1706,9 +1774,9 @@ HTML;
     return $output;
   }
   
-  function delete_cat_slide($id){
+  function delete_cat_slide($id, $view = 'show_table'){
     $output = "";
-   	if (isset($_GET["deletec"])){
+    if (isset($id) && $id){
   		#$id = intval($_GET["deletec"]);
       $this->delete_picture($id);
   		
@@ -1726,15 +1794,24 @@ HTML;
       if($this->files_items && $id){
         $this->files_items->deleteImageForModuleAndModuleId($this->cat_carusel_name, $id);
       }
-      
+      $s = "DELETE FROM `".$this->cat_carusel_name."` WHERE `id` = '$id'";
       if($this->log){ // Ведение лога
         $backUpItem = serialize ( db::row("*", $this->cat_carusel_name, "id = ".$id) );
         $res_log = $this->log->addLogRecord("Удаление", "delete", $this->cat_carusel_name, $id, $backUpItem, addslashes($s));
       }
       
-      $this->pdo->query("DELETE FROM `".$this->cat_carusel_name."` WHERE `id` = '$id'");
-    }  
-    $output = $this->show_table();
+      $this->pdo->query($s);
+    }
+    
+    switch($view){
+      case 'show_table':
+        $output .= $this->show_table();
+        break;
+        
+      case 'ajax':
+        $output .= "ok";
+        break;
+    }
     
     return $output;
   }
@@ -2264,6 +2341,8 @@ HTML;
             $carisel->sort_cat_item();
           }elseif($_GET['act'] == 'delete_item'){
             echo $carisel->delete_slide(intval($_POST['del_id']), 'ajax');
+          }elseif($_GET['act'] == 'delete_cat_item'){
+            echo $carisel->delete_cat_slide(intval($_POST['del_id']), 'ajax');
           }elseif($_GET['act'] == 'croppImg'){
             echo $carisel->croppImg();
           }
