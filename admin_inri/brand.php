@@ -1,10 +1,31 @@
 <?php
-require_once('lib/class.Admin.php');
+require_once(__DIR__.'/lib/class.Admin.php');
 $admin = new Admin();
-require_once('lib/class.Carusel.php');
-require_once('lib/class.Image.php');
 
-class Brand extends Carusel{
+if(  ( IS_AJAX_BACKEND == 1 ) ){
+  require_once( __DIR__.'/lib/class.AjaxCarusel.php');
+  class BlockClass extends AjaxCarusel {}
+}else{
+  require_once( __DIR__.'/lib/class.Carusel.php');  
+  class BlockClass extends Carusel {}
+} 
+require_once( __DIR__.'/lib/class.Image.php' );
+
+class Brand extends BlockClass{
+  
+  function getAjaxCompleteScript(){
+    $output = '';
+    
+    $output .= '
+    <script>
+      $(document).ajaxComplete(function() {
+        CKEDITOR.replace( "longtxt1" );
+        CKEDITOR.replace( "longtxt2" );
+      });
+    </script>';
+    
+    return $output; 
+  }
   
 }
 

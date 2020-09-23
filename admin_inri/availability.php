@@ -1,10 +1,17 @@
 <?php
-require_once('lib/class.Admin.php');
+require_once(__DIR__.'/lib/class.Admin.php');
 $admin = new Admin();
-require_once('lib/class.Carusel.php');
-require_once('lib/class.Image.php');
 
-class Availability extends Carusel{
+if(  ( IS_AJAX_BACKEND == 1 ) ){
+  require_once( __DIR__.'/lib/class.AjaxCarusel.php');
+  class BlockClass extends AjaxCarusel {}
+}else{
+  require_once( __DIR__.'/lib/class.Carusel.php');  
+  class BlockClass extends Carusel {}
+} 
+require_once( __DIR__.'/lib/class.Image.php' );
+
+class Availability extends BlockClass{
   
 }
 
@@ -29,7 +36,7 @@ $carisel->setHeader('Варианты наличия');
 $carisel->setIsUrl(false);
 $carisel->setIsImages(false);
 $carisel->setIsFiles(false);
-$carisel->setIsPager(true);
+$carisel->setIsPager(false);
 $carisel->setIsFilter(false);
 $carisel->setIsLog(true);
 $carisel->setFilterField($arrfilterfield); 

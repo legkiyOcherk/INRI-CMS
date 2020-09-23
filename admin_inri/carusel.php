@@ -1,10 +1,31 @@
 <?php
-require_once('lib/class.Admin.php');
+require_once(__DIR__.'/lib/class.Admin.php');
 $admin = new Admin();
-require_once('lib/class.Carusel.php');
-require_once('lib/class.Image.php'); 
 
-class MineCarusel extends Carusel{
+if(  ( IS_AJAX_BACKEND == 1 ) ){
+  require_once( __DIR__.'/lib/class.AjaxCarusel.php');
+  class BlockClass extends AjaxCarusel {}
+}else{
+  require_once( __DIR__.'/lib/class.Carusel.php');  
+  class BlockClass extends Carusel {}
+} 
+require_once( __DIR__.'/lib/class.Image.php' );
+
+
+class MineCarusel extends BlockClass{
+  
+  function getAjaxCompleteScript(){
+    $output = '';
+    
+    $output .= '
+    <script>
+      $(document).ajaxComplete(function() {
+        CKEDITOR.replace( "longtxt1" );
+      });
+    </script>';
+    
+    return $output; 
+  }
   
   function show_table_rows($item){
     $output = '';
@@ -37,24 +58,11 @@ class MineCarusel extends Carusel{
                     <br><a href="'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" title="редактировать">Ссылка: '.trim(strip_tags($link)).'</a>';
               }
     $output .= '
-            </td>';
-            
-    $output .= '
-        	  <td style="" class="img-act">
-              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
-                  class = "btn btn-info btn-sm"
-                  title = "Редактировать">
-                <i class="fas fa-pencil-alt"></i>
-              </a>
-              
-              <span >
-              <span class="btn btn-danger btn-sm" 
-                    title="удалить" 
-                    onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                <i class="far fa-trash-alt"></i>
-              </span>
             </td>
-  			  </tr>
+            
+        	  <td style="" class="action_btn_box">
+              '.$this->show_table_row_action_btn($id).'
+            </td>
   			  </tr>';
     
     return $output;
@@ -72,13 +80,20 @@ $date_arr = array(
     'img_title' => 'Title изображение',
   );
 
-$carisel = new MineCarusel('carusel', $date_arr, true, true);
+$pager = array(
+  'perPage' => 50,
+  'page' => 1,
+  'url' => '',
+  'items_per_page' => array( 50, 100, 500, 1000, 5000)
+);
+
+$carisel = new MineCarusel('carusel', $date_arr, true, true, $pager  ); 
 
 
 $carisel->setHeader('Слайдер на главной');
 $carisel->setIsUrl(false);
 $carisel->setIsImages(false);
-$carisel->setIsPager(true);
+$carisel->setIsPager(false);
 $carisel->setIsLog(true);
 $carisel->setImg_ideal_width(1920);  
 $carisel->setImg_ideal_height(666); 

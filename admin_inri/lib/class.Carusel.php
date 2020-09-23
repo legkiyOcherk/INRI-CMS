@@ -22,7 +22,7 @@ class Carusel extends BaseCarusel{
   var $images_items = null;  // Модуль картинок
   var $files_items = null;   // Модуль файлов
   var $log = null;           // Вести лог
-  var $is_pager = true;      // Отображать пэйджер
+  var $is_pager = false;     // Отображать пэйджер
   var $is_filter = null;     // Отображать фильтр
   
   var $carusel_name;
@@ -103,9 +103,13 @@ class Carusel extends BaseCarusel{
     
     //Если нужен пэйджер
     if($pager){
-      if(is_array($pager)) $this->pager = $pager;
+      if(is_array($pager)){
+        $this->pager = $pager;
+      }
+      $this->is_pager = true;
       $this->setPagerParamers();
     }
+    
     
   }
   
@@ -304,7 +308,7 @@ class Carusel extends BaseCarusel{
     
   function show_table(){
     $output = "";
-   
+    
     $output .= $this->getFormStyleAndScript(); 
     
     $header = '<h1>'.$this->header.'</h1>';
