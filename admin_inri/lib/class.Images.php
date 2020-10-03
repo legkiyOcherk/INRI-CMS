@@ -700,7 +700,8 @@ class Images extends BaseCarusel{
             <IMG src="/images/'.$this->carusel_name.'/slide/'.$r["img"].'"  class="imgList" >
             <div class="delete_image" name = "'.$r['id'].'" onclick1="delete_image(this, '.$r['id'].')">X Удалить</div>
             <div class="edit_image" ><a href = "/'.ADM_DIR.'/all_images.php?edits='.$r['id'].'" target = "_blank" >Редактировать</a></div>
-            <input type = "text" class="image_name" value = "'.$r['title'].'" data-id = "'.$r['id'].'">
+            <div title="Скрыть" onclick="star_image_check('.$r['id'].', \'hide\')" class="star_image_check '.$this->getStarValStyle($r['hide']).'" id="image_hide_'.$r['id'].'"></div>
+            <input type = "text" class="image_name" value = "'.$r['title'].'" data-id = "'.$r['id'].'"> 
           </li>
         ';
       }
@@ -822,8 +823,25 @@ HTML;
 		  }
     });
     
-
+    // $(".star_image_check").live("click", function()		
+    function star_image_check(id, field) 	{
+  		$.post(\''.$this->carusel_name.'.php?ajx&act=star_check\', {id:id, field:field}, function(data) {
     ';
+    $output .= <<<HTML
+        
+  			if (data == 1) {
+          console.log( 'data = ' + 1 + ' ' + '#image_'+field+'_'+id + ' ' + $('#image_'+field+'_'+id).attr('title'));
+  				$('#image_'+field+'_'+id).removeClass('far fa-star').addClass('fas fa-star');
+  				//$('#image_'+field+'_'+id);
+  			} else {
+          console.log( 'data = ' + 0  + ' ' + '#image_'+field+'_'+id);
+  				$('#image_'+field+'_'+id).removeClass('fas fa-star').addClass('far fa-star');
+  				//$('#image_'+field+'_'+id).addClass('far fa-star');
+  			}
+  		});
+    }
+HTML;
+
     $output .= <<<HTML
     </script>
   <style>
@@ -847,7 +865,19 @@ HTML;
     max-height: 150px;
     max-width: 150px;
   }
-
+  .star_image_check{
+    position: absolute;
+    font-size: 25px;
+    top: 3px;
+    left: 3px;
+    color: #f0ad4e;
+    //color: yellow;
+    opacity: 0.8;
+    cursor: pointer;
+  }
+  .star_image_check:hover{
+    opacity: 1;
+  }
   
   #sortable { list-style-type: none; margin: 0; padding: 0;  }
   #sortable li{ 
@@ -868,7 +898,7 @@ HTML;
     top: 0px;
     right: 0px;
     color: red;
-    opacity: 0.5;
+    opacity: 0.8;
     cursor: pointer;
     font-weight: 400;
   }
@@ -901,7 +931,7 @@ HTML;
     bottom: 35px;
     right: 0px;
     color: red;
-    opacity: 0.5;
+    opacity: 0.8;
     cursor: pointer;
     font-weight: 400;
   }

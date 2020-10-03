@@ -308,7 +308,7 @@ class BaseAdmin{
         #<link href="'.IA_URL.'admin_style/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     $output .= '
         <!-- Custom Fonts -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" >';
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.0/css/all.css" >';
         #<link href="'.IA_URL.'admin_style/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         
     $output .= '
