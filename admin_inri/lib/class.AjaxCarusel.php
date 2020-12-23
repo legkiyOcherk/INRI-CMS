@@ -103,7 +103,22 @@ class AjaxCarusel extends Carusel{
   
   function getAjaxCompleteScript(){
     $output = '';
-  
+    $output .= '
+      <script>
+        $(document).ajaxComplete(function() {
+        
+          var ckeditor_arr = document.querySelectorAll(".ckeditor");
+          if(ckeditor_arr){
+            for (let el of ckeditor_arr) {
+              console.log(el.getAttribute("name"));
+              ckeditor_name = el.getAttribute("name");
+              
+              CKEDITOR.replace( ckeditor_name );
+            }  
+          }
+        });
+      </script>';
+      
     /*$output .= '
     <script>
       $(document).ajaxComplete(function() {
@@ -144,8 +159,16 @@ class AjaxCarusel extends Carusel{
           
       	});
         
+        function CKEDITOR_update(){  // Обновление данных с CKEDITOR - ов
+          for ( instance in CKEDITOR.instances ){
+            CKEDITOR.instances[instance].updateElement();
+          }
+        }
         
         $( ".'.$this->carusel_name.'_popup_form_box" ).on( "click", ".submit_form", function(e){ 
+           
+          CKEDITOR_update();
+          
           $( this ).attr( "disabled", "disabled" );
           if(!is_ajx_send_form) return;
           is_ajx_send_form = false;

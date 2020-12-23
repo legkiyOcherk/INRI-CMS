@@ -50,26 +50,11 @@ ini_set('display_startup_errors', 1);
 
 class Article extends BlockClass{
   
-  function getAjaxCompleteScript(){
-    $output = '';
-    
-    $output .= '
-    <script>
-      $(document).ajaxComplete(function() {
-        CKEDITOR.replace( "longtxt1" );
-        CKEDITOR.replace( "longtxt2" );
-        
-      });
-    </script>'; 
-    
-    return $output;
-  }
-  
   function show_cat_table_rows($item, $i = 0){
     $output = '';
               extract($item);
               $output .= '
-                <tr class="r'.($i % 2).'" id="tr_'.$id.'" style="cursor: move;">			 
+                <tr class="r'.($i % 2).'" id="trc_'.$id.'" style="cursor: move;">			 
                   <td style="width: 20px;">'.$id.'<input type="hidden" value="'.$id.'" name="itCatSort[]"></td>
                   
                   <td style="width: 30px;" class="img-act"><div title="Скрыть" onclick="star_cat_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>
@@ -176,31 +161,16 @@ class Article extends BlockClass{
   
   function getCreateSlide_SqlNames_SqlVals(&$sql_names, &$sql_vals){
     
-    if($_POST['title']){
-      $_POST['orm_search_name'] = get_phpmorphy($_POST['title']);
-    }
-    
-    if($_POST['longtxt2']){
-      $_POST['orm_search'] = get_phpmorphy($_POST['longtxt2']);
-    }
+    $_POST['orm_search_name'] = $_POST['orm_search'] = '';
+    if($_POST['title'])    $_POST['orm_search_name'] = get_phpmorphy($_POST['title']);
+    if($_POST['longtxt2']) $_POST['orm_search']      = get_phpmorphy($_POST['longtxt2']);
     
     $i=0;
     foreach($this->date_arr as $key=>$val){
-      if($key == 'is_enlarge_photos'){
-        if ( isset($_POST[$key]) && $_POST[$key] ) {
-          $_POST[$key] = 1;
-        }else{
-          $_POST[$key] = 0;
-        }
-      }
       ($i) ? $prefix = ', ' : $prefix = ''; $i++;
-      /*if($key == 'date'){
-        if (($timestamp = strtotime($_POST[$key])) === false) {
-          $_POST[$key] = time();
-        }else{
-          $_POST[$key] = strtotime($_POST[$key]);
-        }
-      }*/
+      if( in_array( $key, $this->checkbox_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
+      }
       $sql_names .= $prefix.' `'.$key.'`';
       $sql_vals .= $prefix.' \''.addslashes($_POST[$key]).'\'';
       
@@ -210,31 +180,17 @@ class Article extends BlockClass{
   function getUpdateSlide_SqlVals(){
     $sql_vals = ''; 
     
-    if($_POST['title']){
-      $_POST['orm_search_name'] = get_phpmorphy($_POST['title']);
-    }
-    
-    if($_POST['longtxt2']){
-      $_POST['orm_search'] = get_phpmorphy($_POST['longtxt2']);
-    }
+    $_POST['orm_search_name'] = $_POST['orm_search'] = '';
+    if($_POST['title'])    $_POST['orm_search_name'] = get_phpmorphy($_POST['title']);
+    if($_POST['longtxt2']) $_POST['orm_search']      = get_phpmorphy($_POST['longtxt2']);
     
     $i=0;
     foreach($this->date_arr as $key=>$val){
-      if($key == 'is_enlarge_photos'){
-        if ( isset($_POST[$key]) && $_POST[$key] ) {
-          $_POST[$key] = 1;
-        }else{
-          $_POST[$key] = 0;
-        }
-      }
+
       ($i) ? $prefix = ', ' : $prefix = ''; $i++;
-      /*if($key == 'date'){
-        if (($timestamp = strtotime($_POST[$key])) === false) {
-          $_POST[$key] = time();
-        }else{
-          $_POST[$key] = strtotime($_POST[$key]);
-        }
-      }*/
+      if( in_array( $key, $this->checkbox_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
+      }
       $sql_vals .= $prefix.'  `'.$key.'` = \''.addslashes($_POST[$key]).'\'';
       
     }
@@ -243,23 +199,15 @@ class Article extends BlockClass{
   
   function getCreateCatSlide_SqlNames_SqlVals(&$sql_names, &$sql_vals){
     
-    if($_POST['title']){
-      $_POST['orm_search_name'] = get_phpmorphy($_POST['title']);
-    }
-    
-    if($_POST['longtxt2']){
-      $_POST['orm_search'] = get_phpmorphy($_POST['longtxt2']);
-    }
+    $_POST['orm_search_name'] = $_POST['orm_search'] = '';
+    if($_POST['title'])    $_POST['orm_search_name'] = get_phpmorphy($_POST['title']);
+    if($_POST['longtxt2']) $_POST['orm_search']      = get_phpmorphy($_POST['longtxt2']);
     
     $i=0;
       
     foreach($this->date_cat_arr as $key=>$val){
-      if($key == 'is_enlarge_photos'){
-        if ( isset($_POST[$key]) && $_POST[$key] ) {
-          $_POST[$key] = 1;
-        }else{
-          $_POST[$key] = 0;
-        }
+      if( in_array( $key, $this->checkbox_cat_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
       }
       ($i) ? $prefix = ', ' : $prefix = '';
       $sql_names .= $prefix.' `'.$key.'`';
@@ -271,23 +219,15 @@ class Article extends BlockClass{
   function getUpdateCatSlide_SqlVals(){
     $sql_vals = ''; 
     
-    if($_POST['title']){
-      $_POST['orm_search_name'] = get_phpmorphy($_POST['title']);
-    }
-    
-    if($_POST['longtxt2']){
-      $_POST['orm_search'] = get_phpmorphy($_POST['longtxt2']);
-    }
+    $_POST['orm_search_name'] = $_POST['orm_search'] = '';
+    if($_POST['title'])    $_POST['orm_search_name'] = get_phpmorphy($_POST['title']);
+    if($_POST['longtxt2']) $_POST['orm_search']      = get_phpmorphy($_POST['longtxt2']);
     
     $i=0;
     
     foreach($this->date_cat_arr as $key=>$val){
-      if($key == 'is_enlarge_photos'){
-        if ( isset($_POST[$key]) && $_POST[$key] ) {
-          $_POST[$key] = 1;
-        }else{
-          $_POST[$key] = 0;
-        }
+      if( in_array( $key, $this->checkbox_cat_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
       }
       ($i) ? $prefix = ', ' : $prefix = '';
       $sql_vals .= $prefix.'  `'.$key.'` = \''.addslashes($_POST[$key]).'\'';

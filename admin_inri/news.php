@@ -43,21 +43,7 @@ function get_phpmorphy($descr_str) {
     return $orm_search;
 }
 
-class News extends BlockClass{  
-  
-  function getAjaxCompleteScript(){
-    $output = '';
-    
-    $output .= '
-    <script>
-      $(document).ajaxComplete(function() {
-        CKEDITOR.replace( "longtxt1" );
-        CKEDITOR.replace( "longtxt2" );
-      });
-    </script>';
-    
-    return $output; 
-  }
+class News extends BlockClass{ 
   
   function star_check(){
     

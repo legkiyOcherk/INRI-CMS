@@ -41,7 +41,8 @@ class CatCarusel extends BaseCarusel{
     'url' => '',
     'items_per_page' => array( 10, 50, 100, 500, 1000, 5000)
   );
-  var $filter_field = array('title');
+  var $filter_field       = array( 'title' );
+  var $checkbox_cat_array = array( 'hide'  );
 
   
   
@@ -67,7 +68,7 @@ class CatCarusel extends BaseCarusel{
 
     //Для пересоздания раскоментить
     #$_SESSION[$carusel_name]['is_table'] = 0;
-    #s$_SESSION[$carusel_name]['img_dir'] = 0;
+    #$_SESSION[$carusel_name]['img_dir'] = 0;
     //END Для пересоздания раскоментить
     
     $this->pdo = db_open();
@@ -509,7 +510,7 @@ class CatCarusel extends BaseCarusel{
     $output = '';
               extract($item);
               $output .= '
-                <tr class="r'.($i % 2).'" id="tr_'.$id.'" style="cursor: move;">			 
+                <tr class="r'.($i % 2).'" id="trc_'.$id.'" style="cursor: move;">			 
                   <td style="width: 20px;">'.$id.'<input type="hidden" value="'.$id.'" name="itCatSort[]"></td>
                   
                   <td style="width: 30px;" class="img-act"><div title="Скрыть" onclick="star_cat_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>
@@ -777,17 +778,15 @@ HTML;
   function show_table(){
     $output = "";
     
-    $_SESSION[$this->carusel_name]['c_id'] = 0;
     if(isset($_GET['c_id'])){
       // Запоминаем новую позициию в дереве категорий
       if($_GET['c_id'] != 'root'){
         $_SESSION[$this->carusel_name]['c_id'] = $_GET['c_id'];  
+      }else{
+        $_SESSION[$this->carusel_name]['c_id'] = 0;
       }
-      #else{
-      #  $_SESSION[$this->carusel_name]['c_id'] = 0;
-      #}
-      
-    } 
+    }
+    
     $c_id = $_SESSION[$this->carusel_name]['c_id']; 
     
     $output .= $this->getFormStyleAndScript();
@@ -1057,16 +1056,19 @@ HTML;
     return $output;
   }
   
-  function getCreateSlide_SqlNames_SqlVals(&$sql_names, &$sql_vals){
+  /*function getCreateSlide_SqlNames_SqlVals(&$sql_names, &$sql_vals){
     $i=0;
       
     foreach($this->date_arr as $key=>$val){
       ($i) ? $prefix = ', ' : $prefix = '';
+      if( in_array( $key, $this->checkbox_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
+      }
       $sql_names .= $prefix.' `'.$key.'`';
       $sql_vals .= $prefix.' \''.addslashes($_POST[$key]).'\'';
       $i++;
     };
-  }
+  }*/
   
   function create_slide(){
     $output = "
@@ -1206,16 +1208,19 @@ HTML;
     return $output;
   }
   
-  function getUpdateSlide_SqlVals(){
+  /*function getUpdateSlide_SqlVals(){
     $sql_vals = ''; $i=0;
     
     foreach($this->date_arr as $key=>$val){
       ($i) ? $prefix = ', ' : $prefix = '';
+      if( in_array( $key, $this->checkbox_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
+      }
       $sql_vals .= $prefix.'  `'.$key.'` = \''.addslashes($_POST[$key]).'\'';
       $i++;
     }
     return $sql_vals;
-  }
+  }*/
   
   function update_slide($id){
     $output = "";
@@ -1424,7 +1429,7 @@ HTML;
   function add_cat_slide($item = null){
     $output = $title = "";
     
-    $header .='<h1><a href="'.IA_URL.$this->carusel_name.'.php">'.$this->header.'</a></h1>';
+    $header ='<h1><a href="'.IA_URL.$this->carusel_name.'.php">'.$this->header.'</a></h1>';
     $this->header = $header;
     (!is_null($this->admin)) ?  : $output .=  $header;
     
@@ -1465,6 +1470,9 @@ HTML;
       
     foreach($this->date_cat_arr as $key=>$val){
       ($i) ? $prefix = ', ' : $prefix = '';
+      if( in_array( $key, $this->checkbox_cat_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
+      }
       $sql_names .= $prefix.' `'.$key.'`';
       $sql_vals .= $prefix.' \''.addslashes($_POST[$key]).'\'';
       $i++;
@@ -1645,6 +1653,9 @@ HTML;
     
     foreach($this->date_cat_arr as $key=>$val){
       ($i) ? $prefix = ', ' : $prefix = '';
+      if( in_array( $key, $this->checkbox_cat_array ) ){
+        ( isset($_POST[$key]) && $_POST[$key] ) ? $_POST[$key] = 1 : $_POST[$key] = 0;
+      }
       $sql_vals .= $prefix.'  `'.$key.'` = \''.addslashes($_POST[$key]).'\'';
       $i++;
     }

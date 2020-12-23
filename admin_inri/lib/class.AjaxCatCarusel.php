@@ -133,12 +133,11 @@ class AjaxCatCarusel extends CatCarusel{
     
     if(!$val_is_cildren && !$val_is_items){
       $output .= '
-          <a href="..'.IA_URL.$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}"
-                class="btn btn-danger btn-sm" 
+          <span class="btn btn-danger btn-sm" 
                 title="удалить" 
-                onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
+                onclick="delete_cat_item('.$id.', \'Удалить элеемент?\', \'trc_'.$id.'\')">
             <i class="far fa-trash-alt"></i>
-          </a>
+          </span>
       ';
       #<a href="..'.IA_URL.'$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}">
       #      <img src="..'.IA_URL.'images/icons/b_drop.png" width="16" height="16" border="0">
@@ -167,6 +166,21 @@ class AjaxCatCarusel extends CatCarusel{
   function getAjaxCompleteScript(){
     $output = '';
     
+    $output .= '
+      <script>
+        $(document).ajaxComplete(function() {
+        
+          var ckeditor_arr = document.querySelectorAll(".ckeditor");
+          if(ckeditor_arr){
+            for (let el of ckeditor_arr) {
+              console.log(el.getAttribute("name"));
+              ckeditor_name = el.getAttribute("name");
+              
+              CKEDITOR.replace( ckeditor_name );
+            }  
+          }
+        });
+      </script>';
     /*$output .= '
     <script>
       $(document).ajaxComplete(function() {
@@ -198,14 +212,28 @@ class AjaxCatCarusel extends CatCarusel{
          
           if ($(event.target).closest(".'.$this->carusel_name.'_popup_form_box").length) return;
           if ($(event.target).closest(".ajax_edit_item").length) return;
-          if ($(event.target).closest(".select2-results__option").length) return;
+          
+          if ($(event.target).closest(".select2-results__options").length)   return;
+          if ($(event.target).closest(".select2-results__option").length)    return;
+          if ($(event.target).closest("input.select2-search__field").length) return;
+          
+          console.log("getFormStyleAndScript_Cat");
+          console.log( $(event.target).closest("context") );
           
           div.hide(); // скрываем его 
           
       	});
         
+        function CKEDITOR_update(){  // Обновление данных с CKEDITOR - ов
+          for ( instance in CKEDITOR.instances ){
+            CKEDITOR.instances[instance].updateElement();
+          }
+        }
         
         $( ".'.$this->carusel_name.'_popup_form_box" ).on( "click", ".submit_form", function(e){ 
+          
+          CKEDITOR_update();
+          
           $( this ).attr( "disabled", "disabled" );
           if(!is_ajx_send_form) return;
           is_ajx_send_form = false;
@@ -257,6 +285,9 @@ class AjaxCatCarusel extends CatCarusel{
         });
         
         $( ".'.$this->carusel_name.'_popup_form_box" ).on( "click", ".submit_cat_form", function(e){ 
+          
+          CKEDITOR_update();
+          
           $( this ).attr( "disabled", "disabled" );
           if(!is_ajx_send_form) return;
           is_ajx_send_form = false;
@@ -451,7 +482,7 @@ class AjaxCatCarusel extends CatCarusel{
   
   function ajx_send_cat_form(){
     
-    $output = $id = '';
+    $output = $id = ''; #pri($_POST);
     
     if( !isset($_POST['ajax_updates']  ) ) return;
     if( !isset($_POST['ajax_form_data']) ) return;
@@ -476,10 +507,9 @@ class AjaxCatCarusel extends CatCarusel{
        
     }
     
-    
     if(!$id){
       $output .= $this->create_cat_slide();
-      if( isset($_GET["edits"]) && $_GET["edits"] ) $res['edits'] = $_GET["edits"];
+      if( isset($_GET["editc"]) && $_GET["editc"] ) $res['edits'] = $_GET["editc"];
     }else{
       $output .= $this->update_cat_slide($id);  
       $res['edits'] = $id;

@@ -171,7 +171,7 @@ class Goods extends BlockClass{
     $output = '';
               extract($item);
               $output .= '
-                <tr class="r'.($i % 2).'" id="tr_'.$id.'" style="cursor: move;">			 
+                <tr class="r'.($i % 2).'" id="trc_'.$id.'" style="cursor: move;">			 
                   <td style="width: 20px;">'.$id.'<input type="hidden" value="'.$id.'" name="itCatSort[]"></td>
                   
                   <td style="width: 30px;" class="img-act"><div title="Скрыть" onclick="star_cat_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>
@@ -500,7 +500,7 @@ class Goods extends BlockClass{
     $output .= ' </div> ';
     
     $output .= ' Изображение  (Иделальный размер '.$this->img_cat_ideal_width.' x '.$this->img_cat_ideal_height.'):';
-    $output .= '<BR/><INPUT type="file" name="picture" value="" class="w100"><BR/>';
+    $output .= '<BR/><INPUT type="file" name="picture" id = "fr_picture" value="" class="w100"><BR/>';
     
     return $output;
     
