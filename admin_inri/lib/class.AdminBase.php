@@ -410,7 +410,7 @@ HTML;
     if(isset($_POST['search_admin_q'])){
       $search_quer = $_POST['search_admin_q'];
       $search_quer = strip_tags($search_quer);
-      $search_quer = trim(preg_replace('#[^a-zA-Z0-9а-яёйА-ЯЁЙ\.\_\-\+\*]+#ui', ' ', $search_quer));
+      $search_quer = trim(preg_replace('#[^a-zA-Z0-9а-яёйА-ЯЁЙ\.\_\-\+\*\=\:\/]+#ui', ' ', $search_quer));
       #pri($search_quer);
   
       if($search_quer){

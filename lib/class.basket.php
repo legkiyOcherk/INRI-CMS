@@ -1072,7 +1072,7 @@ class Basket {
         WinPrint.document.close();
         WinPrint.focus();
         WinPrint.print();
-        WinPrint.close();
+        //WinPrint.close();
         prtContent.innerHTML=strOldOne;
       }
       </script>    

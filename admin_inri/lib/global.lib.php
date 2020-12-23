@@ -83,7 +83,7 @@ class AllFunction{
       }
       $output .= '
             </div>
-      	    <div class="col-12 col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 col-lg-10 col-md-offset-2 c_comment">
+      	    <div class="col-12 col-sm-8 offset-sm-4 col-md-9 offset-md-3 col-lg-10 offset-lg-2 c_comment">
               <span class="comment">'.$comment.'</span> 
             </div>
       	  </div>

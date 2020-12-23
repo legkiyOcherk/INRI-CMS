@@ -144,8 +144,6 @@ class AjaxCatCarusel extends CatCarusel{
       #      <img src="..'.IA_URL.'images/icons/b_drop.png" width="16" height="16" border="0">
       #    </a>
     }
-    $output .= '
-      </td>';
     
     return $output;
   }

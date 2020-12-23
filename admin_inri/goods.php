@@ -1,7 +1,14 @@
 <?php
 require_once('lib/class.Admin.php');
 $admin = new Admin();
-require_once('lib/class.CatCarusel.php');
+$admin = new Admin();
+if(  ( IS_AJAX_BACKEND == 1 ) ){
+  require_once( __DIR__.'/lib/class.AjaxCatCarusel.php' );
+  class BlockClass extends AjaxCatCarusel {} 
+}else{
+  require_once( __DIR__.'/lib/class.CatCarusel.php' ); 
+  class BlockClass extends CatCarusel {}  
+}
 require_once('lib/class.Image.php');
 require_once('../vendors/phpmorphy/phpmorphy_init.php'); // Морфология
 
@@ -38,7 +45,22 @@ function get_phpmorphy($descr_str) {
     return $orm_search;
 }
 
-class Goods extends CatCarusel{
+class Goods extends BlockClass{
+  
+  function getAjaxCompleteScript(){
+    $output = '';
+    
+    $output .= '
+    <script>
+      $(document).ajaxComplete(function() {
+        CKEDITOR.replace( "longtxt1" );
+        CKEDITOR.replace( "longtxt2" );
+        CKEDITOR.replace( "longtxt3" );
+      });
+    </script>'; 
+    
+    return $output;
+  }
   
   function getCreateSlide_SqlNames_SqlVals(&$sql_names, &$sql_vals){
     $i=0;
@@ -134,7 +156,7 @@ class Goods extends CatCarusel{
   
   function show_cat_table_header_rows(){
     $output = '
-                <tr class="th">
+                <tr class="tth">
             		  <td style="width: 55px;">#</td>
             		  <td style="width: 50px;">Скрыть</td>
                   <td style="width: 50px;">На главной</td>
@@ -177,46 +199,8 @@ class Goods extends CatCarusel{
             	';
 
               $output .= '
-              	  <td style="" class="img-act">
-                    
-                    <a  href="..'.IA_URL.$this->carusel_name.'.php?editc='.$id.'" 
-                        class = "btn btn-info btn-sm"
-                        title = "Редактировать">
-                        <i class="fas fa-pencil-alt"></i>
-                    </a>';
-/*<a href="..'.IA_URL.'$this->carusel_name.'.php?editc='.$id.'"><img src="../'.ADM_DIR.'/images/icons/b_props.png" width="16" height="16" border="0"></a>&nbsp;*/                    
-                    
-              $val_is_cildren = $val_is_items = '';
-              #$val_is_cildren = db::value('id', '`'.$this->prefix.$this->carusel_name.'_cat'.'`', "parent_id = ".$id);
-              #$val_is_items = db::value('id', '`'.$this->prefix.$this->carusel_name.'`', "cat_id = ".$id);
-              
-              $s = "SELECT id FROM `".$this->prefix.$this->carusel_name.'_cat'."` WHERE parent_id = $id";
-              $q = $this->pdo->query($s);
-              if($q->rowCount()) {
-                $r = $q->fetch();
-                $val_is_cildren = $r['id'];
-              }
-              $s = "SELECT id FROM `".$this->prefix.$this->carusel_name."` WHERE cat_id = $id";
-              $q = $this->pdo->query($s);
-              if($q->rowCount()) {
-                $r = $q->fetch();
-                $val_is_items = $r['id'];
-              }
-              
-              if(!$val_is_cildren && !$val_is_items){
-                $output .= '
-                    <a href="..'.IA_URL.$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}"
-                          class="btn btn-danger btn-sm" 
-                          title="удалить" 
-                          onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                      <i class="far fa-trash-alt"></i>
-                    </a>
-                ';
-                /*<a href="..'.IA_URL.'$this->carusel_name.'.php?deletec='.$id.'" onclick="javascript: if (confirm(\'Удалить?\')) { return true;} else { return false;}">
-                      <img src="../'.ADM_DIR.'/images/icons/b_drop.png" width="16" height="16" border="0">
-                    </a>*/
-              }
-              $output .= '
+                  <td style="" class="action_btn_box">
+                    '.$this->show_cat_table_row_action_btn($id).'
                   </td>
         			  </tr>
               ';
@@ -576,7 +560,7 @@ class Goods extends CatCarusel{
   
   function show_table_header_rows(){
     $output = '
-          <tr class="th nodrop nodrag">
+          <tr class="tth nodrop nodrag">
           	<td style="width: 55px;">#</td>
       		  <td style="width: 50px;">Скрыть</td>
             <td style="width: 50px;">На главной</td>
@@ -638,21 +622,9 @@ class Goods extends CatCarusel{
             <td>'.$portion.' '.$this->units[$units_id].'</td>
             <td><input class="form-control price_input" type="text" name="price" value="'.$price.'"></td>
             
-            <td style="" class="img-act">
-              <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
-                  class = "btn btn-info btn-sm"
-                  title = "Редактировать">
-                <i class="fas fa-pencil-alt"></i>
-              </a>
-              
-              <span >
-              <span class="btn btn-danger btn-sm" 
-                    title="удалить" 
-                    onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                <i class="far fa-trash-alt"></i>
-              </span>
+            <td style="" class="action_btn_box">
+              '.$this->show_table_row_action_btn($id).' 
             </td>
-  			  </tr>
   			  </tr>';
     
     return $output;

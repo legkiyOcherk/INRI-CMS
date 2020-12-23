@@ -50,6 +50,21 @@ ini_set('display_startup_errors', 1);
 
 class Article extends BlockClass{
   
+  function getAjaxCompleteScript(){
+    $output = '';
+    
+    $output .= '
+    <script>
+      $(document).ajaxComplete(function() {
+        CKEDITOR.replace( "longtxt1" );
+        CKEDITOR.replace( "longtxt2" );
+        
+      });
+    </script>'; 
+    
+    return $output;
+  }
+  
   function show_cat_table_rows($item, $i = 0){
     $output = '';
               extract($item);

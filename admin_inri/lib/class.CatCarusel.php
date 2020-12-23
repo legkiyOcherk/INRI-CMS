@@ -727,7 +727,7 @@ HTML;
             <td>
               <input type="checkbox" class="group_checkbox" name="group_item[]" value="'.$id.'"> '.$id.'
               <input type="hidden" value="'.$id.'" name="itSort[]">
-          </td>
+            </td>
             
             <td class="img-act"><div title="Скрыть" onclick="star_check('.$id.', \'hide\')" class="star_check '.$this->getStarValStyle($hide).'" id="hide_'.$id.'"></div></td>  
             <td class = "zoomImg_box" style="">';
@@ -762,13 +762,13 @@ HTML;
               <a  href="..'.IA_URL.$this->carusel_name.'.php?edits='.$id.'" 
                   class = "btn btn-info btn-sm"
                   title = "Редактировать">
-                <i class="fa fa-pencil"></i>
+                <i class="fas fa-pencil-alt"></i>
               </a>
               
               <span class="btn btn-danger btn-sm" 
                     title="удалить" 
                     onclick="delete_item('.$id.', \'Удалить элеемент?\', \'tr_'.$id.'\')">
-                <i class="fa fa-trash-o"></i>
+                <i class="far fa-trash-alt"></i>
               </span>
     ';
     return $output;
@@ -886,11 +886,7 @@ HTML;
     </form>';
     if($this->is_pager) $output .= $strPager;
     
-    $output .= '
-	</div>
-  ';
-
-  return $output;
+    return $output;
     
   }
   

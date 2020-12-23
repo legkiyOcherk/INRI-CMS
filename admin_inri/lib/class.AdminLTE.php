@@ -1021,12 +1021,12 @@ class AdminLTEextends extends BaseAdmin{
 
       <!-- Main content -->
       <section class="content">
-
+        
         <!-- Default box -->
         <div class="box box-primary">
           <div class="box-header with-border">
             <h3 class="box-title">'.$this->title.'</h3>
-
+            
             <div class="box-tools float-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                 <i class="fa fa-minus"></i></button>';
@@ -1047,7 +1047,7 @@ class AdminLTEextends extends BaseAdmin{
           <!-- /.box-footer-->
         </div>
         <!-- /.box -->
-
+      	
       </section>
       <!-- /.content -->
     </div>

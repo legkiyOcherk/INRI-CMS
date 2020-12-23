@@ -82,7 +82,7 @@ class AdminCutaway extends AdminLTEextends{
           case 'Настройки':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-gear" aria-hidden="true"></i> ',
+                  'icon' => '<i class="fas fa-cog" aria-hidden="true"></i> ',
                   'short_decr' => ''
                 ); break; 
                 
@@ -287,7 +287,7 @@ class AdminCorporate extends AdminLTEextends{
           case 'Настройки':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-gear" aria-hidden="true"></i> ',
+                  'icon' => '<i class="fas fa-cog" aria-hidden="true"></i> ',
                   'short_decr' => ''
                 ); break; 
                 
@@ -545,7 +545,7 @@ class AdminOnlineshop extends AdminLTEextends{
           case 'Настройки':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-gear" aria-hidden="true"></i> ',
+                  'icon' => '<i class="fas fa-cog" aria-hidden="true"></i> ',
                   'short_decr' => ''
                 ); break; 
                 
