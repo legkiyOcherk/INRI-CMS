@@ -456,11 +456,8 @@ class Images extends BaseCarusel{
 
     
     if($this->is_pager) $output .= $strPager;
-    $output .= '
-	</div>
-  ';
-
-  return $output;
+    
+    return $output;
     
   }
   

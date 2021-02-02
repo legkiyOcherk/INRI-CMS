@@ -445,11 +445,8 @@ class Files extends BaseCarusel{
     </form>';
     
     if($this->is_pager) $output .= $strPager;
-    $output .= '
-	</div>
-  ';
-
-  return $output;
+    
+    return $output;
     
   }
   

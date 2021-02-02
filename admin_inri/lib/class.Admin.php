@@ -131,9 +131,9 @@ class AdminCutaway extends AdminLTEextends{
           case 'Логи входа в панель':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-exchange" aria-hidden="true"></i>',
+                  'icon' => '<i class="fas fa-exchange-alt"></i>',
                   'short_decr' => ''
-                ); break;      
+                ); break;     
                 
           case 'ЧПУ':
               $this->mainmenu_add_data[$v] = 
@@ -336,7 +336,7 @@ class AdminCorporate extends AdminLTEextends{
           case 'Логи входа в панель':
               $this->mainmenu_add_data[$v] = 
                 array(
-                  'icon' => '<i class="fa fa-exchange" aria-hidden="true"></i>',
+                  'icon' => '<i class="fas fa-exchange-alt"></i>',
                   'short_decr' => ''
                 ); break;      
                 
@@ -443,6 +443,7 @@ class AdminOnlineshop extends AdminLTEextends{
       #---------------------------------------------------------
       "all_files.php"          => "Файлы",
       "all_images.php"         => "Изображения",
+      "admin_logs.php"         => "Логи входа в панель",
       "all_log.php"            => "Логи",
       "url.php"                => "ЧПУ",
       
@@ -590,7 +591,21 @@ class AdminOnlineshop extends AdminLTEextends{
                   'icon' => '<i class="fa fa-bell" aria-hidden="true"></i>',
                   'short_decr' => ''
                 ); break;
-          
+                
+          case 'Логи входа в панель':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fas fa-exchange-alt"></i>',
+                  'short_decr' => ''
+                ); break;      
+                
+          case 'ЧПУ':
+              $this->mainmenu_add_data[$v] = 
+                array(
+                  'icon' => '<i class="fa fa-link" aria-hidden="true"></i>',
+                  'short_decr' => ''
+                ); break;  
+                
           case 'Заказы':
               $this->mainmenu_add_data[$v] = 
                 array(
